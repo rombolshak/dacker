@@ -1,11 +1,10 @@
 @import '@taiga-ui/core/styles/taiga-ui-local.less';
 
 :host {
-  height: 100%;
-  width: 12rem;
+  height: 100vh;
+  width: 14rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   align-items: center;
   .shadow(6);
 
@@ -41,16 +40,20 @@
 
     &:hover {
       cursor: pointer;
-      background-color: var(--tui-base-03);
-      color: var(--tui-base-06);
+      background-color: var(--tui-info-bg-hover);
+      color: var(--tui-text-02);
+
+      .icon {
+        color: var(--tui-text-03);
+      }
     }
 
     &.active {
-      background-color: var(--tui-primary-active);
-      color: var(--tui-text-01-night);
+      background-color: var(--tui-info-bg);
+      color: var(--tui-primary);
 
       .icon {
-        color: var(--tui-base-01);
+        color: var(--tui-primary);
       }
     }
   }
