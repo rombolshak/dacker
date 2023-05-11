@@ -1,34 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './layout/menu/menu.component';
 import { TuiRootModule } from '@taiga-ui/core';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 
 @Component({
   standalone: true,
   imports: [CommonModule, RouterOutlet, MenuComponent, TuiRootModule],
-  selector: 'dacker-root',
+  selector: 'monitraks-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnInit {
-  title = 'dacker';
+  title = 'monitraks';
 
   public ngOnInit() {
     const firebaseConfig = {
-      apiKey: "AIzaSyDQaCfBRjlZh1BPpJNuQORrUA8VRbP4AGA",
-      authDomain: "bububudget.firebaseapp.com",
-      projectId: "bububudget",
-      storageBucket: "bububudget.appspot.com",
-      messagingSenderId: "143725096957",
-      appId: "1:143725096957:web:4c461cee6172b95e10b394",
-      measurementId: "G-6S9NTNHK18"
+      apiKey: 'AIzaSyCh2Z6OYoIfuj8Fv7d_ndaheWXFQ1Rd3l8',
+      authDomain: 'monitraks.firebaseapp.com',
+      projectId: 'monitraks',
+      storageBucket: 'monitraks.appspot.com',
+      messagingSenderId: '148881802323',
+      appId: '1:148881802323:web:7708954cf5817cef8df2a6',
+      measurementId: 'G-XQZ5QEX5DQ',
     };
 
-// Initialize Firebase
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   }

@@ -16,7 +16,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "dacker",
+            "prefix": "monitraks",
             "style": "camelCase"
           }
         ],
@@ -24,7 +24,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "dacker",
+            "prefix": "monitraks",
             "style": "kebab-case"
           }
         ]

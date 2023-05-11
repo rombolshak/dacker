@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'dacker-reports',
+  selector: 'monitraks-reports',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './reports.component.html',

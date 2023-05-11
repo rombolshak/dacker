@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'dacker-register',
+  selector: 'monitraks-register',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './register.component.html',

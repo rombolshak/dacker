@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiSvgModule } from '@taiga-ui/core';
 
 @Component({
-  selector: 'dacker-menu',
+  selector: 'monitraks-menu',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, TuiSvgModule],
   templateUrl: './menu.component.html',

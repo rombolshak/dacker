@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/dacker",
+    "public": "dist/monitraks",
     "ignore": [
       "firebase.json",
       "**/.*",

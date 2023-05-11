@@ -17,16 +17,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'dacker'`, () => {
+  it(`should have as title 'monitraks'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('dacker');
+    expect(app.title).toEqual('monitraks');
   });
 
   it('should render menu', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('dacker-menu')?.textContent).toContain('Dacker');
+    expect(compiled.querySelector('monitraks-menu')?.textContent).toContain('monitraks');
   });
 });

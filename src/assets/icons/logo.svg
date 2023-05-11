@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg146223" viewBox="0 0 1024 768" height="768px" width="1024px" version="1.1">
+  <metadata id="metadata146229">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs146227"/>
+  <linearGradient spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient2-logo-55a6f5a8-8945-4ed9-930f-5afd9925edd3">
+    <stop id="stop146204" stop-opacity="1" stop-color="#ffffff" offset="0%"/>
+    <stop id="stop146206" stop-opacity="1" stop-color="#000000" offset="100%"/>
+  </linearGradient>
+  <linearGradient gradientTransform="rotate(-30)" spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient3-logo-55a6f5a8-8945-4ed9-930f-5afd9925edd3">
+    <stop id="stop146209" stop-opacity="1" stop-color="#ffffff" offset="0%"/>
+    <stop id="stop146211" stop-opacity="1" stop-color="#cccccc" offset="50%"/>
+    <stop id="stop146213" stop-opacity="1" stop-color="#000000" offset="100%"/>
+  </linearGradient>
+  <g id="logo-group">
+    <image xlink:href="" id="container"/>
+    <g id="logo-center">
+      <image xlink:href="" id="icon_container"/>
+      <g id="slogan" style="font-style:normal;font-weight:300;font-size:32px;line-height:1;font-family:Overpass;font-variant-ligatures:none;text-align:center;text-anchor:middle"/>
+      <g id="title" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" aria-label="MoniTraks">
+        <path id="path146232" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 429.875,0 h -6.15234 l -5.3086,-24.1875 V 0 h -6.1875 v -29.882812 h 9 l 5.625,22.9570308 5.51953,-22.9570308 h 9 V 0 h -6.1875 v -24.1875 z"/>
+        <path id="path146234" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 456.10156,0.94921875 q -4.64062,0 -7.69922,-2.74218745 -1.54687,-1.4414063 -2.39062,-3.8671875 -0.84375,-2.4257813 -0.84375,-5.1328128 0,-2.777344 0.84375,-5.203125 0.84375,-2.425781 2.39062,-3.867187 2.98828,-2.671875 7.69922,-2.671875 4.7461,0 7.62891,2.671875 1.6875,1.476562 2.49609,3.867187 0.84375,2.390625 0.84375,5.203125 0,2.7421877 -0.84375,5.1328128 -0.80859,2.3906249 -2.49609,3.8671875 -2.95313,2.74218745 -7.62891,2.74218745 z m 0,-18.59765575 q -2.63672,0 -4.07812,2.460937 -1.08985,2.003906 -1.08985,4.394531 0,2.214844 1.08985,4.324219 1.40625,2.4960937 4.07812,2.4960937 2.63672,0 4.11328,-2.4960937 1.08985,-2.2851563 1.08985,-4.324219 0,-2.214844 -1.08985,-4.394531 -1.51172,-2.460937 -4.11328,-2.460937 z"/>
+        <path id="path146236" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 471.35937,0 v -22.183594 h 5.69532 v 3.304688 q 0.8789,-1.722656 2.35547,-2.671875 1.51171,-0.984375 3.16406,-0.984375 8.57812,0 8.57812,7.628906 V 0 h -5.76562 v -13.605469 q 0,-2.039062 -0.73828,-3.164062 -0.70313,-1.160156 -3.44532,-1.160156 -2.25,0.28125 -3.1289,1.335937 -0.87891,1.054687 -1.01953,2.425781 V 0 Z"/>
+        <path id="path146238" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 496.53125,-24.785156 v -5.097656 h 5.76562 v 5.097656 z m 0,24.785156 v -22.183594 h 5.76562 V 0 Z"/>
+        <path id="path146240" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 505.74219,-29.882812 h 23.90625 v 5.097656 h -8.6836 V 0 h -6.15234 v -24.785156 h -9.07031 z"/>
+        <path id="path146242" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 532.8125,0 v -22.183594 h 5.69531 v 4.253907 q 0.38672,-1.054688 0.91406,-1.792969 0.52735,-0.738281 1.86329,-1.652344 1.58203,-1.160156 4.04296,-1.160156 v 5.835937 q -1.125,-0.140625 -2.0039,-0.140625 -1.86328,0 -3.16406,0.949219 -1.26563,0.914062 -1.65235,3.375 V 0 Z"/>
+        <path id="path146244" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="M 567.54687,0 H 561.5 q -0.63281,-0.84375 -0.63281,-2.2148438 -1.16016,1.1601563 -2.95313,2.17968755 -1.79297,0.984375 -4.95703,0.984375 -5.76562,-0.6328125 -5.76562,-6.85546875 0.10546,-2.7070313 1.54687,-4.570313 1.44141,-1.863281 4.92188,-2.425781 2.88281,-0.105469 5.76562,-0.984375 1.44141,-0.632812 1.44141,-2.53125 0,-0.914062 -0.94922,-1.441406 -0.94922,-0.5625 -2.88281,-0.5625 -2.17969,0.105469 -2.91797,1.089844 -0.73828,0.984375 -0.8086,2.496093 h -5.41406 q 0.0703,-7.699218 9.14063,-7.699218 3.33984,0 5.27343,0.808594 3.9375,1.511718 3.9375,6.187499 V -3.375 q 0,1.40625 1.30078,2.56640625 z m -6.67968,-9.2109375 v -1.2304685 q -1.05469,0.597656 -3.02344,0.8437497 -1.96875,0.2460938 -2.32031,0.3164063 -1.125,0.2109375 -1.89844,0.984375 -0.73828,0.7382813 -0.73828,1.828125 0,0.2109375 0.14062,0.7734375 0.17578,0.5976563 0.52735,1.0195313 0.38672,0.421875 1.125,0.6328125 0.77343,0.2109374 2.14453,0.2109374 2.35547,-0.3515624 3.19922,-1.7578124 0.84375,-1.40625 0.84375,-3.6210938 z"/>
+        <path id="path146246" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 571.34375,-29.882812 h 5.66016 v 16.347656 l 7.27734,-8.648438 h 6.57422 l -7.48828,8.4375 L 591.34766,0 h -6.78516 l -5.16797,-9.4921875 -2.39062,2.5664063 V 0 h -5.66016 z"/>
+        <path id="path146248" style="font-style:normal;font-weight:200;font-size:72px;line-height:1;font-family:'DB ThaiText';font-variant-ligatures:none;text-align:center;text-anchor:middle" d="m 592.82422,-6.5390625 h 5.69531 q 0.35156,1.1601563 1.01953,1.828125 0.70313,0.6328125 1.58203,0.9140625 0.87891,0.2460937 2.35547,0.421875 3.51563,0 3.51563,-2.3203125 0,-0.703125 -0.38672,-1.2304687 -0.35156,-0.5273438 -1.05469,-0.6328125 l -7.10156,-2.0742188 q -2.77735,-0.8085935 -3.79688,-2.1796875 -0.98437,-1.40625 -0.98437,-3.234375 0,-3.585937 2.67187,-5.835937 2.10938,-1.546875 5.90625,-1.652344 4.32422,0 6.85547,1.582031 2.10938,1.300781 2.70703,2.742188 0.59766,1.441406 0.59766,3.164062 h -5.55469 q 0,-1.195312 -0.42187,-1.792969 -0.38672,-0.597656 -1.72266,-1.019531 -1.125,-0.351562 -2.10937,-0.351562 -1.40625,0 -2.4961,0.632812 -0.8789,0.457031 -0.8789,1.582031 0,1.160156 1.30078,1.441406 l 8.26172,2.25 q 1.08984,0.28125 2.03906,1.054688 0.94922,0.773437 1.54687,1.8984375 0.59766,1.125 0.59766,2.4257813 0,2.0742187 -1.125,4.1484374 -1.08984,2.03906255 -3.69141,2.9882813 -0.94922,0.31640625 -2.5664,0.52734375 -1.61719,0.2109375 -2.98828,0.2109375 -3.09375,-0.10546875 -4.88672,-0.87890625 -4.67578,-2.0742188 -4.88672,-6.609375 z"/>
+      </g>
+      <image xlink:href="https://app.brandmark.io/nounpreview/2029534.png" id="icon"/>
+    </g>
+  </g>
+</svg>
