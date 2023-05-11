@@ -34,6 +34,7 @@
     "@taiga-ui/styles": "^3.25.0",
     "@tinkoff/ng-dompurify": "3.0.0",
     "dompurify": "2.2.9",
+    "firebase": "^9.21.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
