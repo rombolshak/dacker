@@ -8,9 +8,8 @@ describe('AuthPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ AuthPanelComponent ]
-    })
-    .compileComponents();
+      imports: [AuthPanelComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AuthPanelComponent);
     component = fixture.componentInstance;
