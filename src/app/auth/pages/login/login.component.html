@@ -4,5 +4,25 @@
   <h3 class="slogan">Always sunny</h3>
 </div>
 <div class="wrapper">
-  <div class="form"></div>
+  <div class="tui-form">
+    <h2 class="tui-form__header">Добро пожаловать!</h2>
+    <div class="tui-form__row">
+      <tui-input tuiTextfieldIconLeft="tuiIconMailLarge">
+        Email
+        <input tuiTextfield placeholder="you@example.com" />
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input-password tuiTextfieldIconLeft="tuiIconLockLarge">Пароль</tui-input-password>
+      <div class="tui-form__field-note"><a tuiLink>Забыли пароль?</a></div>
+    </div>
+    <div class="tui-form__buttons">
+      <button tuiButton class="tui-form__button">Войти</button>
+    </div>
+    <div class="text-divider">или</div>
+    <div class="tui-form__buttons">
+      <button tuiButton class="tui-form__button" appearance="outline" icon="/assets/icons/google.svg">Google</button>
+    </div>
+    <div class="tui-form__row signup">Нет аккаунта? <a tuiLink>Регистрация</a></div>
+  </div>
 </div>

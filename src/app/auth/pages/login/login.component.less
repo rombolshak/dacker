@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 6rem;
+    padding: 6rem 0;
     background: #6c698d;
     color: #f7ebec;
 
@@ -36,5 +36,42 @@
 
   .wrapper {
     flex: 1 0 66%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tui-form {
+      width: 50%;
+    }
+
+    .tui-form__field-note {
+      text-align: right;
+    }
+
+    .text-divider {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      color: var(--tui-text-03);
+
+      &::before,
+      &::after {
+        content: '';
+        height: 1px;
+        background-color: silver;
+        flex-grow: 1;
+        margin: 1rem;
+      }
+    }
+
+    button {
+      width: 100%;
+    }
+
+    .signup {
+      margin-top: 2rem;
+      text-align: center;
+      font: var(--tui-font-text-m);
+    }
   }
 }
