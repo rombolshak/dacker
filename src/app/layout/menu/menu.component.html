@@ -1,9 +1,13 @@
-<div class="logo">
-  <img src="/assets/icons/logo.png" />
-  <div class="title">Monitraks</div>
+<div class="main-menu">
+  <div class="logo">
+    <img src="/assets/icons/logo.png" />
+    <div class="title">Monitraks</div>
+  </div>
+
+  <div *ngFor="let item of menuItems" class="item" [routerLink]="item.link" routerLinkActive="active">
+    <tui-svg [src]="item.icon" class="icon"></tui-svg>
+    {{ item.name }}
+  </div>
 </div>
 
-<div *ngFor="let item of menuItems" class="item" [routerLink]="item.link" routerLinkActive="active">
-  <tui-svg [src]="item.icon" class="icon"></tui-svg>
-  {{ item.name }}
-</div>
+<monitraks-auth-panel></monitraks-auth-panel>
