@@ -1,0 +1,40 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+
+  .about {
+    flex: 0 0 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem;
+    background: #6c698d;
+    color: #f7ebec;
+
+    .title {
+      font: var(--tui-font-heading-1);
+      font-weight: lighter;
+      margin-bottom: 0;
+    }
+
+    .slogan {
+      font: var(--tui-font-text-xl);
+      margin-top: 0;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      filter: brightness(0) saturate(100%) invert(89%) sepia(5%) saturate(358%) hue-rotate(307deg) brightness(107%)
+        contrast(94%);
+    }
+  }
+
+  .wrapper {
+    flex: 1 0 66%;
+  }
+}

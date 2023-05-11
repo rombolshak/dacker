@@ -1,6 +1,6 @@
 <tui-root>
   <div class="root">
-    <monitraks-menu></monitraks-menu>
+    <monitraks-menu *ngIf="auth.isAuthenticated$ | async"></monitraks-menu>
     <div class="page-content">
       <router-outlet></router-outlet>
     </div>

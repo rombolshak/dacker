@@ -6,6 +6,7 @@ import { TuiRootModule } from '@taiga-ui/core';
 
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { AuthService } from './auth/services/auth.service';
 
 @Component({
   standalone: true,
@@ -15,5 +16,6 @@ import { getAnalytics } from 'firebase/analytics';
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent {
+  constructor(public auth: AuthService) {}
   title = 'monitraks';
 }
