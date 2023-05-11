@@ -6,6 +6,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #F7EBEC;
+  background: #6C698D;
   .shadow(6);
 
   .logo {
@@ -14,12 +16,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font: var(--tui-font-heading-4);
-    color: var(--tui-text-01);
+    font: var(--tui-font-heading-3);
+    font-weight: lighter;
+    margin: 2rem 1rem;
 
-    .subtitle {
-      font: var(--tui-font-text-s);
-      color: var(--tui-text-02);
+    img {
+      width: 60px;
+      height: 60px;
+      filter: brightness(0) saturate(100%) invert(89%) sepia(5%) saturate(358%) hue-rotate(307deg) brightness(107%) contrast(94%);
     }
   }
 
@@ -31,30 +35,20 @@
     margin: 0 2rem;
     width: 100%;
     font: var(--tui-font-text-m-2);
-    color: var(--tui-base-05);
 
     .icon {
-      color: var(--tui-base-05);
       margin: 0 1.5rem 0 1.5rem;
     }
 
     &:hover {
       cursor: pointer;
-      background-color: var(--tui-info-bg-hover);
-      color: var(--tui-text-02);
-
-      .icon {
-        color: var(--tui-text-03);
-      }
+      background-color: #625f81;
+      color: #ffffff;
     }
 
     &.active {
-      background-color: var(--tui-info-bg);
-      color: var(--tui-primary);
-
-      .icon {
-        color: var(--tui-primary);
-      }
+      background-color: #f3e2e3;
+      color: #625f81;
     }
   }
 }
