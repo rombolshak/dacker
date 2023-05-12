@@ -10,4 +10,13 @@
   </div>
 </div>
 
-<monitraks-auth-panel></monitraks-auth-panel>
+<tui-hosted-dropdown class="item" [content]="authPanel">
+  <div class="item auth">
+    <tui-svg src="tuiIconUserLarge" class="icon"></tui-svg>
+    Профиль
+    <tui-arrow></tui-arrow>
+  </div>
+</tui-hosted-dropdown>
+<ng-template #authPanel>
+  <monitraks-auth-panel></monitraks-auth-panel>
+</ng-template>
