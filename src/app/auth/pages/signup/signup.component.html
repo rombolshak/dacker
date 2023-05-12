@@ -1,1 +1,30 @@
-<p>signup works!</p>
+<monitraks-auth-layout>
+  <form class="tui-form" [formGroup]="form" (submit)="formSubmit()">
+    <h2 class="tui-form__header">Регистрация</h2>
+    <div class="tui-form__row">
+      <tui-input [formControl]="form.controls.login" tuiTextfieldIconLeft="tuiIconMailLarge">
+        Email
+        <input tuiTextfield placeholder="you@example.com" type="email" />
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input-password [formControl]="form.controls.password" tuiTextfieldIconLeft="tuiIconLockLarge">
+        Пароль
+      </tui-input-password>
+    </div>
+    <div class="tui-form__row" *ngIf="error | async as message">
+      <tui-notification status="error">Не удалось создать аккаунт: {{ message }}</tui-notification>
+    </div>
+    <div class="tui-form__buttons">
+      <button
+        type="submit"
+        tuiButton
+        class="tui-form__button"
+        [disabled]="isLoading || !form.valid"
+        [showLoader]="isLoading">
+        Создать аккаунт
+      </button>
+    </div>
+    <div class="tui-form__row signup">Уже зарегистрированы? <a tuiLink routerLink="../login">Войти</a></div>
+  </form>
+</monitraks-auth-layout>

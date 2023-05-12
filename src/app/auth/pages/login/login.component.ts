@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { TuiInputModule, TuiInputPasswordModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiNotificationModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth.service';
 import { BehaviorSubject, finalize } from 'rxjs';
-import firebase from 'firebase/compat';
-import FirebaseError = firebase.FirebaseError;
-import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.component';
+import { AuthLayoutComponent } from '@app/auth/components/auth-layout/auth-layout.component';
+import { AuthError } from '@angular/fire/auth';
 
 @Component({
   selector: 'monitraks-login',
@@ -30,7 +29,7 @@ import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginComponent {
-  constructor(private fb: NonNullableFormBuilder, private auth: AuthService) {}
+  constructor(private fb: NonNullableFormBuilder, private auth: AuthService, private router: Router) {}
 
   public form = this.fb.group({
     login: this.fb.control('', [Validators.required, Validators.email]),
@@ -47,9 +46,8 @@ export default class LoginComponent {
       .login(this.form.getRawValue())
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: user => console.log(user),
-        error: (err: FirebaseError) =>
-          this.error.next(err.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, '')),
+        next: user => this.router.navigate(['/']),
+        error: (err: AuthError) => this.error.next(err.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, '')),
       });
   }
 }

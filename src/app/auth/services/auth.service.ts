@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, authState, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, authState, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { AppUser } from './user';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -10,11 +10,12 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 export class AuthService {
   constructor(private auth: Auth) {
     authState(auth).subscribe(user => {
+      console.log('user changed', user);
       this.userData.next(user);
     });
 
     this.user$ = this.userData.asObservable();
-    this.isAuthenticated$ = this.user$.pipe(map(u => u != null && u.emailVerified));
+    this.isAuthenticated$ = this.user$.pipe(map(u => u != null));
   }
 
   public isAuthenticated$: Observable<boolean>;
@@ -25,5 +26,9 @@ export class AuthService {
 
   login(data: { login: string; password: string }) {
     return fromPromise(signInWithEmailAndPassword(this.auth, data.login, data.password));
+  }
+
+  register(data: { login: string; password: string }) {
+    return fromPromise(createUserWithEmailAndPassword(this.auth, data.login, data.password));
   }
 }
