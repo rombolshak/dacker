@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './layout/menu/menu.component';
 import { TuiRootModule } from '@taiga-ui/core';
-
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
 import { AuthService } from './auth/services/auth.service';
 
 @Component({

@@ -8,14 +8,20 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { firebase } from './environments/firebase';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getAuth, initializeAuth, provideAuth, debugErrorMap } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideAnimations(),
-    importProvidersFrom(provideFirebaseApp(() => initializeApp(firebase))),
+    importProvidersFrom(
+      provideFirebaseApp(() => {
+        const app = initializeApp(firebase);
+        initializeAuth(app, { errorMap: debugErrorMap });
+        return app;
+      })
+    ),
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     {
