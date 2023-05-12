@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Auth, authState, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import {
+  Auth,
+  authState,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 import { AppUser } from './user';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 @Injectable({
@@ -30,5 +36,9 @@ export class AuthService {
 
   register(data: { login: string; password: string }) {
     return fromPromise(createUserWithEmailAndPassword(this.auth, data.login, data.password));
+  }
+
+  logout() {
+    return from(signOut(this.auth));
   }
 }
