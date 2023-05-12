@@ -1,14 +1,7 @@
 ﻿import { Routes } from '@angular/router';
-import { AuthPipe, canActivate, emailVerified } from '@angular/fire/auth-guard';
-import { map, pipe } from 'rxjs';
+import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
-const redirectUnverifiedTo: (redirect: string | any[]) => AuthPipe = redirect =>
-  pipe(
-    emailVerified,
-    map(verified => verified || redirect)
-  );
-
-const redirectToLogin = redirectUnverifiedTo('auth/login');
+const redirectToLogin = redirectUnauthorizedTo('auth/login');
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },

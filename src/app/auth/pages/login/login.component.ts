@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { BehaviorSubject, finalize } from 'rxjs';
 import firebase from 'firebase/compat';
 import FirebaseError = firebase.FirebaseError;
+import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.component';
 
 @Component({
   selector: 'monitraks-login',
@@ -22,6 +23,7 @@ import FirebaseError = firebase.FirebaseError;
     ReactiveFormsModule,
     RouterLink,
     TuiNotificationModule,
+    AuthLayoutComponent,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less'],

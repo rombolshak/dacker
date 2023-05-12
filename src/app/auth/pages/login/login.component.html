@@ -1,9 +1,4 @@
-<div class="about">
-  <img src="/assets/icons/logo.png" />
-  <h1 class="title">Monitraks</h1>
-  <h3 class="slogan">Always sunny</h3>
-</div>
-<div class="wrapper">
+<monitraks-auth-layout>
   <form class="tui-form" [formGroup]="form" (submit)="formSubmit()">
     <h2 class="tui-form__header">Добро пожаловать!</h2>
     <div class="tui-form__row">
@@ -37,4 +32,4 @@
     </div>
     <div class="tui-form__row signup">Нет аккаунта? <a tuiLink routerLink="../signup">Регистрация</a></div>
   </form>
-</div>
+</monitraks-auth-layout>

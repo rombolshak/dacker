@@ -1,80 +1,37 @@
 @import '@taiga-ui/core/styles/taiga-ui-local.less';
 
-@aboutWidth: 33%;
-@logoWidth: 200px;
-
 :host {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  width: 100%;
+  .tui-form {
+    width: 50%;
+  }
 
-  .about {
-    flex: 0 0 @aboutWidth;
+  .tui-form__field-note {
+    text-align: right;
+  }
+
+  .text-divider {
+    margin-top: 2rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: calc((@aboutWidth - @logoWidth) / 2) 0;
-    background: #6c698d;
-    color: #f7ebec;
+    color: var(--tui-text-03);
 
-    .title {
-      font: var(--tui-font-heading-1);
-      font-weight: lighter;
-      margin-bottom: 0;
-    }
-
-    .slogan {
-      font: var(--tui-font-text-xl);
-      margin-top: 0;
-    }
-
-    img {
-      width: @logoWidth;
-      height: @logoWidth;
-      filter: brightness(0) saturate(100%) invert(89%) sepia(5%) saturate(358%) hue-rotate(307deg) brightness(107%)
-        contrast(94%);
+    &::before,
+    &::after {
+      content: '';
+      height: 1px;
+      background-color: silver;
+      flex-grow: 1;
+      margin: 1rem;
     }
   }
 
-  .wrapper {
-    flex: 1 0 calc(100% - @aboutWidth);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  button {
+    width: 100%;
+  }
 
-    .tui-form {
-      width: 50%;
-    }
-
-    .tui-form__field-note {
-      text-align: right;
-    }
-
-    .text-divider {
-      margin-top: 2rem;
-      display: flex;
-      align-items: center;
-      color: var(--tui-text-03);
-
-      &::before,
-      &::after {
-        content: '';
-        height: 1px;
-        background-color: silver;
-        flex-grow: 1;
-        margin: 1rem;
-      }
-    }
-
-    button {
-      width: 100%;
-    }
-
-    .signup {
-      margin-top: 2rem;
-      text-align: center;
-      font: var(--tui-font-text-m);
-    }
+  .signup {
+    margin-top: 2rem;
+    text-align: center;
+    font: var(--tui-font-text-m);
   }
 }
