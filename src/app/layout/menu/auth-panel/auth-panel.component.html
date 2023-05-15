@@ -1,5 +1,4 @@
 <tui-data-list role="menu">
   <button tuiOption class="item disabled">{{ (auth.user$ | async)?.email }}</button>
-  <a tuiOption class="item" routerLink="/auth/profile">Управление</a>
   <a tuiOption class="item" (click)="signOut()">Выйти</a>
 </tui-data-list>
