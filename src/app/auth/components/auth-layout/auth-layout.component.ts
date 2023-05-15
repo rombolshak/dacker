@@ -6,8 +6,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './auth-layout.component.html',
-  styleUrls: ['./auth-layout.component.less']
+  styleUrls: ['./auth-layout.component.less'],
 })
-export class AuthLayoutComponent {
-
-}
+export class AuthLayoutComponent {}
