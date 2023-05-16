@@ -22,11 +22,13 @@ bootstrapApplication(AppComponent, {
         return app;
       })
     ),
-    importProvidersFrom(provideAuth(() => {
-      const auth = getAuth();
-      auth.languageCode = 'ru';
-      return auth;
-    })),
+    importProvidersFrom(
+      provideAuth(() => {
+        const auth = getAuth();
+        auth.languageCode = 'ru';
+        return auth;
+      })
+    ),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     {
       provide: TUI_SANITIZER,

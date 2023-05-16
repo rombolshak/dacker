@@ -4,7 +4,8 @@ import {
   authState,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut, sendPasswordResetEmail,
+  signOut,
+  sendPasswordResetEmail,
 } from '@angular/fire/auth';
 import { AppUser } from './user';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
