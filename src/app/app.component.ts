@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './layout/menu/menu.component';
@@ -11,6 +11,7 @@ import { AuthService } from './auth/services/auth.service';
   selector: 'monitraks-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   constructor(public auth: AuthService) {}

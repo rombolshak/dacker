@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@app/auth/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { BehaviorSubject, finalize } from 'rxjs';
-import { AuthError } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 import { AuthLayoutComponent } from '@app/auth/components/auth-layout/auth-layout.component';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiNotificationModule } from '@taiga-ui/core';
+import { FormBaseComponent } from '@app/auth/components/form-base.component';
 
 @Component({
   selector: 'monitraks-password-reset',
@@ -26,25 +26,17 @@ import { TuiButtonModule, TuiLinkModule, TuiNotificationModule } from '@taiga-ui
   styleUrls: ['./password-reset.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class PasswordResetComponent {
-  constructor(private fb: NonNullableFormBuilder, private auth: AuthService, private router: Router) {}
+export default class PasswordResetComponent extends FormBaseComponent<{ login: string }> {
+  constructor(private auth: AuthService, fb: NonNullableFormBuilder, router: Router) {
+    super(
+      fb.group({
+        login: fb.control('', [Validators.required, Validators.email]),
+      }),
+      router
+    );
+  }
 
-  public form = this.fb.group({
-    login: this.fb.control('', [Validators.required, Validators.email]),
-  });
-
-  public error = new BehaviorSubject('');
-  public isLoading = false;
-
-  public formSubmit() {
-    this.isLoading = true;
-    this.error.next('');
-    this.auth
-      .sendResetEmail(this.form.controls.login.value)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: user => this.router.navigate(['/']),
-        error: (err: AuthError) => this.error.next(err.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, '')),
-      });
+  protected override doFormAction(value: { login: string }): Observable<void> {
+    return this.auth.sendResetEmail(value.login);
   }
 }

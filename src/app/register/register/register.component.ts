@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,5 +7,6 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RegisterComponent {}

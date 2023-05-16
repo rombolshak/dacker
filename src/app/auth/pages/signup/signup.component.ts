@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthLayoutComponent } from '../../components/auth-layout/auth-layout.component';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { BehaviorSubject, finalize } from 'rxjs';
-import { AuthError } from '@angular/fire/auth';
 import { TuiInputModule, TuiInputPasswordModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiNotificationModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
 import { Router, RouterLink } from '@angular/router';
+import { FormBaseComponent } from '@app/auth/components/form-base.component';
 
 @Component({
   selector: 'monitraks-signup',
@@ -26,27 +25,20 @@ import { Router, RouterLink } from '@angular/router';
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class SignupComponent {
-  constructor(private fb: NonNullableFormBuilder, private auth: AuthService, private router: Router) {}
+export default class SignupComponent extends FormBaseComponent<{ login: string; password: string }> {
+  constructor(private auth: AuthService, fb: NonNullableFormBuilder, router: Router) {
+    super(
+      fb.group({
+        login: fb.control('', [Validators.required, Validators.email]),
+        password: fb.control('', [Validators.required]),
+      }),
+      router
+    );
+  }
 
-  public form = this.fb.group({
-    login: this.fb.control('', [Validators.required, Validators.email]),
-    password: this.fb.control('', [Validators.required]),
-  });
-
-  public error = new BehaviorSubject('');
-  public isLoading = false;
-
-  public formSubmit() {
-    this.isLoading = true;
-    this.error.next('');
-    this.auth
-      .register(this.form.getRawValue())
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: user => this.router.navigate(['/']),
-        error: (err: AuthError) => this.error.next(err.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, '')),
-      });
+  protected override doFormAction(value: { login: string; password: string }) {
+    return this.auth.register(value);
   }
 }

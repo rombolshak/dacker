@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
@@ -20,6 +20,7 @@ import { TuiArrowModule, tuiArrowOptionsProvider } from '@taiga-ui/kit';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.less'],
   providers: [tuiArrowOptionsProvider({ iconLarge: 'tuiIconChevronUpLarge', iconSmall: 'tuiIconChevronUp' })],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent {
   menuItems = [
