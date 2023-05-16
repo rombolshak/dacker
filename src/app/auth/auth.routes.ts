@@ -13,4 +13,9 @@ export default [
     loadComponent: () => import('./pages/signup/signup.component'),
     ...canActivate(() => redirectToDashboard),
   },
+  {
+    path: 'password-recovery',
+    loadComponent: () => import('./pages/password-reset/password-reset.component'),
+    ...canActivate(() => redirectToDashboard)
+  }
 ] as Route[];
