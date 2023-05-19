@@ -8,22 +8,22 @@ export const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.routes') },
   {
     path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard/dashboard.component'),
+    loadComponent: () => import('./pages/dashboard/dashboard/dashboard.component'),
     ...canActivate(() => redirectToLogin),
   },
   {
     path: 'register',
-    loadComponent: () => import('./register/register/register.component'),
+    loadComponent: () => import('./pages/register/register/register.component'),
     ...canActivate(() => redirectToLogin),
   },
   {
     path: 'income',
-    loadComponent: () => import('./income/income/income.component'),
+    loadComponent: () => import('./pages/income/income/income.component'),
     ...canActivate(() => redirectToLogin),
   },
   {
     path: 'reports',
-    loadComponent: () => import('./reports/reports/reports.component'),
+    loadComponent: () => import('./pages/reports/reports/reports.component'),
     ...canActivate(() => redirectToLogin),
   },
 ];
