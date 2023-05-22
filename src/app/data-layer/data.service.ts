@@ -22,7 +22,7 @@ class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
 export class DataService {
   constructor(private storage: StorageService) {}
 
-  public accounts = new EntityListRequestBuilder(
+  public accounts = new EntityListRequestBuilder<AccountData, AccountRequestBuilder>(
     this.storage,
     'accounts',
     id => new AccountRequestBuilder(this.storage, id)

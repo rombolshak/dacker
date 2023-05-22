@@ -1,1 +1,5 @@
-<p>dashboard works!</p>
+<h2 class="tui-text_h2">Вклады</h2>
+<div class="content" *tuiLet="accounts$ | async as accounts">
+  <div class="no-accounts" *ngIf="!accounts?.length; else list">Ничего нет</div>
+  <ng-template #list> {{ accounts!.length }} вкладов </ng-template>
+</div>
