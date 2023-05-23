@@ -4,11 +4,13 @@ import { DataService } from '@app/data-layer/data.service';
 import { Observable } from 'rxjs';
 import { AccountData } from '@app/model/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiBlockStatusModule } from '@taiga-ui/layout';
+import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core';
 
 @Component({
   selector: 'monitraks-dashboard',
   standalone: true,
-  imports: [CommonModule, TuiLetModule],
+  imports: [CommonModule, TuiLetModule, TuiBlockStatusModule, TuiButtonModule, TuiSvgModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
