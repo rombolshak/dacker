@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AccountData } from '@app/model/account.data';
-import { OperationData } from '@app/model/operation.data';
+import { AccountData } from '@app/models/account.data';
+import { OperationData } from '@app/models/operation.data';
 import {
   DefaultEntityListRequestBuilder,
   EntityListRequestBuilder,

@@ -1,5 +1,5 @@
 ﻿import { Observable, of } from 'rxjs';
-import { Identifiable } from '@app/model/identifiable';
+import { Identifiable } from '@app/models/identifiable';
 import { StorageService } from '@app/data-layer/storage.service';
 
 export class EntityRequestBuilder<TEntity extends Identifiable> {
