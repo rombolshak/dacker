@@ -19,10 +19,10 @@ export interface AccountData extends Identifiable {
   bank: BankInfo;
   openedAt: Date;
   duration: AccountDuration;
-  interest: AccountInterest;
-  canWithdraw: boolean;
-  canContribute: boolean;
-  interestIsCapitalized: boolean;
-  interestSchedule: InterestSchedule;
-  interestBase: InterestBase;
+  // interest: AccountInterest;
+  // canWithdraw: boolean;
+  // canContribute: boolean;
+  // interestIsCapitalized: boolean;
+  // interestSchedule: InterestSchedule;
+  // interestBase: InterestBase;
 }
