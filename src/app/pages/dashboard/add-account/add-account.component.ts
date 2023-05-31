@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { TuiButtonModule, TuiDialogContext, TuiErrorModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiDialogContext, TuiErrorModule, TuiGroupModule } from '@taiga-ui/core';
 import { AccountData } from '@app/models/account.data';
 import {
   TuiCheckboxBlockModule,
@@ -32,6 +32,7 @@ import { TuiDay, TuiMonth } from '@taiga-ui/cdk';
     TuiCheckboxLabeledModule,
     TuiInputNumberModule,
     TuiCheckboxBlockModule,
+    TuiGroupModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -74,6 +75,9 @@ export class AddAccountComponent {
       closingDate: this.fb.control<TuiDay | null>(null),
       durationDays: this.fb.control<number | null>(null),
     }),
+    canWithdraw: this.fb.nonNullable.control(false),
+    canContribute: this.fb.nonNullable.control(false),
+    interestIsCapitalized: this.fb.nonNullable.control(false),
   });
 
   banks = ['Сбер', 'ВТБ', 'Тинькофф'];

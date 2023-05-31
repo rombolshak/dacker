@@ -11,6 +11,7 @@
     </tui-combo-box>
     <tui-error [formControl]="accountForm.controls.bank.controls.name" [error]="[] | tuiFieldError | async"></tui-error>
   </div>
+
   <div class="tui-form__row tui-form__row_multi-fields">
     <div class="tui-form__multi-field">
       <tui-input-date
@@ -47,6 +48,17 @@
         [formControl]="accountForm.controls.dates.controls.closingDate"
         [error]="[] | tuiFieldError | async"></tui-error>
     </div>
+  </div>
+
+  <div class="tui-form__row" tuiGroup>
+    <tui-checkbox-block [formControl]="accountForm.controls.canContribute">Можно пополнять</tui-checkbox-block>
+    <tui-checkbox-block [formControl]="accountForm.controls.canWithdraw">Можно снимать</tui-checkbox-block>
+  </div>
+
+  <div class="tui-form__row">
+    <tui-checkbox-block [formControl]="accountForm.controls.interestIsCapitalized">
+      Капитализация процентов
+    </tui-checkbox-block>
   </div>
 
   <div class="tui-form__buttons tui-form__buttons_align_center">
