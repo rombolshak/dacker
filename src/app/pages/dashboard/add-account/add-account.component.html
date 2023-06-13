@@ -51,6 +51,10 @@
   </div>
 
   <div class="tui-form__header">Ставка</div>
+  <button tuiButton size="s" type="button" appearance="secondary" (click)="addMonth()">Добавить срок</button>
+  <button tuiButton size="s" type="button" class="tui-space_left-2 tui-space_bottom-4" appearance="secondary">
+    Добавить сумму
+  </button>
   <table tuiTable class="tui-table" [columns]="interestColumns">
     <thead>
       <tr tuiThGroup>
@@ -65,7 +69,7 @@
       </tr>
     </thead>
     <tbody tuiTbody [data]="accountForm.controls.interest.controls">
-      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls[0].controls.steps.controls">
+      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls[0].controls.steps.controls; let j = index">
         <ng-container *ngFor="let col of interestColumns; let i = index">
           <ng-container *ngIf="i === 0">
             <td *tuiCell="col" tuiTd>{{ getRangeHeader(range.getRawValue()) }}</td>
@@ -73,7 +77,7 @@
           <ng-container *ngIf="i !== 0">
             <td *tuiCell="col" tuiTd>
               <tui-input-number
-                [formControl]="range.controls.rate"
+                [formControl]="accountForm.controls.interest.controls[i - 1].controls.steps.controls[j].controls.rate"
                 [min]="0"
                 postfix="%"
                 [precision]="1"></tui-input-number></td

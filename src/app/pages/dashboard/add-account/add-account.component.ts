@@ -80,12 +80,11 @@ export class AddAccountComponent {
     interest: this.fb.nonNullable.array([
       this.fb.group({
         startMonth: this.fb.nonNullable.control(1),
-        endMonth: this.fb.control<number | null>(null),
         steps: this.fb.nonNullable.array([
           this.fb.group({
             rangeStart: this.fb.nonNullable.control(0),
             rangeEnd: this.fb.control<number | null>(null),
-            rate: this.fb.nonNullable.control(10),
+            rate: this.fb.control<number | null>(null, Validators.required),
           }),
         ]),
       }),
@@ -104,16 +103,22 @@ export class AddAccountComponent {
 
   interestColumns = [
     'ranges',
-    ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}-${month.endMonth}`),
+    ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}`),
   ];
 
   getMonthRangeHeader(number: number): string {
-    const control = this.accountForm.controls.interest.controls[number].getRawValue();
-    if (!control.endMonth) {
-      return `${control.startMonth}+ мес.`;
+    const controls = this.accountForm.controls.interest.controls;
+    const currentStart = controls[number].controls.startMonth.value;
+    if (number === controls.length - 1) {
+      return `${currentStart}+ мес.`;
     }
 
-    return `${control.startMonth} – ${control.endMonth} мес.`;
+    const nextStart = controls[number + 1].controls.startMonth.value;
+    if (currentStart + 1 === nextStart) {
+      return `${currentStart} мес.`;
+    }
+
+    return `${currentStart} – ${nextStart - 1} мес.`;
   }
 
   getRangeHeader(range: { rangeStart: number; rangeEnd: number | null }): string {
@@ -122,6 +127,27 @@ export class AddAccountComponent {
     }
 
     return `${range.rangeStart} – ${range.rangeEnd} руб.`;
+  }
+
+  addMonth() {
+    const interestMonths = this.accountForm.controls.interest.getRawValue();
+    const ranges = interestMonths[0].steps;
+    const newRanges = ranges.map(r =>
+      this.fb.group({
+        rangeStart: this.fb.nonNullable.control(r.rangeStart),
+        rangeEnd: this.fb.control(r.rangeEnd),
+        rate: this.fb.control<number | null>(null, Validators.required),
+      })
+    );
+
+    const lastMonth = interestMonths.at(-1)!.startMonth;
+    const newMonth = this.fb.group({
+      startMonth: this.fb.nonNullable.control(lastMonth + 2),
+      steps: this.fb.nonNullable.array(newRanges),
+    });
+
+    this.accountForm.controls.interest.push(newMonth);
+    this.calculateInterestColumns();
   }
 
   saveForm(): void {
@@ -135,5 +161,12 @@ export class AddAccountComponent {
 
   private getModel(): AccountData {
     return {} as AccountData;
+  }
+
+  private calculateInterestColumns() {
+    this.interestColumns = [
+      'ranges',
+      ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}`),
+    ];
   }
 }
