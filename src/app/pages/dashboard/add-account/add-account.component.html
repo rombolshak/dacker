@@ -50,6 +50,39 @@
     </div>
   </div>
 
+  <div class="tui-form__header">Ставка</div>
+  <table tuiTable class="tui-table" [columns]="interestColumns">
+    <thead>
+      <tr tuiThGroup>
+        <ng-container *ngFor="let col of interestColumns; let i = index">
+          <ng-container *ngIf="i === 0">
+            <th *tuiHead="col" tuiTh [sorter]="null">Сумма \ Срок</th>
+          </ng-container>
+          <ng-container *ngIf="i !== 0">
+            <th *tuiHead="col" tuiTh [sorter]="null">{{ getMonthRangeHeader(i - 1) }}</th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody tuiTbody [data]="accountForm.controls.interest.controls">
+      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls[0].controls.steps.controls">
+        <ng-container *ngFor="let col of interestColumns; let i = index">
+          <ng-container *ngIf="i === 0">
+            <td *tuiCell="col" tuiTd>{{ getRangeHeader(range.getRawValue()) }}</td>
+          </ng-container>
+          <ng-container *ngIf="i !== 0">
+            <td *tuiCell="col" tuiTd>
+              <tui-input-number
+                [formControl]="range.controls.rate"
+                [min]="0"
+                postfix="%"
+                [precision]="1"></tui-input-number></td
+          ></ng-container>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+
   <div class="tui-form__row" tuiGroup>
     <tui-checkbox-block [formControl]="accountForm.controls.canContribute">Можно пополнять</tui-checkbox-block>
     <tui-checkbox-block [formControl]="accountForm.controls.canWithdraw">Можно снимать</tui-checkbox-block>

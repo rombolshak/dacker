@@ -15,6 +15,7 @@ import {
 } from '@taiga-ui/kit';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TuiDay, TuiMonth } from '@taiga-ui/cdk';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 
 @Component({
   selector: 'monitraks-add-account',
@@ -33,6 +34,7 @@ import { TuiDay, TuiMonth } from '@taiga-ui/cdk';
     TuiInputNumberModule,
     TuiCheckboxBlockModule,
     TuiGroupModule,
+    TuiTableModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -75,6 +77,19 @@ export class AddAccountComponent {
       closingDate: this.fb.control<TuiDay | null>(null),
       durationDays: this.fb.control<number | null>(null),
     }),
+    interest: this.fb.nonNullable.array([
+      this.fb.group({
+        startMonth: this.fb.nonNullable.control(1),
+        endMonth: this.fb.control<number | null>(null),
+        steps: this.fb.nonNullable.array([
+          this.fb.group({
+            rangeStart: this.fb.nonNullable.control(0),
+            rangeEnd: this.fb.control<number | null>(null),
+            rate: this.fb.nonNullable.control(10),
+          }),
+        ]),
+      }),
+    ]),
     canWithdraw: this.fb.nonNullable.control(false),
     canContribute: this.fb.nonNullable.control(false),
     interestIsCapitalized: this.fb.nonNullable.control(false),
@@ -86,6 +101,28 @@ export class AddAccountComponent {
   openMinDate = TuiDay.currentLocal().append({ year: -2 });
   openMaxDate = TuiDay.currentLocal().append({ month: 1 });
   closingMaxDate = TuiDay.currentLocal().append({ day: this.depositMaxDurationDays });
+
+  interestColumns = [
+    'ranges',
+    ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}-${month.endMonth}`),
+  ];
+
+  getMonthRangeHeader(number: number): string {
+    const control = this.accountForm.controls.interest.controls[number].getRawValue();
+    if (!control.endMonth) {
+      return `${control.startMonth}+ мес.`;
+    }
+
+    return `${control.startMonth} – ${control.endMonth} мес.`;
+  }
+
+  getRangeHeader(range: { rangeStart: number; rangeEnd: number | null }): string {
+    if (!range.rangeEnd) {
+      return `${range.rangeStart}+ руб.`;
+    }
+
+    return `${range.rangeStart} – ${range.rangeEnd} руб.`;
+  }
 
   saveForm(): void {
     console.log(this.accountForm.getRawValue());
