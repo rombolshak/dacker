@@ -50,7 +50,12 @@
     </div>
   </div>
 
-  <div class="tui-form__header">Ставка</div>
+  <div class="tui-form__row" tuiGroup>
+    <tui-checkbox-block [formControl]="accountForm.controls.canContribute">Можно пополнять</tui-checkbox-block>
+    <tui-checkbox-block [formControl]="accountForm.controls.canWithdraw">Можно снимать</tui-checkbox-block>
+  </div>
+
+  <div class="tui-form__header">Проценты</div>
   <button tuiButton size="s" type="button" class="tui-space_bottom-4" appearance="secondary" (click)="addMonth()">
     Добавить срок
   </button>
@@ -123,11 +128,6 @@
       </tr>
     </tbody>
   </table>
-
-  <div class="tui-form__row" tuiGroup>
-    <tui-checkbox-block [formControl]="accountForm.controls.canContribute">Можно пополнять</tui-checkbox-block>
-    <tui-checkbox-block [formControl]="accountForm.controls.canWithdraw">Можно снимать</tui-checkbox-block>
-  </div>
 
   <div class="tui-form__row">
     <tui-checkbox-block [formControl]="accountForm.controls.interestIsCapitalized">
