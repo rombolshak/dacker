@@ -80,7 +80,7 @@
                 <ng-template #monthHeader>
                   <div class="header">
                     <span (click)="showEditControl(monthControl)">{{ getMonthRangeHeader(i - 1) }}</span>
-                    <tui-svg *ngIf="i !== 1" src="tuiIconTrash"></tui-svg>
+                    <tui-svg *ngIf="i !== 1" src="tuiIconTrash" (click)="removeMonth(i - 1)"></tui-svg>
                   </div>
                 </ng-template>
               </td>
@@ -106,7 +106,7 @@
               <ng-template #moneyHeader>
                 <div class="header">
                   <span (click)="showEditControl(rangeControl)">{{ getMoneyRangeHeader(j) }}</span>
-                  <tui-svg *ngIf="j !== 0" src="tuiIconTrash"></tui-svg>
+                  <tui-svg *ngIf="j !== 0" src="tuiIconTrash" (click)="removeMoney(j)"></tui-svg>
                 </div>
               </ng-template>
             </td>

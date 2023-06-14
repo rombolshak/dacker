@@ -132,6 +132,12 @@ export class AddAccountComponent {
     this.calculateInterestColumns();
   }
 
+  removeMonth(index: number) {
+    this.accountForm.controls.interest.controls.monthSteps.removeAt(index);
+    this.accountForm.controls.interest.controls.rates.removeAt(index);
+    this.calculateInterestColumns();
+  }
+
   addMoney() {
     const newMoney = this.fb.control<number | null>(null, Validators.required);
     for (const ratesByMonth of this.accountForm.controls.interest.controls.rates.controls) {
@@ -139,6 +145,13 @@ export class AddAccountComponent {
     }
 
     this.accountForm.controls.interest.controls.moneySteps.push(newMoney);
+  }
+
+  removeMoney(index: number) {
+    this.accountForm.controls.interest.controls.moneySteps.removeAt(index);
+    for (const ratesByMonth of this.accountForm.controls.interest.controls.rates.controls) {
+      ratesByMonth.removeAt(index);
+    }
   }
 
   showEditControl(control: FormControl) {
