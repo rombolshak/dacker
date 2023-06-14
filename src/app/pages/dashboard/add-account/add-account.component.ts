@@ -14,7 +14,7 @@ import {
   TuiInputNumberModule,
 } from '@taiga-ui/kit';
 import { FormBuilder, FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TuiDay, TuiMonth } from '@taiga-ui/cdk';
+import { TuiActiveZoneModule, TuiAutoFocusModule, TuiDay, TuiLetModule, TuiMonth } from '@taiga-ui/cdk';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 
 @Component({
@@ -35,6 +35,9 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
     TuiCheckboxBlockModule,
     TuiGroupModule,
     TuiTableModule,
+    TuiLetModule,
+    TuiAutoFocusModule,
+    TuiActiveZoneModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -78,8 +81,8 @@ export class AddAccountComponent {
       durationDays: this.fb.control<number | null>(null),
     }),
     interest: this.fb.group({
-      monthSteps: this.fb.array([this.fb.control(1)]),
-      moneySteps: this.fb.array([this.fb.control(0)]),
+      monthSteps: this.fb.array([this.fb.control<number | null>({ value: 1, disabled: true }, Validators.required)]),
+      moneySteps: this.fb.array([this.fb.control<number | null>({ value: 0, disabled: true }, Validators.required)]),
       rates: this.fb.array([this.fb.array([this.fb.control<number | null>(null, Validators.required)])]),
     }),
     canWithdraw: this.fb.control(false),
@@ -110,10 +113,7 @@ export class AddAccountComponent {
   }
 
   addMonth() {
-    const interestMonths = this.accountForm.controls.interest.getRawValue().monthSteps;
-    const lastMonth = interestMonths.at(-1)!;
-    const newMonth = this.fb.control(lastMonth + 2, Validators.required);
-
+    const newMonth = this.fb.control<number | null>(null, Validators.required);
     const moneySteps = this.accountForm.controls.interest.controls.moneySteps.length;
     const rates = this.fb.array(
       Array.from({ length: moneySteps }, () => this.fb.control<number | null>(null, Validators.required))
@@ -122,6 +122,25 @@ export class AddAccountComponent {
     this.accountForm.controls.interest.controls.rates.push(rates);
     this.accountForm.controls.interest.controls.monthSteps.push(newMonth);
     this.calculateInterestColumns();
+  }
+
+  addMoney() {
+    const newMoney = this.fb.control<number | null>(null, Validators.required);
+    for (const ratesByMonth of this.accountForm.controls.interest.controls.rates.controls) {
+      ratesByMonth.push(this.fb.control<number | null>(null, Validators.required));
+    }
+
+    this.accountForm.controls.interest.controls.moneySteps.push(newMoney);
+  }
+
+  showEditControl(control: FormControl) {
+    if (control.value !== 1 && control.value !== 0) control.enable();
+  }
+
+  closeEditControl(controlActive: boolean, monthControl: FormControl<number | null>) {
+    if (!controlActive && monthControl.valid) {
+      monthControl.disable();
+    }
   }
 
   saveForm(): void {
@@ -137,13 +156,21 @@ export class AddAccountComponent {
     return {} as AccountData;
   }
 
-  private getRangeHeader(controls: Array<FormControl<number>>, index: number, postfix: string): string {
+  private getRangeHeader(controls: Array<FormControl<number | null>>, index: number, postfix: string): string {
     const currentStart = controls[index].value;
+    if (currentStart === null) {
+      return '???';
+    }
+
     if (index === controls.length - 1) {
       return `${currentStart}+ ${postfix}`;
     }
 
     const nextStart = controls[index + 1].value;
+    if (nextStart === null) {
+      return `${currentStart} – ??? ${postfix}`;
+    }
+
     if (currentStart + 1 === nextStart) {
       return `${currentStart} ${postfix}`;
     }
@@ -154,7 +181,7 @@ export class AddAccountComponent {
   private calculateInterestColumns() {
     this.interestColumns = [
       'ranges',
-      ...this.accountForm.controls.interest.getRawValue().monthSteps.map(month => `month-${month}`),
+      ...this.accountForm.controls.interest.getRawValue().monthSteps.map((_, i) => `month-${i}`),
     ];
   }
 }

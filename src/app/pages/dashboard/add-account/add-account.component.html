@@ -51,28 +51,51 @@
   </div>
 
   <div class="tui-form__header">Ставка</div>
-  <button tuiButton size="s" type="button" appearance="secondary" (click)="addMonth()">Добавить срок</button>
-  <button tuiButton size="s" type="button" class="tui-space_left-2 tui-space_bottom-4" appearance="secondary">
+  <button tuiButton size="s" type="button" class="tui-space_bottom-4" appearance="secondary" (click)="addMonth()">
+    Добавить срок
+  </button>
+  <button tuiButton size="s" type="button" class="tui-space_left-2" appearance="secondary" (click)="addMoney()">
     Добавить сумму
   </button>
   <table tuiTable class="tui-table" [columns]="interestColumns">
-    <thead>
-      <tr tuiThGroup>
+    <tbody tuiTbody [data]="accountForm.controls.interest.controls.monthSteps.controls">
+      <tr tuiTr>
         <ng-container *ngFor="let col of interestColumns; let i = index">
           <ng-container *ngIf="i === 0">
-            <th *tuiHead="col" tuiTh [sorter]="null">Сумма \ Срок</th>
+            <td *tuiCell="col" tuiTd>Сумма \ Срок</td>
           </ng-container>
-          <ng-container *ngIf="i !== 0">
-            <th *tuiHead="col" tuiTh [sorter]="null">{{ getMonthRangeHeader(i - 1) }}</th>
+          <ng-container *ngIf="i !== 0"
+            ><ng-container *tuiLet="accountForm.controls.interest.controls.monthSteps.at(i - 1) as monthControl">
+              <td *tuiCell="col" tuiTd (tuiActiveZoneChange)="closeEditControl($event, monthControl)">
+                <ng-container *ngIf="monthControl.enabled; else monthHeader">
+                  <tui-input-number [formControl]="monthControl" postfix="мес." [precision]="0" tuiAutoFocus>
+                  </tui-input-number>
+                </ng-container>
+                <ng-template #monthHeader>
+                  <span (click)="showEditControl(monthControl)">{{ getMonthRangeHeader(i - 1) }}</span>
+                </ng-template>
+              </td>
+            </ng-container>
           </ng-container>
         </ng-container>
       </tr>
-    </thead>
+    </tbody>
     <tbody tuiTbody [data]="accountForm.controls.interest.controls.rates.controls">
-      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls.moneySteps.controls; let j = index">
+      <tr tuiTr *ngFor="let rangeControl of accountForm.controls.interest.controls.moneySteps.controls; let j = index">
         <ng-container *ngFor="let col of interestColumns; let i = index">
           <ng-container *ngIf="i === 0">
-            <td *tuiCell="col" tuiTd>{{ getMoneyRangeHeader(j) }}</td>
+            <td *tuiCell="col" tuiTd (tuiActiveZoneChange)="closeEditControl($event, rangeControl)">
+              <ng-container *ngIf="rangeControl.enabled; else moneyHeader">
+                <tui-input-number
+                  [formControl]="rangeControl"
+                  postfix="руб."
+                  [precision]="0"
+                  tuiAutoFocus></tui-input-number>
+              </ng-container>
+              <ng-template #moneyHeader>
+                <span (click)="showEditControl(rangeControl)">{{ getMoneyRangeHeader(j) }}</span>
+              </ng-template>
+            </td>
           </ng-container>
           <ng-container *ngIf="i !== 0">
             <td *tuiCell="col" tuiTd>
