@@ -78,7 +78,10 @@
                   </tui-input-number>
                 </ng-container>
                 <ng-template #monthHeader>
-                  <span (click)="showEditControl(monthControl)">{{ getMonthRangeHeader(i - 1) }}</span>
+                  <div class="header">
+                    <span (click)="showEditControl(monthControl)">{{ getMonthRangeHeader(i - 1) }}</span>
+                    <tui-svg *ngIf="i !== 1" src="tuiIconTrash"></tui-svg>
+                  </div>
                 </ng-template>
               </td>
             </ng-container>
@@ -101,7 +104,10 @@
                   [max]="getRangeMax(accountForm.controls.interest.controls.moneySteps, j)"></tui-input-number>
               </ng-container>
               <ng-template #moneyHeader>
-                <span (click)="showEditControl(rangeControl)">{{ getMoneyRangeHeader(j) }}</span>
+                <div class="header">
+                  <span (click)="showEditControl(rangeControl)">{{ getMoneyRangeHeader(j) }}</span>
+                  <tui-svg *ngIf="j !== 0" src="tuiIconTrash"></tui-svg>
+                </div>
               </ng-template>
             </td>
           </ng-container>
