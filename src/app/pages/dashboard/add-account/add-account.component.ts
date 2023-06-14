@@ -13,7 +13,7 @@ import {
   TuiInputModule,
   TuiInputNumberModule,
 } from '@taiga-ui/kit';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TuiDay, TuiMonth } from '@taiga-ui/cdk';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 
@@ -43,7 +43,7 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
 export class AddAccountComponent {
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<AccountData>,
-    private readonly fb: FormBuilder
+    private readonly fb: NonNullableFormBuilder
   ) {
     const datesControls = this.accountForm.controls.dates.controls;
     datesControls.openedDate.valueChanges.subscribe(() => {
@@ -65,33 +65,26 @@ export class AddAccountComponent {
   }
 
   accountForm = this.fb.group({
-    id: this.fb.nonNullable.control(''),
-    name: this.fb.nonNullable.control('', Validators.required),
+    id: this.fb.control(''),
+    name: this.fb.control('', Validators.required),
     bank: this.fb.group({
-      name: this.fb.nonNullable.control('', Validators.required),
-      icon: this.fb.nonNullable.control('', Validators.required),
+      name: this.fb.control('', Validators.required),
+      icon: this.fb.control('', Validators.required),
     }),
     dates: this.fb.group({
-      openedDate: this.fb.nonNullable.control<TuiDay>(TuiDay.currentLocal()),
-      isOpenEnded: this.fb.nonNullable.control(false),
+      openedDate: this.fb.control<TuiDay>(TuiDay.currentLocal()),
+      isOpenEnded: this.fb.control(false),
       closingDate: this.fb.control<TuiDay | null>(null),
       durationDays: this.fb.control<number | null>(null),
     }),
-    interest: this.fb.nonNullable.array([
-      this.fb.group({
-        startMonth: this.fb.nonNullable.control(1),
-        steps: this.fb.nonNullable.array([
-          this.fb.group({
-            rangeStart: this.fb.nonNullable.control(0),
-            rangeEnd: this.fb.control<number | null>(null),
-            rate: this.fb.control<number | null>(null, Validators.required),
-          }),
-        ]),
-      }),
-    ]),
-    canWithdraw: this.fb.nonNullable.control(false),
-    canContribute: this.fb.nonNullable.control(false),
-    interestIsCapitalized: this.fb.nonNullable.control(false),
+    interest: this.fb.group({
+      monthSteps: this.fb.array([this.fb.control(1)]),
+      moneySteps: this.fb.array([this.fb.control(0)]),
+      rates: this.fb.array([this.fb.array([this.fb.control<number | null>(null, Validators.required)])]),
+    }),
+    canWithdraw: this.fb.control(false),
+    canContribute: this.fb.control(false),
+    interestIsCapitalized: this.fb.control(false),
   });
 
   banks = ['Сбер', 'ВТБ', 'Тинькофф'];
@@ -103,50 +96,31 @@ export class AddAccountComponent {
 
   interestColumns = [
     'ranges',
-    ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}`),
+    ...this.accountForm.controls.interest.getRawValue().monthSteps.map(month => `month-${month}`),
   ];
 
-  getMonthRangeHeader(number: number): string {
-    const controls = this.accountForm.controls.interest.controls;
-    const currentStart = controls[number].controls.startMonth.value;
-    if (number === controls.length - 1) {
-      return `${currentStart}+ мес.`;
-    }
-
-    const nextStart = controls[number + 1].controls.startMonth.value;
-    if (currentStart + 1 === nextStart) {
-      return `${currentStart} мес.`;
-    }
-
-    return `${currentStart} – ${nextStart - 1} мес.`;
+  getMonthRangeHeader(index: number): string {
+    const controls = this.accountForm.controls.interest.controls.monthSteps.controls;
+    return this.getRangeHeader(controls, index, 'мес.');
   }
 
-  getRangeHeader(range: { rangeStart: number; rangeEnd: number | null }): string {
-    if (!range.rangeEnd) {
-      return `${range.rangeStart}+ руб.`;
-    }
-
-    return `${range.rangeStart} – ${range.rangeEnd} руб.`;
+  getMoneyRangeHeader(index: number): string {
+    const controls = this.accountForm.controls.interest.controls.moneySteps.controls;
+    return this.getRangeHeader(controls, index, 'руб.');
   }
 
   addMonth() {
-    const interestMonths = this.accountForm.controls.interest.getRawValue();
-    const ranges = interestMonths[0].steps;
-    const newRanges = ranges.map(r =>
-      this.fb.group({
-        rangeStart: this.fb.nonNullable.control(r.rangeStart),
-        rangeEnd: this.fb.control(r.rangeEnd),
-        rate: this.fb.control<number | null>(null, Validators.required),
-      })
+    const interestMonths = this.accountForm.controls.interest.getRawValue().monthSteps;
+    const lastMonth = interestMonths.at(-1)!;
+    const newMonth = this.fb.control(lastMonth + 2, Validators.required);
+
+    const moneySteps = this.accountForm.controls.interest.controls.moneySteps.length;
+    const rates = this.fb.array(
+      Array.from({ length: moneySteps }, () => this.fb.control<number | null>(null, Validators.required))
     );
 
-    const lastMonth = interestMonths.at(-1)!.startMonth;
-    const newMonth = this.fb.group({
-      startMonth: this.fb.nonNullable.control(lastMonth + 2),
-      steps: this.fb.nonNullable.array(newRanges),
-    });
-
-    this.accountForm.controls.interest.push(newMonth);
+    this.accountForm.controls.interest.controls.rates.push(rates);
+    this.accountForm.controls.interest.controls.monthSteps.push(newMonth);
     this.calculateInterestColumns();
   }
 
@@ -163,10 +137,24 @@ export class AddAccountComponent {
     return {} as AccountData;
   }
 
+  private getRangeHeader(controls: Array<FormControl<number>>, index: number, postfix: string): string {
+    const currentStart = controls[index].value;
+    if (index === controls.length - 1) {
+      return `${currentStart}+ ${postfix}`;
+    }
+
+    const nextStart = controls[index + 1].value;
+    if (currentStart + 1 === nextStart) {
+      return `${currentStart} ${postfix}`;
+    }
+
+    return `${currentStart} – ${nextStart - 1} ${postfix}`;
+  }
+
   private calculateInterestColumns() {
     this.interestColumns = [
       'ranges',
-      ...this.accountForm.controls.interest.getRawValue().map(month => `month-${month.startMonth}`),
+      ...this.accountForm.controls.interest.getRawValue().monthSteps.map(month => `month-${month}`),
     ];
   }
 }

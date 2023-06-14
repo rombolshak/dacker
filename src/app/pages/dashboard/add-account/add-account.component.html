@@ -68,16 +68,16 @@
         </ng-container>
       </tr>
     </thead>
-    <tbody tuiTbody [data]="accountForm.controls.interest.controls">
-      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls[0].controls.steps.controls; let j = index">
+    <tbody tuiTbody [data]="accountForm.controls.interest.controls.rates.controls">
+      <tr tuiTr *ngFor="let range of accountForm.controls.interest.controls.moneySteps.controls; let j = index">
         <ng-container *ngFor="let col of interestColumns; let i = index">
           <ng-container *ngIf="i === 0">
-            <td *tuiCell="col" tuiTd>{{ getRangeHeader(range.getRawValue()) }}</td>
+            <td *tuiCell="col" tuiTd>{{ getMoneyRangeHeader(j) }}</td>
           </ng-container>
           <ng-container *ngIf="i !== 0">
             <td *tuiCell="col" tuiTd>
               <tui-input-number
-                [formControl]="accountForm.controls.interest.controls[i - 1].controls.steps.controls[j].controls.rate"
+                [formControl]="accountForm.controls.interest.controls.rates.at(i - 1).at(j)"
                 [min]="0"
                 postfix="%"
                 [precision]="1"></tui-input-number></td
