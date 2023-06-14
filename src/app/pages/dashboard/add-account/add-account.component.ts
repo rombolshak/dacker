@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { TuiButtonModule, TuiDialogContext, TuiErrorModule, TuiGroupModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiDialogContext, TuiErrorModule, TuiGroupModule, TuiSvgModule } from '@taiga-ui/core';
 import { AccountData } from '@app/models/account.data';
 import {
   TuiCheckboxBlockModule,
@@ -13,7 +13,14 @@ import {
   TuiInputModule,
   TuiInputNumberModule,
 } from '@taiga-ui/kit';
-import { FormBuilder, FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TuiActiveZoneModule, TuiAutoFocusModule, TuiDay, TuiLetModule, TuiMonth } from '@taiga-ui/cdk';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 
@@ -38,6 +45,7 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
     TuiLetModule,
     TuiAutoFocusModule,
     TuiActiveZoneModule,
+    TuiSvgModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -141,6 +149,21 @@ export class AddAccountComponent {
     if (!controlActive && monthControl.valid) {
       monthControl.disable();
     }
+  }
+
+  getRangeMin(controls: FormArray<FormControl<number | null>>, currentIndex: number): number {
+    if (currentIndex === 0) return 1;
+    const left = controls.at(currentIndex - 1).value;
+    if (left === null) return Infinity;
+    return left + 1;
+  }
+
+  getRangeMax(controls: FormArray<FormControl<number | null>>, currentIndex: number): number {
+    if (currentIndex === 0) return 1;
+    if (currentIndex === controls.length - 1) return Infinity;
+    const right = controls.at(currentIndex + 1).value;
+    if (right === null) return Infinity;
+    return right - 1;
   }
 
   saveForm(): void {

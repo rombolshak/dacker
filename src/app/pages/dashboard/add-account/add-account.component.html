@@ -68,7 +68,13 @@
             ><ng-container *tuiLet="accountForm.controls.interest.controls.monthSteps.at(i - 1) as monthControl">
               <td *tuiCell="col" tuiTd (tuiActiveZoneChange)="closeEditControl($event, monthControl)">
                 <ng-container *ngIf="monthControl.enabled; else monthHeader">
-                  <tui-input-number [formControl]="monthControl" postfix="мес." [precision]="0" tuiAutoFocus>
+                  <tui-input-number
+                    [formControl]="monthControl"
+                    postfix="мес."
+                    [precision]="0"
+                    tuiAutoFocus
+                    [min]="getRangeMin(accountForm.controls.interest.controls.monthSteps, i - 1)"
+                    [max]="getRangeMax(accountForm.controls.interest.controls.monthSteps, i - 1)">
                   </tui-input-number>
                 </ng-container>
                 <ng-template #monthHeader>
@@ -90,7 +96,9 @@
                   [formControl]="rangeControl"
                   postfix="руб."
                   [precision]="0"
-                  tuiAutoFocus></tui-input-number>
+                  tuiAutoFocus
+                  [min]="getRangeMin(accountForm.controls.interest.controls.moneySteps, j)"
+                  [max]="getRangeMax(accountForm.controls.interest.controls.moneySteps, j)"></tui-input-number>
               </ng-container>
               <ng-template #moneyHeader>
                 <span (click)="showEditControl(rangeControl)">{{ getMoneyRangeHeader(j) }}</span>
