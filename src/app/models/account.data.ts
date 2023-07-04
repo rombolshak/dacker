@@ -8,11 +8,11 @@ type RangeInterest = { rangeStart: number; rangeEnd?: number; rate: number };
 type MonthInterest = { startMonth: number; endMonth?: number; steps: RangeInterest[] };
 type AccountInterest = MonthInterest[];
 
-type RepeatOption = 'monthly' | 'quaterly' | 'semiannual' | 'annually';
+export type RepeatOption = 'monthly' | 'quaterly' | 'semiannual' | 'annually';
 type OneTimeSchedule = { type: 'onClosing' };
 type RepeatedSchedule = { type: RepeatOption; day: number };
 type InterestSchedule = OneTimeSchedule | RepeatedSchedule;
-type InterestBase = 'everyDay' | 'monthlyMin';
+export type InterestBase = 'everyDay' | 'monthlyMin';
 
 export interface AccountData extends Identifiable {
   name: string;
@@ -22,7 +22,6 @@ export interface AccountData extends Identifiable {
   // interest: AccountInterest;
   canWithdraw: boolean;
   canContribute: boolean;
-  interestIsCapitalized: boolean;
-  // interestSchedule: InterestSchedule;
+  interestSchedule: InterestSchedule;
   // interestBase: InterestBase;
 }

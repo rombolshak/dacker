@@ -36,6 +36,7 @@ export default class DashboardComponent {
     {
       dismissible: false,
       label: 'Новый счёт',
+      size: 'l',
       data: {},
     }
   );

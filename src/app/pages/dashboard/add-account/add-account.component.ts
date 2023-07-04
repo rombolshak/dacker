@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { TuiButtonModule, TuiDialogContext, TuiErrorModule, TuiGroupModule, TuiSvgModule } from '@taiga-ui/core';
-import { AccountData } from '@app/models/account.data';
+import {
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiDialogContext,
+  TuiErrorModule,
+  TuiGroupModule,
+  TuiSvgModule,
+} from '@taiga-ui/core';
+import { AccountData, InterestBase, RepeatOption } from '@app/models/account.data';
 import {
   TuiCheckboxBlockModule,
   TuiCheckboxLabeledModule,
@@ -12,6 +19,9 @@ import {
   TuiInputDateModule,
   TuiInputModule,
   TuiInputNumberModule,
+  TuiRadioBlockModule,
+  TuiSelectModule,
+  TuiStringifyContentPipeModule,
 } from '@taiga-ui/kit';
 import {
   FormArray,
@@ -46,6 +56,10 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
     TuiAutoFocusModule,
     TuiActiveZoneModule,
     TuiSvgModule,
+    TuiSelectModule,
+    TuiStringifyContentPipeModule,
+    TuiDataListModule,
+    TuiRadioBlockModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -95,7 +109,12 @@ export class AddAccountComponent {
     }),
     canWithdraw: this.fb.control(false),
     canContribute: this.fb.control(false),
-    interestIsCapitalized: this.fb.control(false),
+    capitalization: this.fb.group({
+      isEnabled: this.fb.control(false),
+      repeatOption: this.fb.control<RepeatOption | null>(null),
+      repeatDay: this.fb.control<number | null>(null),
+      basis: this.fb.control<InterestBase | null>(null),
+    }),
   });
 
   banks = ['Сбер', 'ВТБ', 'Тинькофф'];
@@ -109,6 +128,27 @@ export class AddAccountComponent {
     'ranges',
     ...this.accountForm.controls.interest.getRawValue().monthSteps.map(month => `month-${month}`),
   ];
+
+  repeatOptions = ['monthly', 'quaterly', 'semiannual', 'annually'] as RepeatOption[];
+
+  readonly getRepeatOptionContent = ($item: RepeatOption): string => {
+    switch ($item) {
+      case 'monthly':
+        return 'Ежемесячно';
+      case 'quaterly':
+        return 'Ежеквартально';
+      case 'semiannual':
+        return 'Полугодично';
+      case 'annually':
+        return 'Ежегодно';
+    }
+  };
+
+  readonly paydayStringify = (day: number): string => {
+    if (day === 31) return 'Последний день месяца';
+    if (day === this.accountForm.controls.dates.getRawValue().openedDate.day) return 'День открытия';
+    return day.toString();
+  };
 
   getMonthRangeHeader(index: number): string {
     const controls = this.accountForm.controls.interest.controls.monthSteps.controls;

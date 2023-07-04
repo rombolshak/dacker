@@ -129,10 +129,45 @@
     </tbody>
   </table>
 
-  <div class="tui-form__row">
-    <tui-checkbox-block [formControl]="accountForm.controls.interestIsCapitalized">
+  <div class="tui-form__row" tuiGroup>
+    <tui-checkbox-block [formControl]="accountForm.controls.capitalization.controls.isEnabled">
       Капитализация процентов
     </tui-checkbox-block>
+    <ng-container *ngIf="accountForm.controls.capitalization.controls.isEnabled.value">
+      <tui-select
+        [formControl]="accountForm.controls.capitalization.controls.repeatOption"
+        [stringify]="getRepeatOptionContent">
+        Периодичность
+        <tui-data-list-wrapper
+          *tuiDataList
+          [items]="repeatOptions"
+          [itemContent]="getRepeatOptionContent | tuiStringifyContent"></tui-data-list-wrapper>
+      </tui-select>
+      <tui-combo-box
+        *ngIf="accountForm.controls.capitalization.controls.repeatOption.value === 'monthly'"
+        [formControl]="accountForm.controls.capitalization.controls.repeatDay"
+        [stringify]="paydayStringify">
+        День выплаты
+        <tui-data-list-wrapper
+          [items]="[accountForm.controls.dates.controls.openedDate.value.day, 31]"
+          *tuiDataList
+          [itemContent]="paydayStringify | tuiStringifyContent"></tui-data-list-wrapper>
+      </tui-combo-box>
+    </ng-container>
+  </div>
+  <div
+    class="tui-form__row"
+    tuiGroup
+    *ngIf="
+      accountForm.controls.capitalization.controls.isEnabled.value &&
+      (accountForm.controls.canWithdraw.value || accountForm.controls.canContribute.value)
+    ">
+    <tui-radio-block [formControl]="accountForm.controls.capitalization.controls.basis" [item]="'everyDay'">
+      На среднемесячный остаток
+    </tui-radio-block>
+    <tui-radio-block [formControl]="accountForm.controls.capitalization.controls.basis" [item]="'monthlyMin'">
+      На минимальный остаток
+    </tui-radio-block>
   </div>
 
   <div class="tui-form__buttons tui-form__buttons_align_center">
