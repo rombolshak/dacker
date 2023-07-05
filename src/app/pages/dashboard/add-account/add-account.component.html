@@ -34,6 +34,9 @@
         [max]="depositMaxDurationDays">
         Срок (дней)
       </tui-input-number>
+      <tui-error
+        [formControl]="accountForm.controls.dates.controls.durationDays"
+        [error]="[] | tuiFieldError | async"></tui-error>
     </div>
     <div class="tui-form__multi-field" *ngIf="!accountForm.controls.dates.controls.durationDays.value">
       <tui-checkbox-block [formControl]="accountForm.controls.dates.controls.isOpenEnded">

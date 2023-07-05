@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Predicate } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import {
@@ -26,16 +26,27 @@ import {
   TuiStringifyContentPipeModule,
 } from '@taiga-ui/kit';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { TuiActiveZoneModule, TuiAutoFocusModule, TuiDay, TuiLetModule, TuiMonth } from '@taiga-ui/cdk';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { banks } from '@app/pages/dashboard/add-account/bank-list';
+
+function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn): ValidatorFn {
+  return (formControl: AbstractControl<any, any>) => {
+    if (!formControl.parent) return null;
+    if (predicate()) return validator(formControl);
+    return null;
+  };
+}
 
 @Component({
   selector: 'monitraks-add-account',
@@ -80,29 +91,39 @@ export class AddAccountComponent {
       datesControls.closingDate.setValue(null, { emitEvent: false });
       datesControls.durationDays.setValue(null, { emitEvent: false });
     });
-    datesControls.closingDate.valueChanges.subscribe(date => {
+    datesControls.closingDate.valueChanges.subscribe((date: TuiDay | null) => {
       datesControls.durationDays.setValue(
         date !== null ? TuiDay.lengthBetween(datesControls.openedDate.value, date) : null,
         { emitEvent: false }
       );
     });
-    datesControls.durationDays.valueChanges.subscribe(duration => {
+    datesControls.durationDays.valueChanges.subscribe((duration: number | null) => {
       datesControls.closingDate.setValue(
         duration !== null ? datesControls.openedDate.value.append({ day: duration }) : null,
         { emitEvent: false }
       );
     });
+    datesControls.isOpenEnded.valueChanges.subscribe((_: boolean) => {
+      datesControls.closingDate.updateValueAndValidity({ emitEvent: false });
+      datesControls.durationDays.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
-  accountForm = this.fb.group({
+  accountForm: any = this.fb.group({
     id: this.fb.control(''),
     name: this.fb.control('', Validators.required),
     bank: this.fb.control('', Validators.required),
     dates: this.fb.group({
-      openedDate: this.fb.control<TuiDay>(TuiDay.currentLocal()),
+      openedDate: this.fb.control<TuiDay>(TuiDay.currentLocal(), Validators.required),
       isOpenEnded: this.fb.control(false),
-      closingDate: this.fb.control<TuiDay | null>(null),
-      durationDays: this.fb.control<number | null>(null),
+      closingDate: this.fb.control<TuiDay | null>(
+        null,
+        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required)
+      ),
+      durationDays: this.fb.control<number | null>(
+        null,
+        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required)
+      ),
     }),
     interest: this.fb.group({
       monthSteps: this.fb.array([this.fb.control<number | null>({ value: 1, disabled: true }, Validators.required)]),
@@ -130,7 +151,7 @@ export class AddAccountComponent {
 
   interestColumns = [
     'ranges',
-    ...this.accountForm.controls.interest.getRawValue().monthSteps.map(month => `month-${month}`),
+    ...this.accountForm.controls.interest.getRawValue().monthSteps.map((month: number | null) => `month-${month}`),
   ];
 
   repeatOptions = ['monthly', 'quaterly', 'semiannual', 'annually'] as RepeatOption[];
@@ -261,7 +282,7 @@ export class AddAccountComponent {
   private calculateInterestColumns() {
     this.interestColumns = [
       'ranges',
-      ...this.accountForm.controls.interest.getRawValue().monthSteps.map((_, i) => `month-${i}`),
+      ...this.accountForm.controls.interest.getRawValue().monthSteps.map((_: number | null, i: number) => `month-${i}`),
     ];
   }
 }
