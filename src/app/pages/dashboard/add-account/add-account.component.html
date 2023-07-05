@@ -4,12 +4,15 @@
     <tui-error [formControl]="accountForm.controls.name" [error]="[] | tuiFieldError | async"></tui-error>
   </div>
   <div class="tui-form__row">
-    <tui-combo-box [formControl]="accountForm.controls.bank.controls.name">
+    <tui-combo-box [formControl]="accountForm.controls.bank" [stringify]="banksStringify">
       Банк
       <input tuiTextfield />
-      <tui-data-list-wrapper *tuiDataList [items]="banks"></tui-data-list-wrapper>
+      <tui-data-list-wrapper
+        *tuiDataList
+        [items]="banks | tuiFilterByInputWith : banksStringify"
+        [itemContent]="bankInfo"></tui-data-list-wrapper>
     </tui-combo-box>
-    <tui-error [formControl]="accountForm.controls.bank.controls.name" [error]="[] | tuiFieldError | async"></tui-error>
+    <tui-error [formControl]="accountForm.controls.bank" [error]="[] | tuiFieldError | async"></tui-error>
   </div>
 
   <div class="tui-form__row tui-form__row_multi-fields">
@@ -171,7 +174,15 @@
   </div>
 
   <div class="tui-form__buttons tui-form__buttons_align_center">
-    <button tuiButton class="tui-form__button" type="submit">Сохранить</button>
+    <button tuiButton class="tui-form__button" type="submit" [disabled]="accountForm.invalid">Сохранить</button>
     <button tuiButton appearance="secondary" type="reset" class="tui-form__button" (click)="close()">Отмена</button>
   </div>
 </form>
+
+<ng-template #bankInfo let-item>
+  <div class="bank-info">
+    <tui-avatar
+      [avatarUrl]="'https://raw.githubusercontent.com/melpnz/rblp/master/icon/' + item.id + '.svg'"></tui-avatar>
+    <span>{{ item.name }}</span>
+  </div>
+</ng-template>

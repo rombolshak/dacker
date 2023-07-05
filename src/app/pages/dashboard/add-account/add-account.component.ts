@@ -11,11 +11,13 @@ import {
 } from '@taiga-ui/core';
 import { AccountData, InterestBase, RepeatOption } from '@app/models/account.data';
 import {
+  TuiAvatarModule,
   TuiCheckboxBlockModule,
   TuiCheckboxLabeledModule,
   TuiComboBoxModule,
   TuiDataListWrapperModule,
   TuiFieldErrorPipeModule,
+  TuiFilterByInputPipeModule,
   TuiInputDateModule,
   TuiInputModule,
   TuiInputNumberModule,
@@ -33,6 +35,7 @@ import {
 } from '@angular/forms';
 import { TuiActiveZoneModule, TuiAutoFocusModule, TuiDay, TuiLetModule, TuiMonth } from '@taiga-ui/cdk';
 import { TuiTableModule } from '@taiga-ui/addon-table';
+import { banks } from '@app/pages/dashboard/add-account/bank-list';
 
 @Component({
   selector: 'monitraks-add-account',
@@ -60,6 +63,8 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
     TuiStringifyContentPipeModule,
     TuiDataListModule,
     TuiRadioBlockModule,
+    TuiFilterByInputPipeModule,
+    TuiAvatarModule,
   ],
   templateUrl: './add-account.component.html',
   styleUrls: ['./add-account.component.less'],
@@ -92,10 +97,7 @@ export class AddAccountComponent {
   accountForm = this.fb.group({
     id: this.fb.control(''),
     name: this.fb.control('', Validators.required),
-    bank: this.fb.group({
-      name: this.fb.control('', Validators.required),
-      icon: this.fb.control('', Validators.required),
-    }),
+    bank: this.fb.control('', Validators.required),
     dates: this.fb.group({
       openedDate: this.fb.control<TuiDay>(TuiDay.currentLocal()),
       isOpenEnded: this.fb.control(false),
@@ -117,7 +119,9 @@ export class AddAccountComponent {
     }),
   });
 
-  banks = ['Сбер', 'ВТБ', 'Тинькофф'];
+  banks = banks;
+
+  readonly banksStringify = (item: { name: string }) => item.name ?? '';
 
   depositMaxDurationDays = 2000;
   openMinDate = TuiDay.currentLocal().append({ year: -2 });
