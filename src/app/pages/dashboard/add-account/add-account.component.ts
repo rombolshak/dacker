@@ -107,6 +107,15 @@ export class AddAccountComponent {
       datesControls.closingDate.updateValueAndValidity({ emitEvent: false });
       datesControls.durationDays.updateValueAndValidity({ emitEvent: false });
     });
+
+    const capitalizationControls = this.accountForm.controls.capitalization.controls;
+    capitalizationControls.isEnabled.valueChanges.subscribe((_: boolean) => {
+      capitalizationControls.repeatOption.updateValueAndValidity({ emitEvent: false });
+      capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
+    });
+    capitalizationControls.repeatOption.valueChanges.subscribe((_: number | null) => {
+      capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   accountForm: any = this.fb.group({
@@ -134,9 +143,23 @@ export class AddAccountComponent {
     canContribute: this.fb.control(false),
     capitalization: this.fb.group({
       isEnabled: this.fb.control(false),
-      repeatOption: this.fb.control<RepeatOption | null>(null),
-      repeatDay: this.fb.control<number | null>(null),
-      basis: this.fb.control<InterestBase | null>(null),
+      repeatOption: this.fb.control<RepeatOption | null>(
+        null,
+        conditionalValidator(
+          () => this.accountForm.controls.capitalization.controls.isEnabled.value,
+          Validators.required
+        )
+      ),
+      repeatDay: this.fb.control<number | null>(
+        null,
+        conditionalValidator(
+          () =>
+            this.accountForm.controls.capitalization.controls.isEnabled.value &&
+            this.accountForm.controls.capitalization.controls.repeatOption.value === 'monthly',
+          Validators.required
+        )
+      ),
+      basis: this.fb.control<InterestBase>('everyDay'),
     }),
   });
 
