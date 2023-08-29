@@ -1,27 +1,18 @@
 ﻿import { Identifiable } from '@app/models/identifiable';
+type AccountInterest = { moneySteps: number[]; monthSteps: number[]; rates: number[][] };
 
-type BankInfo = { name: string; icon: string };
-
-type AccountDuration = { days?: number };
-
-type RangeInterest = { rangeStart: number; rangeEnd?: number; rate: number };
-type MonthInterest = { startMonth: number; endMonth?: number; steps: RangeInterest[] };
-type AccountInterest = MonthInterest[];
-
-export type RepeatOption = 'monthly' | 'quaterly' | 'semiannual' | 'annually';
-type OneTimeSchedule = { type: 'onClosing' };
-type RepeatedSchedule = { type: RepeatOption; day: number };
-type InterestSchedule = OneTimeSchedule | RepeatedSchedule;
+export type RepeatOption = 'onClosing' | 'monthly' | 'quaterly' | 'semiannual' | 'annually';
+type InterestSchedule = { type: RepeatOption; day: number | null };
 export type InterestBase = 'everyDay' | 'monthlyMin';
 
 export interface AccountData extends Identifiable {
   name: string;
-  bank: BankInfo;
+  bank: string;
   openedAt: Date;
-  duration: AccountDuration;
-  // interest: AccountInterest;
+  duration: number | null;
+  interest: AccountInterest;
   canWithdraw: boolean;
   canContribute: boolean;
   interestSchedule: InterestSchedule;
-  // interestBase: InterestBase;
+  interestBase: InterestBase;
 }

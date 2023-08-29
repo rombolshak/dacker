@@ -152,7 +152,8 @@
       <tui-combo-box
         *ngIf="accountForm.controls.capitalization.controls.repeatOption.value === 'monthly'"
         [formControl]="accountForm.controls.capitalization.controls.repeatDay"
-        [stringify]="paydayStringify">
+        [stringify]="paydayStringify"
+        [strict]="false">
         День выплаты
         <tui-data-list-wrapper
           [items]="[accountForm.controls.dates.controls.openedDate.value.day, 31]"

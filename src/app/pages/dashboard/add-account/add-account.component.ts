@@ -4,6 +4,8 @@ import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiDialogContext } from '@taiga-ui/core';
 import { AccountData } from '@app/models/account.data';
 import { AddAccountFormComponent } from '@app/pages/dashboard/add-account/add-account-form/add-account-form.component';
+import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
+import { AccountDataConverter } from '@app/pages/dashboard/add-account/account-data-converter';
 
 @Component({
   selector: 'monitraks-add-account',
@@ -16,7 +18,9 @@ import { AddAccountFormComponent } from '@app/pages/dashboard/add-account/add-ac
 export class AddAccountComponent {
   constructor(@Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<AccountData>) {}
 
-  save(form: any) {}
+  save(form: AccountFormData) {
+    this.context.completeWith(AccountDataConverter.toModel(form));
+  }
 
   close() {
     this.context.$implicit.complete();

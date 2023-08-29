@@ -29,6 +29,7 @@ import {
 } from '@angular/forms';
 import { AccountData, InterestBase, RepeatOption } from '@app/models/account.data';
 import { banks } from '@app/pages/dashboard/add-account/bank-list';
+import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
 
 function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn): ValidatorFn {
   return (formControl: AbstractControl<any, any>) => {
@@ -73,7 +74,7 @@ function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn
 })
 export class AddAccountFormComponent {
   @Output()
-  public save = new EventEmitter<any>();
+  public save = new EventEmitter<AccountFormData>();
 
   @Output()
   public cancel = new EventEmitter();
@@ -182,6 +183,8 @@ export class AddAccountFormComponent {
         return 'Полугодично';
       case 'annually':
         return 'Ежегодно';
+      case 'onClosing':
+        return 'При закрытии';
     }
   };
 
@@ -261,7 +264,7 @@ export class AddAccountFormComponent {
   }
 
   saveForm(): void {
-    this.save.emit(this.accountForm.getRawValue());
+    this.save.emit(this.accountForm.getRawValue() satisfies AccountFormData);
   }
 
   private getModel(): AccountData {
