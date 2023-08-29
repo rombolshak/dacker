@@ -8,6 +8,7 @@ import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiButtonModule, TuiDialogService, TuiSvgModule } from '@taiga-ui/core';
 import { AddAccountComponent } from '@app/pages/dashboard/add-account/add-account.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'monitraks-dashboard',
@@ -18,7 +19,11 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DashboardComponent {
-  constructor(data: DataService, private readonly dialogs: TuiDialogService, private readonly injector: Injector) {
+  constructor(
+    private data: DataService,
+    private readonly dialogs: TuiDialogService,
+    private readonly injector: Injector
+  ) {
     this.accounts$ = data.accounts.getAll();
   }
 
@@ -26,9 +31,16 @@ export default class DashboardComponent {
 
   addAccount(): void {
     this.addAccountDialog.subscribe({
-      next: value => console.log(value),
-      complete: () => console.log('complete'),
+      next: value => this.updateAccount(value),
     });
+  }
+
+  private updateAccount(model: AccountData): void {
+    if (model.id === '') {
+      model.id = uuid();
+    }
+
+    this.data.accounts.withId(model.id).set(model).subscribe();
   }
 
   private readonly addAccountDialog = this.dialogs.open<AccountData>(

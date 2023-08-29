@@ -25,7 +25,7 @@ export class DataService {
   public accounts = new EntityListRequestBuilder<AccountData, AccountRequestBuilder>(
     this.storage,
     'accounts',
-    id => new AccountRequestBuilder(this.storage, id)
+    id => new AccountRequestBuilder(this.storage, `accounts/${id}`)
   );
   // public operations: OperationsRequestBuilder;
 }
