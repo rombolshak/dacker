@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '@app/data-layer/data.service';
-import { Observable, tap } from 'rxjs';
+import { delay, Observable, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
-import { TuiButtonModule, TuiDialogService, TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiDialogService, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
 import { AddAccountComponent } from '@app/pages/dashboard/add-account/add-account.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { firestoreAutoId } from '@app/models/identifiable';
@@ -13,7 +13,15 @@ import { firestoreAutoId } from '@app/models/identifiable';
 @Component({
   selector: 'monitraks-dashboard',
   standalone: true,
-  imports: [CommonModule, TuiLetModule, TuiBlockStatusModule, TuiButtonModule, TuiSvgModule, AddAccountComponent],
+  imports: [
+    CommonModule,
+    TuiLetModule,
+    TuiBlockStatusModule,
+    TuiButtonModule,
+    TuiSvgModule,
+    AddAccountComponent,
+    TuiLoaderModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

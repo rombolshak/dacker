@@ -1,12 +1,15 @@
 <h2 class="header">Вклады</h2>
 <div class="content" *tuiLet="accounts$ | async as accounts">
-  <div class="no-accounts" *ngIf="!accounts?.length; else list">
-    <tui-block-status [card]="true">
-      <tui-svg src="/assets/icons/safe-opened.svg" tuiSlot="top"></tui-svg>
-      <h2>Здесь пока пусто...</h2>
+  <tui-loader [showLoader]="!accounts" size="xxl" [overlay]="true"> </tui-loader>
+  <ng-container *ngIf="accounts">
+    <div class="no-accounts" *ngIf="!accounts.length; else list">
+      <tui-block-status [card]="true">
+        <tui-svg src="/assets/icons/safe-opened.svg" tuiSlot="top"></tui-svg>
+        <h2>Здесь пока пусто...</h2>
 
-      <button tuiButton appearance="primary" size="xl" (click)="addAccount()">Добавить счёт</button>
-    </tui-block-status>
-  </div>
-  <ng-template #list> {{ accounts!.length }} вкладов </ng-template>
+        <button tuiButton appearance="primary" size="xl" (click)="addAccount()">Добавить счёт</button>
+      </tui-block-status>
+    </div>
+    <ng-template #list> {{ accounts!.length }} вкладов </ng-template>
+  </ng-container>
 </div>
