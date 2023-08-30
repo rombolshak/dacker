@@ -1,0 +1,25 @@
+<table
+  tuiTable
+  class="table"
+  [columns]="allColumns"
+  [tuiSortBy]="sorter$ | async"
+  (tuiSortByChange)="sorter$.next($event)">
+  <thead>
+    <tr tuiThGroup>
+      <th *tuiHead="'name'" tuiSortable tuiTh>Название</th>
+      <th *tuiHead="'bank'" tuiSortable tuiTh>Банк</th>
+      <th *tuiHead="'currentTotalAmount'" tuiSortable tuiTh>Сумма</th>
+      <th *tuiHead="'currentIncomeAmount'" tuiSortable tuiTh>Доход, руб</th>
+      <th *tuiHead="'currentIncomePercent'" tuiSortable tuiTh>Доход, % год</th>
+      <th *tuiHead="'expectedIncomeAmount'" tuiSortable tuiTh>Ожидаемый доход, руб</th>
+      <th *tuiHead="'openedAt'" tuiSortable tuiTh>Дата открытия</th>
+      <th *tuiHead="'duration'" tuiSortable tuiTh>Срок</th>
+      <th *tuiHead="'closingAt'" tuiSortable tuiTh>Дата закрытия</th>
+      <th *tuiHead="'canContribute'" tuiSortable tuiTh>Пополения</th>
+      <th *tuiHead="'canWithdraw'" tuiSortable tuiTh>Снятия</th>
+      <th *tuiHead="'currentNominalRate'" tuiSortable tuiTh>Номинальная ставка</th>
+      <th *tuiHead="'currentRealRate'" tuiSortable tuiTh>Реальная ставка</th>
+      <th *tuiHead="'interestInfo'" tuiSortable tuiTh>Проценты</th>
+    </tr>
+  </thead>
+</table>
