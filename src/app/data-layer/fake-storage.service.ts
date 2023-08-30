@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
