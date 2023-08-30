@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  Auth,
   authState,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  Auth,
 } from '@angular/fire/auth';
 import { AppUser } from './user';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
