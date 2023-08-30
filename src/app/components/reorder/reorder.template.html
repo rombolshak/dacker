@@ -1,0 +1,20 @@
+<tui-tiles class="t-wrapper" [(order)]="order">
+  <tui-tile *ngFor="let item of unsortedItems; let index = index" [style.order]="order.get(index)">
+    <div class="t-item">
+      <tui-svg tuiTileHandle class="t-icon" [src]="options.icons.drag"></tui-svg>
+      {{ item }}
+      <button
+        appearance="icon"
+        size="xs"
+        tuiIconButton
+        type="button"
+        class="t-button"
+        [class.t-button_hidden]="!isEnabled(item)"
+        [icon]="getIcon(item)"
+        [title]="showHideText$ | async"
+        (click)="toggle(item)"
+        (keydown.arrowDown.prevent)="move(index, 1)"
+        (keydown.arrowUp.prevent)="move(index, -1)"></button>
+    </div>
+  </tui-tile>
+</tui-tiles>

@@ -1,7 +1,16 @@
+<div class="toolbar">
+  <tui-hosted-dropdown [content]="columnsSelector">
+    <button tuiButton size="s" type="button" [iconRight]="arrow">Выбор столбцов</button>
+    <ng-template #columnsSelector>
+      <tui-reorder [(items)]="allColumns" [(enabled)]="selectedColumns" class="columns-selector"></tui-reorder>
+    </ng-template>
+  </tui-hosted-dropdown>
+</div>
+
 <table
   tuiTable
   class="table"
-  [columns]="allColumns"
+  [columns]="selectedColumns"
   [tuiSortBy]="sorter$ | async"
   (tuiSortByChange)="sorter$.next($event)">
   <thead>
@@ -23,11 +32,3 @@
     </tr>
   </thead>
 </table>
-
-<tui-reorder [(items)]="order" [(enabled)]="selected"></tui-reorder>
-
-<tui-tiles [debounce]="400" [order]="orderMap" (orderChange)="reorder($event)" class="tiles">
-  <tui-tile *ngFor="let item of order; let i = index" [style.order]="orderMap.get(i)">
-    <div class="content"><tui-svg tuiTileHandle src="tuiIconDragLarge"></tui-svg> {{ item }}</div>
-  </tui-tile>
-</tui-tiles>

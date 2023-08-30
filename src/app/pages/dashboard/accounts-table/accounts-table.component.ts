@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountData } from '@app/models/account.data';
-import { TuiReorderModule, TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
-import { TuiTilesModule } from '@taiga-ui/kit';
-import { TuiSvgModule } from '@taiga-ui/core';
+import { TUI_ARROW } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiReorderModule } from '@app/components/reorder';
 
 type Key =
   | 'name'
@@ -24,7 +25,15 @@ type Key =
 @Component({
   selector: 'monitraks-accounts-table',
   standalone: true,
-  imports: [CommonModule, TuiTableModule, TuiReorderModule, TuiTilesModule, TuiSvgModule],
+  imports: [
+    CommonModule,
+    TuiTableModule,
+    TuiReorderModule,
+    TuiSvgModule,
+    TuiHostedDropdownModule,
+    TuiButtonModule,
+    TuiReorderModule,
+  ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,7 +43,7 @@ export class AccountsTableComponent {
   public accounts: AccountData[] = [];
 
   readonly sorter$ = new BehaviorSubject<Key | null>('closingAt');
-  allColumns: readonly string[] = [
+  allColumns: string[] = [
     'name',
     'bank',
     'currentTotalAmount',
@@ -51,14 +60,7 @@ export class AccountsTableComponent {
     'interestInfo',
   ];
 
-  order = ['1', '2', '3'];
+  selectedColumns = this.allColumns;
 
-  orderMap = new Map<number, number>();
-
-  selected = this.order;
-
-  reorder($event: Map<number, number>) {
-    console.log('reorder');
-    this.orderMap = $event;
-  }
+  arrow = TUI_ARROW;
 }
