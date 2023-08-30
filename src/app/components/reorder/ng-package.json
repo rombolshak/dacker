@@ -1,8 +1,6 @@
 {
-    "lib": {
-        "entryFile": "index.ts",
-        "styleIncludePaths": [
-            "../../../core/styles"
-        ]
-    }
+  "lib": {
+    "entryFile": "index.ts",
+    "styleIncludePaths": ["../../../core/styles"]
+  }
 }
