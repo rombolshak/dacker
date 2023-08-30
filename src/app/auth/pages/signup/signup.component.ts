@@ -28,13 +28,17 @@ import { FormBaseComponent } from '@app/auth/components/form-base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SignupComponent extends FormBaseComponent<{ login: string; password: string }> {
-  constructor(private auth: AuthService, fb: NonNullableFormBuilder, router: Router) {
+  constructor(
+    private auth: AuthService,
+    fb: NonNullableFormBuilder,
+    router: Router,
+  ) {
     super(
       fb.group({
         login: fb.control('', [Validators.required, Validators.email]),
         password: fb.control('', [Validators.required]),
       }),
-      router
+      router,
     );
   }
 

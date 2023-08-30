@@ -18,7 +18,10 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
   providedIn: 'root',
 })
 export class StorageService {
-  constructor(private auth: Auth, private store: Firestore) {}
+  constructor(
+    private auth: Auth,
+    private store: Firestore,
+  ) {}
 
   getAll<T>(collectionName: string): Observable<T[]> {
     const ref = collection(this.store, this.getAuthPart(), collectionName) as CollectionReference<T>;

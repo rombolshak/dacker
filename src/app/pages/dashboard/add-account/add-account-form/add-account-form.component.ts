@@ -89,13 +89,13 @@ export class AddAccountFormComponent {
     datesControls.closingDate.valueChanges.subscribe((date: TuiDay | null) => {
       datesControls.durationDays.setValue(
         date !== null ? TuiDay.lengthBetween(datesControls.openedDate.value, date) : null,
-        { emitEvent: false }
+        { emitEvent: false },
       );
     });
     datesControls.durationDays.valueChanges.subscribe((duration: number | null) => {
       datesControls.closingDate.setValue(
         duration !== null ? datesControls.openedDate.value.append({ day: duration }) : null,
-        { emitEvent: false }
+        { emitEvent: false },
       );
     });
     datesControls.isOpenEnded.valueChanges.subscribe(() => {
@@ -123,11 +123,11 @@ export class AddAccountFormComponent {
       isOpenEnded: this.fb.control(false),
       closingDate: this.fb.control<TuiDay | null>(
         null,
-        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required)
+        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required),
       ),
       durationDays: this.fb.control<number | null>(
         null,
-        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required)
+        conditionalValidator(() => !this.accountForm.controls.dates.controls.isOpenEnded.value, Validators.required),
       ),
     }),
     interest: this.fb.group({
@@ -143,8 +143,8 @@ export class AddAccountFormComponent {
         null,
         conditionalValidator(
           () => this.accountForm.controls.capitalization.controls.isEnabled.value,
-          Validators.required
-        )
+          Validators.required,
+        ),
       ),
       repeatDay: this.fb.control<number | null>(
         null,
@@ -152,8 +152,8 @@ export class AddAccountFormComponent {
           () =>
             this.accountForm.controls.capitalization.controls.isEnabled.value &&
             this.accountForm.controls.capitalization.controls.repeatOption.value === 'monthly',
-          Validators.required
-        )
+          Validators.required,
+        ),
       ),
       basis: this.fb.control<InterestBase>('everyDay'),
     }),
@@ -210,7 +210,7 @@ export class AddAccountFormComponent {
     const newMonth = this.fb.control<number | null>(null, Validators.required);
     const moneySteps = this.accountForm.controls.interest.controls.moneySteps.length;
     const rates = this.fb.array(
-      Array.from({ length: moneySteps }, () => this.fb.control<number | null>(null, Validators.required))
+      Array.from({ length: moneySteps }, () => this.fb.control<number | null>(null, Validators.required)),
     );
 
     this.accountForm.controls.interest.controls.rates.push(rates);

@@ -25,7 +25,7 @@ export class AccountDataConverter {
           return { money: step, rate: formData.interest.rates[i][j] };
         });
         return { month: month, rates: rates };
-      })
+      }),
     );
 
     result.interestBase = formData.capitalization.basis;

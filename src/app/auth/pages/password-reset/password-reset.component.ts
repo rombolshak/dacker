@@ -27,12 +27,16 @@ import { FormBaseComponent } from '@app/auth/components/form-base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class PasswordResetComponent extends FormBaseComponent<{ login: string }> {
-  constructor(private auth: AuthService, fb: NonNullableFormBuilder, router: Router) {
+  constructor(
+    private auth: AuthService,
+    fb: NonNullableFormBuilder,
+    router: Router,
+  ) {
     super(
       fb.group({
         login: fb.control('', [Validators.required, Validators.email]),
       }),
-      router
+      router,
     );
   }
 

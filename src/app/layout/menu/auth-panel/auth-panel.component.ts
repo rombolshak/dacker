@@ -13,7 +13,10 @@ import { TuiDataListModule, TuiSvgModule } from '@taiga-ui/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthPanelComponent {
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(
+    public auth: AuthService,
+    private router: Router,
+  ) {}
 
   signOut() {
     this.auth.logout().subscribe(() => this.router.navigate(['/auth/login']));

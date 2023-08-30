@@ -9,7 +9,7 @@
       <input tuiTextfield />
       <tui-data-list-wrapper
         *tuiDataList
-        [items]="banks | tuiFilterByInputWith : banksStringify"
+        [items]="banks | tuiFilterByInputWith: banksStringify"
         [itemContent]="bankInfo"></tui-data-list-wrapper>
     </tui-combo-box>
     <tui-error [formControl]="accountForm.controls.bank" [error]="[] | tuiFieldError | async"></tui-error>

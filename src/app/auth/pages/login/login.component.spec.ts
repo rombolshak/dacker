@@ -39,7 +39,7 @@ describe('LoginComponent', () => {
     spyOn(TestBed.inject(AuthService), 'login').and.returnValue(
       throwError(() => ({
         message: 'Firebase: test error (auth.test)',
-      }))
+      })),
     );
 
     component.formSubmit();

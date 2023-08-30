@@ -3,7 +3,10 @@ import { Identifiable } from '@app/models/identifiable';
 import { StorageService } from '@app/data-layer/storage.service';
 
 export class EntityRequestBuilder<TEntity extends Identifiable> {
-  constructor(protected storage: StorageService, protected entityPath: string) {}
+  constructor(
+    protected storage: StorageService,
+    protected entityPath: string,
+  ) {}
   public get(): Observable<TEntity | null> {
     return this.storage.get<TEntity>(this.entityPath);
   }
@@ -17,12 +20,12 @@ export class EntityRequestBuilder<TEntity extends Identifiable> {
 
 export class EntityListRequestBuilder<
   TEntity extends Identifiable,
-  TEntityRequestBuilder extends EntityRequestBuilder<TEntity>
+  TEntityRequestBuilder extends EntityRequestBuilder<TEntity>,
 > {
   constructor(
     protected storage: StorageService,
     protected collectionPath: string,
-    private entityBuilderFactory: (id: string) => TEntityRequestBuilder
+    private entityBuilderFactory: (id: string) => TEntityRequestBuilder,
   ) {}
 
   public getAll(): Observable<TEntity[]> {

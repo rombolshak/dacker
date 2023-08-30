@@ -20,14 +20,14 @@ bootstrapApplication(AppComponent, {
         const app = initializeApp(firebase);
         initializeAuth(app, { persistence: browserLocalPersistence, errorMap: debugErrorMap });
         return app;
-      })
+      }),
     ),
     importProvidersFrom(
       provideAuth(() => {
         const auth = getAuth();
         auth.languageCode = 'ru';
         return auth;
-      })
+      }),
     ),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     {

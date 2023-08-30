@@ -32,11 +32,11 @@ export default class DashboardComponent {
   constructor(
     private readonly data: DataService,
     private readonly dialogs: TuiDialogService,
-    private readonly injector: Injector
+    private readonly injector: Injector,
   ) {
     this.accounts$ = this.reload$.pipe(
       tap(() => (this.isLoading = true)),
-      switchMap(() => data.accounts.getAll().pipe(finalize(() => (this.isLoading = false))))
+      switchMap(() => data.accounts.getAll().pipe(finalize(() => (this.isLoading = false)))),
     );
   }
 
@@ -68,7 +68,7 @@ export default class DashboardComponent {
       label: 'Новый счёт',
       size: 'l',
       data: {},
-    }
+    },
   );
 
   private reload$ = new BehaviorSubject(true);
