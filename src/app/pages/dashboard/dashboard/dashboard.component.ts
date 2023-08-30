@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '@app/data-layer/data.service';
-import { delay, Observable, tap } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, switchMap, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
@@ -28,14 +28,18 @@ import { firestoreAutoId } from '@app/models/identifiable';
 })
 export default class DashboardComponent {
   constructor(
-    private data: DataService,
+    private readonly data: DataService,
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector
   ) {
-    this.accounts$ = data.accounts.getAll();
+    this.accounts$ = this.reload$.pipe(
+      tap(() => (this.isLoading = true)),
+      switchMap(() => data.accounts.getAll().pipe(finalize(() => (this.isLoading = false))))
+    );
   }
 
   accounts$: Observable<AccountData[]>;
+  isLoading = true;
 
   addAccount(): void {
     this.addAccountDialog.subscribe({
@@ -48,7 +52,11 @@ export default class DashboardComponent {
       model.id = firestoreAutoId();
     }
 
-    this.data.accounts.withId(model.id).set(model).subscribe();
+    this.isLoading = true;
+    this.data.accounts
+      .withId(model.id)
+      .set(model)
+      .subscribe(() => this.reload$.next(true));
   }
 
   private readonly addAccountDialog = this.dialogs.open<AccountData>(
@@ -60,4 +68,6 @@ export default class DashboardComponent {
       data: {},
     }
   );
+
+  private reload$ = new BehaviorSubject(true);
 }

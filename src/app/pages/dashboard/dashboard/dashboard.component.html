@@ -1,8 +1,8 @@
 <h2 class="header">Вклады</h2>
 <div class="content" *tuiLet="accounts$ | async as accounts">
-  <tui-loader [showLoader]="!accounts" size="xxl" [overlay]="true"> </tui-loader>
-  <ng-container *ngIf="accounts">
-    <div class="no-accounts" *ngIf="!accounts.length; else list">
+  <tui-loader [showLoader]="isLoading" size="xxl" [overlay]="true"> </tui-loader>
+  <ng-container *ngIf="!isLoading">
+    <div class="no-accounts" *ngIf="!accounts?.length; else list">
       <tui-block-status [card]="true">
         <tui-svg src="/assets/icons/safe-opened.svg" tuiSlot="top"></tui-svg>
         <h2>Здесь пока пусто...</h2>
