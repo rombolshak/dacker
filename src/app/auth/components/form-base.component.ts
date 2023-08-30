@@ -6,7 +6,10 @@ import { AuthError } from '@angular/fire/auth';
 type ControlsOf<T> = { [K in keyof T]: FormControl<T[K]> };
 
 export abstract class FormBaseComponent<T> {
-  protected constructor(public form: FormGroup<ControlsOf<T>>, private router: Router) {}
+  protected constructor(
+    public form: FormGroup<ControlsOf<T>>,
+    private router: Router,
+  ) {}
 
   public error = new BehaviorSubject('');
   public isLoading = false;
