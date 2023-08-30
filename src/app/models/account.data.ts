@@ -1,9 +1,12 @@
 ﻿import { Identifiable } from '@app/models/identifiable';
-type AccountInterest = { moneySteps: number[]; monthSteps: number[]; rates: number[][] };
 
 export type RepeatOption = 'onClosing' | 'monthly' | 'quaterly' | 'semiannual' | 'annually';
-type InterestSchedule = { type: RepeatOption; day: number | null };
 export type InterestBase = 'everyDay' | 'monthlyMin';
+
+type MoneyStepRate = { money: number; rate: number };
+type MonthInterest = { month: number; rates: MoneyStepRate[] };
+type AccountInterest = MonthInterest[];
+type InterestSchedule = { type: RepeatOption; day: number | null };
 
 export interface AccountData extends Identifiable {
   name: string;

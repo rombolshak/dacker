@@ -8,7 +8,7 @@ import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiButtonModule, TuiDialogService, TuiSvgModule } from '@taiga-ui/core';
 import { AddAccountComponent } from '@app/pages/dashboard/add-account/add-account.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { v4 as uuid } from 'uuid';
+import { firestoreAutoId } from '@app/models/identifiable';
 
 @Component({
   selector: 'monitraks-dashboard',
@@ -37,7 +37,7 @@ export default class DashboardComponent {
 
   private updateAccount(model: AccountData): void {
     if (model.id === '') {
-      model.id = uuid();
+      model.id = firestoreAutoId();
     }
 
     this.data.accounts.withId(model.id).set(model).subscribe();

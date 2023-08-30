@@ -3,14 +3,12 @@ import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.d
 
 export class AccountDataConverter {
   public static toModel(formData: AccountFormData): AccountData {
-    console.log(formData);
     const result = {} as AccountData;
     result.id = formData.id;
     result.name = formData.name;
     result.bank = formData.bank.id;
     result.openedAt = formData.dates.openedDate.toLocalNativeDate();
     result.duration = formData.dates.isOpenEnded ? null : formData.dates.durationDays;
-    result.interest = formData.interest;
     result.canWithdraw = formData.canWithdraw;
     result.canContribute = formData.canContribute;
     result.interestSchedule = formData.capitalization.isEnabled
@@ -19,6 +17,16 @@ export class AccountDataConverter {
           day: formData.capitalization.repeatDay,
         }
       : { type: 'onClosing', day: null };
+
+    result.interest = [];
+    result.interest.push(
+      ...formData.interest.monthSteps.map((month, i) => {
+        const rates = formData.interest.moneySteps.map((step, j) => {
+          return { money: step, rate: formData.interest.rates[i][j] };
+        });
+        return { month: month, rates: rates };
+      })
+    );
 
     result.interestBase = formData.capitalization.basis;
     return result;
