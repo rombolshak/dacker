@@ -23,3 +23,11 @@
     </tr>
   </thead>
 </table>
+
+<tui-reorder [(items)]="order" [(enabled)]="selected"></tui-reorder>
+
+<tui-tiles [debounce]="400" [order]="orderMap" (orderChange)="reorder($event)" class="tiles">
+  <tui-tile *ngFor="let item of order; let i = index" [style.order]="orderMap.get(i)">
+    <div class="content"><tui-svg tuiTileHandle src="tuiIconDragLarge"></tui-svg> {{ item }}</div>
+  </tui-tile>
+</tui-tiles>

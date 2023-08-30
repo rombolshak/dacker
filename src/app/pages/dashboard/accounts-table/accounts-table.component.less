@@ -1,3 +1,27 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
   overflow: auto;
+
+  .tiles {
+    width: 10rem;
+    gap: 1rem;
+    grid-auto-rows: minmax(var(--tui-height-m), auto);
+  }
+
+  .content {
+    .transition(box-shadow);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    background: var(--tui-base-01);
+    border-radius: var(--tui-radius-l);
+    border: 1px solid var(--tui-base-03);
+    cursor: ns-resize;
+
+    tui-tile._dragged & {
+      .shadow(5);
+    }
+  }
 }

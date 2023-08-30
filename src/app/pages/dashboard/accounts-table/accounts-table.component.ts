@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountData } from '@app/models/account.data';
-import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiReorderModule, TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
+import { TuiTilesModule } from '@taiga-ui/kit';
+import { TuiSvgModule } from '@taiga-ui/core';
 
 type Key =
   | 'name'
@@ -22,7 +24,7 @@ type Key =
 @Component({
   selector: 'monitraks-accounts-table',
   standalone: true,
-  imports: [CommonModule, TuiTableModule],
+  imports: [CommonModule, TuiTableModule, TuiReorderModule, TuiTilesModule, TuiSvgModule],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,4 +50,15 @@ export class AccountsTableComponent {
     'currentRealRate',
     'interestInfo',
   ];
+
+  order = ['1', '2', '3'];
+
+  orderMap = new Map<number, number>();
+
+  selected = this.order;
+
+  reorder($event: Map<number, number>) {
+    console.log('reorder');
+    this.orderMap = $event;
+  }
 }

@@ -1,1 +1,7 @@
 <p>income works!</p>
+
+<tui-tiles [debounce]="400" [order]="orderMap" (orderChange)="reorder($event)" class="tiles">
+  <tui-tile *ngFor="let item of order; let i = index" [style.order]="orderMap.get(i)" tuiTileHandle class="tile">
+    <div class="content">{{ item }}</div>
+  </tui-tile>
+</tui-tiles>
