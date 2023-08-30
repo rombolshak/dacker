@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { TUI_REORDER_OPTIONS, TuiReorderOptions } from './reorder.options';
 
 @Component({
-  selector: 'tui-reorder',
+  selector: 'monitraks-reorder',
   templateUrl: './reorder.template.html',
   styleUrls: ['./reorder.style.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

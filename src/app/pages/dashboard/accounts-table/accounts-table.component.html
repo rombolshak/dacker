@@ -2,7 +2,10 @@
   <tui-hosted-dropdown [content]="columnsSelector">
     <button tuiButton size="s" type="button" [iconRight]="arrow">Выбор столбцов</button>
     <ng-template #columnsSelector>
-      <tui-reorder [(items)]="allColumns" [(enabled)]="selectedColumns" class="columns-selector"></tui-reorder>
+      <monitraks-reorder
+        [(items)]="allColumns"
+        [(enabled)]="selectedColumns"
+        class="columns-selector"></monitraks-reorder>
     </ng-template>
   </tui-hosted-dropdown>
 </div>
