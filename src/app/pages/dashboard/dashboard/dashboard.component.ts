@@ -9,6 +9,7 @@ import { TuiButtonModule, TuiDialogService, TuiLoaderModule, TuiSvgModule } from
 import { AddAccountComponent } from '@app/pages/dashboard/add-account/add-account.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { firestoreAutoId } from '@app/models/identifiable';
+import { AccountsTableComponent } from '@app/pages/dashboard/accounts-table/accounts-table.component';
 
 @Component({
   selector: 'monitraks-dashboard',
@@ -21,6 +22,7 @@ import { firestoreAutoId } from '@app/models/identifiable';
     TuiSvgModule,
     AddAccountComponent,
     TuiLoaderModule,
+    AccountsTableComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],

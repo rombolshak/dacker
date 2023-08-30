@@ -10,6 +10,6 @@
         <button tuiButton appearance="primary" size="xl" (click)="addAccount()">Добавить счёт</button>
       </tui-block-status>
     </div>
-    <ng-template #list> {{ accounts!.length }} вкладов </ng-template>
+    <ng-template #list><monitraks-accounts-table [accounts]="accounts!"></monitraks-accounts-table></ng-template>
   </ng-container>
 </div>
