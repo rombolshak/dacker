@@ -6,19 +6,13 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
   providedIn: 'root',
 })
 export class FakeStorageService {
-  getAll<T>(collectionName: string): Observable<T[]> {
-    return of([]);
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   get<T>(entityPath: string): Observable<T | null> {
     return of(null);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   set<T>(entityPath: string, data: T): Observable<void> {
-    return of();
-  }
-
-  delete(entityPath: string): Observable<void> {
     return of();
   }
 }

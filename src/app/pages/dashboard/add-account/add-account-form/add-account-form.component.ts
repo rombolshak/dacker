@@ -32,6 +32,7 @@ import { banks } from '@app/pages/dashboard/add-account/bank-list';
 import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
 
 function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn): ValidatorFn {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (formControl: AbstractControl<any, any>) => {
     if (!formControl.parent) return null;
     if (predicate()) return validator(formControl);
@@ -97,21 +98,22 @@ export class AddAccountFormComponent {
         { emitEvent: false }
       );
     });
-    datesControls.isOpenEnded.valueChanges.subscribe((_: boolean) => {
+    datesControls.isOpenEnded.valueChanges.subscribe(() => {
       datesControls.closingDate.updateValueAndValidity({ emitEvent: false });
       datesControls.durationDays.updateValueAndValidity({ emitEvent: false });
     });
 
     const capitalizationControls = this.accountForm.controls.capitalization.controls;
-    capitalizationControls.isEnabled.valueChanges.subscribe((_: boolean) => {
+    capitalizationControls.isEnabled.valueChanges.subscribe(() => {
       capitalizationControls.repeatOption.updateValueAndValidity({ emitEvent: false });
       capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
     });
-    capitalizationControls.repeatOption.valueChanges.subscribe((_: number | null) => {
+    capitalizationControls.repeatOption.valueChanges.subscribe(() => {
       capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   accountForm: any = this.fb.group({
     id: this.fb.control(''),
     name: this.fb.control('', Validators.required),

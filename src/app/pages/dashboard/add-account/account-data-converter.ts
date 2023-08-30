@@ -31,8 +31,4 @@ export class AccountDataConverter {
     result.interestBase = formData.capitalization.basis;
     return result;
   }
-
-  public static fromModel(model: AccountData): AccountFormData {
-    return {} as AccountFormData;
-  }
 }

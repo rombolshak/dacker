@@ -1,7 +1,7 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, finalize, Observable } from 'rxjs';
-import { AuthError, UserCredential } from '@angular/fire/auth';
+import { AuthError } from '@angular/fire/auth';
 
 type ControlsOf<T> = { [K in keyof T]: FormControl<T[K]> };
 
@@ -17,10 +17,10 @@ export abstract class FormBaseComponent<T> {
     this.doFormAction(this.form.getRawValue() as T)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: _ => this.router.navigate(['/']),
+        next: () => this.router.navigate(['/']),
         error: (err: AuthError) => this.error.next(err.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, '')),
       });
   }
 
-  protected abstract doFormAction(value: T): Observable<any>;
+  protected abstract doFormAction(value: T): Observable<never>;
 }

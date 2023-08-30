@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, defer, from, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { AppUser } from '@app/auth/services/user';
 
 @Injectable({
@@ -24,16 +24,6 @@ export class FakeAuthService {
 
   register(data: { login: string; password: string }) {
     this.userData.next({ uid: 'user', email: data.login });
-    return of({});
-  }
-
-  sendResetEmail(email: string) {
-    return of({});
-  }
-
-  logout() {
-    this.userData.next(null);
-    return of({});
     return of({});
   }
 }

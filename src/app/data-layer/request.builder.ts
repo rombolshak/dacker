@@ -1,4 +1,4 @@
-﻿import { Observable, of } from 'rxjs';
+﻿import { Observable } from 'rxjs';
 import { Identifiable } from '@app/models/identifiable';
 import { StorageService } from '@app/data-layer/storage.service';
 
