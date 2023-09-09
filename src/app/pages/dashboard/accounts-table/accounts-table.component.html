@@ -46,8 +46,18 @@
       <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt.toLocaleDateString('ru-ru') }}</td>
       <td *tuiCell="'duration'" tuiTd>{{ account.duration }}</td>
       <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt?.toLocaleDateString('ru-ru') }}</td>
-      <td *tuiCell="'canContribute'" tuiTd></td>
-      <td *tuiCell="'canWithdraw'" tuiTd></td>
+      <td *tuiCell="'canContribute'" tuiTd>
+        <tui-badge
+          size="m"
+          [value]="account.canContribute ? 'Да' : 'Нет'"
+          [status]="account.canContribute ? 'success' : 'neutral'"></tui-badge>
+      </td>
+      <td *tuiCell="'canWithdraw'" tuiTd>
+        <tui-badge
+          size="m"
+          [value]="account.canWithdraw ? 'Да' : 'Нет'"
+          [status]="account.canWithdraw ? 'success' : 'neutral'"></tui-badge>
+      </td>
       <td *tuiCell="'currentNominalRate'" tuiTd></td>
       <td *tuiCell="'currentRealRate'" tuiTd></td>
       <td *tuiCell="'interestInfo'" tuiTd></td>

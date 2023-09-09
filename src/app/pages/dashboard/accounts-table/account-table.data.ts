@@ -7,4 +7,6 @@ export interface AccountTableData {
   openedAt: Date;
   duration: number | null;
   closingAt: Date | null;
+  canWithdraw: boolean;
+  canContribute: boolean;
 }

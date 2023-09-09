@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AccountData } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
-import { TUI_ARROW } from '@taiga-ui/kit';
+import { TUI_ARROW, TuiBadgeModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiFormatDatePipeModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
 import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
@@ -40,6 +40,7 @@ type Key =
     TuiLetModule,
     TuiFormatDatePipeModule,
     AsPipe,
+    TuiBadgeModule,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
@@ -88,9 +89,8 @@ export class AccountsTableComponent {
       closingAt: model.duration
         ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration }).toLocalNativeDate()
         : null,
+      canWithdraw: model.canWithdraw,
+      canContribute: model.canContribute,
     } satisfies AccountTableData;
-  }
-  getClosingDate(account: AccountData): Date {
-    return TuiDay.fromLocalNativeDate(account.openedAt.toDate()).append({ day: account.duration! }).toLocalNativeDate();
   }
 }
