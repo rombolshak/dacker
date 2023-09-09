@@ -1,6 +1,7 @@
 import { AccountDataConverter } from './account-data-converter';
 import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
 import { TuiDay } from '@taiga-ui/cdk';
+import { Timestamp } from '@angular/fire/firestore';
 
 describe('AccountDataConverter', () => {
   it('should create an instance', () => {
@@ -49,7 +50,7 @@ describe('AccountDataConverter', () => {
     expect(result.interestBase).toBe('monthlyMin');
     expect(result.interestSchedule.type).toBe('monthly');
     expect(result.interestSchedule.day).toBe(22);
-    expect(result.openedAt).toEqual(TuiDay.currentLocal().toLocalNativeDate());
+    expect(result.openedAt).toEqual(Timestamp.fromDate(TuiDay.currentLocal().toLocalNativeDate()));
     expect(result.duration).toBe(111);
 
     expect(result.interest.length).toBe(3);

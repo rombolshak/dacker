@@ -32,7 +32,10 @@
       <th *tuiHead="'interestInfo'" tuiTh>Проценты</th>
     </tr>
   </thead>
-  <tbody *tuiLet="accounts | tuiTableSort as sortedAccounts" tuiTbody [data]="sortedAccounts">
+  <tbody
+    *tuiLet="accountsData | tuiTableSort | as: AccountTableData as sortedAccounts"
+    tuiTbody
+    [data]="sortedAccounts">
     <tr *ngFor="let account of sortedAccounts" tuiTr>
       <td *tuiCell="'name'" tuiTd>{{ account.name }}</td>
       <td *tuiCell="'bank'" tuiTd>{{ account.bank }}</td>
@@ -40,9 +43,9 @@
       <td *tuiCell="'currentIncomeAmount'" tuiTd></td>
       <td *tuiCell="'currentIncomePercent'" tuiTd></td>
       <td *tuiCell="'expectedIncomeAmount'" tuiTd></td>
-      <td *tuiCell="'openedAt'" tuiTd></td>
-      <td *tuiCell="'duration'" tuiTd></td>
-      <td *tuiCell="'closingAt'" tuiTd></td>
+      <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt.toLocaleDateString('ru-ru') }}</td>
+      <td *tuiCell="'duration'" tuiTd>{{ account.duration }}</td>
+      <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt?.toLocaleDateString('ru-ru') }}</td>
       <td *tuiCell="'canContribute'" tuiTd></td>
       <td *tuiCell="'canWithdraw'" tuiTd></td>
       <td *tuiCell="'currentNominalRate'" tuiTd></td>

@@ -4,9 +4,11 @@ import { AccountData } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
 import { TUI_ARROW } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiFormatDatePipeModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
+import { AsPipe } from '@app/pipes/as.pipe';
+import { AccountTableData } from '@app/pages/dashboard/accounts-table/account-table.data';
 
 type Key =
   | 'name'
@@ -23,6 +25,7 @@ type Key =
   | 'currentNominalRate'
   | 'currentRealRate'
   | 'interestInfo';
+
 @Component({
   selector: 'monitraks-accounts-table',
   standalone: true,
@@ -35,6 +38,8 @@ type Key =
     TuiButtonModule,
     TuiReorderModule,
     TuiLetModule,
+    TuiFormatDatePipeModule,
+    AsPipe,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
@@ -42,11 +47,15 @@ type Key =
 })
 export class AccountsTableComponent {
   @Input()
-  public accounts: AccountData[] = [];
+  public set accounts(data: AccountData[]) {
+    this.accountsData = data.map(this.toViewModel);
+  }
 
   @Output()
   public addRequested = new EventEmitter();
 
+  accountsData: AccountTableData[] = [];
+  AccountTableData!: AccountTableData[];
   readonly sorter$ = new BehaviorSubject<Key | null>('closingAt');
   allColumns: readonly string[] = [
     'name',
@@ -68,4 +77,20 @@ export class AccountsTableComponent {
   selectedColumns = this.allColumns;
 
   iconArrow = TUI_ARROW;
+  protected readonly Object = Object;
+
+  private toViewModel(model: AccountData): AccountTableData {
+    return {
+      name: model.name,
+      bank: model.bank,
+      openedAt: model.openedAt.toDate(),
+      duration: model.duration,
+      closingAt: model.duration
+        ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration }).toLocalNativeDate()
+        : null,
+    } satisfies AccountTableData;
+  }
+  getClosingDate(account: AccountData): Date {
+    return TuiDay.fromLocalNativeDate(account.openedAt.toDate()).append({ day: account.duration! }).toLocalNativeDate();
+  }
 }

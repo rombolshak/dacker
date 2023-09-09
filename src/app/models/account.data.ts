@@ -1,4 +1,5 @@
 ﻿import { Identifiable } from '@app/models/identifiable';
+import { Timestamp } from '@angular/fire/firestore';
 
 export type RepeatOption = 'onClosing' | 'monthly' | 'quaterly' | 'semiannual' | 'annually';
 export type InterestBase = 'everyDay' | 'monthlyMin';
@@ -11,7 +12,7 @@ type InterestSchedule = { type: RepeatOption; day: number | null };
 export interface AccountData extends Identifiable {
   name: string;
   bank: string;
-  openedAt: Date;
+  openedAt: Timestamp;
   duration: number | null;
   interest: AccountInterest;
   canWithdraw: boolean;

@@ -36,7 +36,12 @@ export default class DashboardComponent {
   ) {
     this.accounts$ = this.reload$.pipe(
       tap(() => (this.isLoading = true)),
-      switchMap(() => data.accounts.getAll().pipe(finalize(() => (this.isLoading = false)))),
+      switchMap(() =>
+        data.accounts.getAll().pipe(
+          tap(data => console.log(data)),
+          finalize(() => (this.isLoading = false)),
+        ),
+      ),
     );
   }
 

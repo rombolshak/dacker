@@ -1,5 +1,6 @@
 import { AccountData } from '@app/models/account.data';
 import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
+import { Timestamp } from '@angular/fire/firestore';
 
 export class AccountDataConverter {
   public static toModel(formData: AccountFormData): AccountData {
@@ -7,7 +8,7 @@ export class AccountDataConverter {
     result.id = formData.id;
     result.name = formData.name;
     result.bank = formData.bank.id;
-    result.openedAt = formData.dates.openedDate.toLocalNativeDate();
+    result.openedAt = Timestamp.fromDate(formData.dates.openedDate.toLocalNativeDate());
     result.duration = formData.dates.isOpenEnded ? null : formData.dates.durationDays;
     result.canWithdraw = formData.canWithdraw;
     result.canContribute = formData.canContribute;
