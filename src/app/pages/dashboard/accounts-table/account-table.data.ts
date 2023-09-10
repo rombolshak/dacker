@@ -1,6 +1,4 @@
-﻿import { Timestamp } from '@angular/fire/firestore';
-import { InterestBase } from '@app/models/account.data';
-import { TuiDay } from '@taiga-ui/cdk';
+﻿import { TuiDay } from '@taiga-ui/cdk';
 
 export interface AccountTableData {
   name: string;
