@@ -43,9 +43,9 @@
       <td *tuiCell="'currentIncomeAmount'" tuiTd></td>
       <td *tuiCell="'currentIncomePercent'" tuiTd></td>
       <td *tuiCell="'expectedIncomeAmount'" tuiTd></td>
-      <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt.toLocaleDateString('ru-ru') }}</td>
+      <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt }}</td>
       <td *tuiCell="'duration'" tuiTd>{{ account.duration }}</td>
-      <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt?.toLocaleDateString('ru-ru') }}</td>
+      <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt }}</td>
       <td *tuiCell="'canContribute'" tuiTd>
         <tui-badge
           size="m"

@@ -84,10 +84,10 @@ export class AccountsTableComponent {
     return {
       name: model.name,
       bank: model.bank,
-      openedAt: model.openedAt.toDate(),
+      openedAt: TuiDay.fromLocalNativeDate(model.openedAt.toDate()),
       duration: model.duration,
       closingAt: model.duration
-        ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration }).toLocalNativeDate()
+        ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration })
         : null,
       canWithdraw: model.canWithdraw,
       canContribute: model.canContribute,
