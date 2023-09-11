@@ -29,7 +29,7 @@
       <th *tuiHead="'canWithdraw'" tuiTh>Снятия</th>
       <th *tuiHead="'currentNominalRate'" tuiTh>Номинальная ставка</th>
       <th *tuiHead="'currentRealRate'" tuiTh>Реальная ставка</th>
-      <th *tuiHead="'interestInfo'" tuiTh>Проценты</th>
+      <th *tuiHead="'interestInfo'" tuiTh [sorter]="null">Проценты</th>
     </tr>
   </thead>
   <tbody
@@ -60,7 +60,7 @@
       </td>
       <td *tuiCell="'currentNominalRate'" tuiTd></td>
       <td *tuiCell="'currentRealRate'" tuiTd></td>
-      <td *tuiCell="'interestInfo'" tuiTd></td>
+      <td *tuiCell="'interestInfo'" tuiTd>{{ account.interestScheduleDescription }}</td>
     </tr>
   </tbody>
 </table>

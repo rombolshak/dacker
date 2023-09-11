@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AccountData } from '@app/models/account.data';
+import { AccountData, RepeatOption } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
 import { TUI_ARROW, TuiBadgeModule } from '@taiga-ui/kit';
@@ -49,7 +49,7 @@ type Key =
 export class AccountsTableComponent {
   @Input()
   public set accounts(data: AccountData[]) {
-    this.accountsData = data.map(this.toViewModel);
+    this.accountsData = data.map(this.toViewModel.bind(this));
   }
 
   @Output()
@@ -78,7 +78,6 @@ export class AccountsTableComponent {
   selectedColumns = this.allColumns;
 
   iconArrow = TUI_ARROW;
-  protected readonly Object = Object;
 
   private toViewModel(model: AccountData): AccountTableData {
     return {
@@ -91,6 +90,38 @@ export class AccountsTableComponent {
         : null,
       canWithdraw: model.canWithdraw,
       canContribute: model.canContribute,
+      interestScheduleDescription: this.getInterestScheduleDescription(model),
     } satisfies AccountTableData;
+  }
+
+  private getInterestScheduleDescription(model: AccountData): string {
+    const dayPart =
+      model.interestSchedule.type === 'monthly'
+        ? model.interestSchedule.day === 31
+          ? 'в последний день месяца'
+          : `${model.interestSchedule.day!}-го числа`
+        : '';
+    const capitalizationPart =
+      model.interestSchedule.type === 'onClosing'
+        ? ''
+        : model.interestSchedule.isCapitalizing
+        ? 'с капитализацией'
+        : 'без капитализации';
+    return `${this.getRepeatOptionContent(model.interestSchedule.type)} ${dayPart} ${capitalizationPart}`;
+  }
+
+  private getRepeatOptionContent($item: RepeatOption): string {
+    switch ($item) {
+      case 'monthly':
+        return 'Ежемесячно';
+      case 'quaterly':
+        return 'Ежеквартально';
+      case 'semiannual':
+        return 'Полугодично';
+      case 'annually':
+        return 'Ежегодно';
+      case 'onClosing':
+        return 'В конце срока';
+    }
   }
 }

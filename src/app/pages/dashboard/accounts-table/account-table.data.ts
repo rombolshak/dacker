@@ -8,4 +8,5 @@ export interface AccountTableData {
   closingAt: TuiDay | null;
   canWithdraw: boolean;
   canContribute: boolean;
+  interestScheduleDescription: string;
 }
