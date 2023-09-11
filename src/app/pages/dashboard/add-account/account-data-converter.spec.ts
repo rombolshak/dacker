@@ -27,11 +27,11 @@ describe('AccountDataConverter', () => {
           [5, 6],
         ],
       },
-      capitalization: {
+      interestSchedule: {
         basis: 'monthlyMin',
         repeatDay: 22,
         repeatOption: 'monthly',
-        isEnabled: true,
+        isCapitalizing: true,
       },
       canContribute: true,
       canWithdraw: false,

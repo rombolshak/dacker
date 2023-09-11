@@ -12,12 +12,11 @@ export class AccountDataConverter {
     result.duration = formData.dates.isOpenEnded ? null : formData.dates.durationDays;
     result.canWithdraw = formData.canWithdraw;
     result.canContribute = formData.canContribute;
-    result.interestSchedule = formData.capitalization.isEnabled
-      ? {
-          type: formData.capitalization.repeatOption!,
-          day: formData.capitalization.repeatDay,
-        }
-      : { type: 'onClosing', day: null };
+    result.interestSchedule = {
+      type: formData.interestSchedule.repeatOption!,
+      day: formData.interestSchedule.repeatDay,
+      isCapitalizing: formData.interestSchedule.isCapitalizing,
+    };
 
     result.interest = [];
     result.interest.push(
@@ -29,7 +28,7 @@ export class AccountDataConverter {
       }),
     );
 
-    result.interestBase = formData.capitalization.basis;
+    result.interestBase = formData.interestSchedule.basis;
     return result;
   }
 }

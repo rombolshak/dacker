@@ -103,11 +103,7 @@ export class AddAccountFormComponent {
       datesControls.durationDays.updateValueAndValidity({ emitEvent: false });
     });
 
-    const capitalizationControls = this.accountForm.controls.capitalization.controls;
-    capitalizationControls.isEnabled.valueChanges.subscribe(() => {
-      capitalizationControls.repeatOption.updateValueAndValidity({ emitEvent: false });
-      capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
-    });
+    const capitalizationControls = this.accountForm.controls.interestSchedule.controls;
     capitalizationControls.repeatOption.valueChanges.subscribe(() => {
       capitalizationControls.repeatDay.updateValueAndValidity({ emitEvent: false });
     });
@@ -137,21 +133,13 @@ export class AddAccountFormComponent {
     }),
     canWithdraw: this.fb.control(false),
     canContribute: this.fb.control(false),
-    capitalization: this.fb.group({
-      isEnabled: this.fb.control(false),
-      repeatOption: this.fb.control<RepeatOption | null>(
-        null,
-        conditionalValidator(
-          () => this.accountForm.controls.capitalization.controls.isEnabled.value,
-          Validators.required,
-        ),
-      ),
+    interestSchedule: this.fb.group({
+      isCapitalizing: this.fb.control(false),
+      repeatOption: this.fb.control<RepeatOption | null>('onClosing', Validators.required),
       repeatDay: this.fb.control<number | null>(
         null,
         conditionalValidator(
-          () =>
-            this.accountForm.controls.capitalization.controls.isEnabled.value &&
-            this.accountForm.controls.capitalization.controls.repeatOption.value === 'monthly',
+          () => this.accountForm.controls.interestSchedule.controls.repeatOption.value === 'monthly',
           Validators.required,
         ),
       ),
@@ -173,7 +161,7 @@ export class AddAccountFormComponent {
     ...this.accountForm.controls.interest.getRawValue().monthSteps.map((month: number | null) => `month-${month}`),
   ];
 
-  repeatOptions = ['monthly', 'quaterly', 'semiannual', 'annually'] as RepeatOption[];
+  repeatOptions = ['monthly', 'quaterly', 'semiannual', 'annually', 'onClosing'] as RepeatOption[];
 
   readonly getRepeatOptionContent = ($item: RepeatOption): string => {
     switch ($item) {
@@ -186,7 +174,7 @@ export class AddAccountFormComponent {
       case 'annually':
         return 'Ежегодно';
       case 'onClosing':
-        return 'При закрытии';
+        return 'В конце срока';
     }
   };
 

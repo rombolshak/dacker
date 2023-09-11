@@ -7,7 +7,7 @@ export type InterestBase = 'everyDay' | 'monthlyMin';
 type MoneyStepRate = { money: number; rate: number };
 type MonthInterest = { month: number; rates: MoneyStepRate[] };
 type AccountInterest = MonthInterest[];
-type InterestSchedule = { type: RepeatOption; day: number | null };
+type InterestSchedule = { type: RepeatOption; day: number | null; isCapitalizing: boolean };
 
 export interface AccountData extends Identifiable {
   name: string;

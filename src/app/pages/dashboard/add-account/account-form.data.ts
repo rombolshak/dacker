@@ -18,8 +18,8 @@ export interface AccountFormData {
   };
   canWithdraw: boolean;
   canContribute: boolean;
-  capitalization: {
-    isEnabled: boolean;
+  interestSchedule: {
+    isCapitalizing: boolean;
     repeatOption: RepeatOption | null;
     repeatDay: number | null;
     basis: InterestBase;
