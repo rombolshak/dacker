@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AccountData, RepeatOption } from '@app/models/account.data';
+import { AccountData } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
-import { TUI_ARROW, TuiBadgeModule } from '@taiga-ui/kit';
+import { TUI_ARROW, TuiBadgeModule, TuiTagModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiFormatDatePipeModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
 import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
@@ -41,6 +41,7 @@ type Key =
     TuiFormatDatePipeModule,
     AsPipe,
     TuiBadgeModule,
+    TuiTagModule,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
@@ -90,32 +91,45 @@ export class AccountsTableComponent {
         : null,
       canWithdraw: model.canWithdraw,
       canContribute: model.canContribute,
-      interestScheduleDescription: this.getInterestScheduleDescription(model),
+      interestScheduleDescription: {
+        repeatType: this.getRepeatOptionContent(model),
+        repeatDay: this.getRepeatDayContent(model),
+        capitalization: this.getCapitalizationContent(model),
+        basis: this.getInterestBasisContent(model),
+      },
     } satisfies AccountTableData;
   }
 
-  private getInterestScheduleDescription(model: AccountData): string {
-    const dayPart =
-      model.interestSchedule.type === 'monthly'
-        ? model.interestSchedule.day === 31
-          ? 'в последний день месяца'
-          : `${model.interestSchedule.day!}-го числа`
-        : '';
-    const capitalizationPart =
-      model.interestSchedule.type === 'onClosing'
-        ? ''
-        : model.interestSchedule.isCapitalizing
-        ? 'с капитализацией'
-        : 'без капитализации';
-    return `${this.getRepeatOptionContent(model.interestSchedule.type)} ${dayPart} ${capitalizationPart}`;
-  }
+  private readonly getRepeatDayContent = (model: AccountData): string => {
+    return model.interestSchedule.type === 'monthly'
+      ? model.interestSchedule.day === 31
+        ? 'в пoслeдний дeнь мeсяцa'
+        : `${model.interestSchedule.day!}-го числа`
+      : '';
+  };
 
-  private getRepeatOptionContent($item: RepeatOption): string {
-    switch ($item) {
+  private readonly getCapitalizationContent = (model: AccountData): string => {
+    return model.interestSchedule.type === 'onClosing'
+      ? ''
+      : model.interestSchedule.isCapitalizing
+      ? 'с кaпитaлизaциeй'
+      : 'без капитализации';
+  };
+
+  private readonly getInterestBasisContent = (model: AccountData): string => {
+    return model.canContribute || model.canWithdraw
+      ? model.interestBase === 'everyDay'
+        ? 'на ежедневный остаток'
+        : 'нa минимальный остаток'
+      : '';
+  };
+
+  private readonly getRepeatOptionContent = (model: AccountData): string => {
+    switch (model.interestSchedule.type) {
       case 'monthly':
-        return 'Ежемесячно';
+        return 'Eжeмесячно';
       case 'quaterly':
-        return 'Ежеквартально';
+        return 'Eжеквартально';
       case 'semiannual':
         return 'Полугодично';
       case 'annually':
@@ -123,5 +137,5 @@ export class AccountsTableComponent {
       case 'onClosing':
         return 'В конце срока';
     }
-  }
+  };
 }

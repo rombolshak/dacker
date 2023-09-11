@@ -60,7 +60,24 @@
       </td>
       <td *tuiCell="'currentNominalRate'" tuiTd></td>
       <td *tuiCell="'currentRealRate'" tuiTd></td>
-      <td *tuiCell="'interestInfo'" tuiTd>{{ account.interestScheduleDescription }}</td>
+      <td *tuiCell="'interestInfo'" tuiTd>
+        <tui-tag
+          *ngIf="account.interestScheduleDescription.repeatType"
+          [value]="account.interestScheduleDescription.repeatType"
+          [autoColor]="true"></tui-tag>
+        <tui-tag
+          *ngIf="account.interestScheduleDescription.repeatDay"
+          [value]="account.interestScheduleDescription.repeatDay"
+          [autoColor]="true"></tui-tag>
+        <tui-tag
+          *ngIf="account.interestScheduleDescription.capitalization"
+          [value]="account.interestScheduleDescription.capitalization"
+          [autoColor]="true"></tui-tag>
+        <tui-tag
+          *ngIf="account.interestScheduleDescription.basis"
+          [value]="account.interestScheduleDescription.basis"
+          [autoColor]="true"></tui-tag>
+      </td>
     </tr>
   </tbody>
 </table>
