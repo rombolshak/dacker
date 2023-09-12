@@ -6,12 +6,14 @@ export interface AccountTableData {
   openedAt: TuiDay;
   duration: number | null;
   closingAt: TuiDay | null;
-  canWithdraw: boolean;
-  canContribute: boolean;
   interestScheduleDescription: {
     repeatType: string;
     repeatDay: string;
     capitalization: string;
     basis: string;
+  };
+  additionalInfo: {
+    canWithdraw: string;
+    canContribute: string;
   };
 }

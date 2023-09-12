@@ -69,8 +69,6 @@ export class AccountsTableComponent {
     'openedAt',
     'duration',
     'closingAt',
-    'canContribute',
-    'canWithdraw',
     'currentNominalRate',
     'currentRealRate',
     'interestInfo',
@@ -89,8 +87,10 @@ export class AccountsTableComponent {
       closingAt: model.duration
         ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration })
         : null,
-      canWithdraw: model.canWithdraw,
-      canContribute: model.canContribute,
+      additionalInfo: {
+        canWithdraw: this.getCanWithdrawContent(model),
+        canContribute: this.getCanContributeContent(model),
+      },
       interestScheduleDescription: {
         repeatType: this.getRepeatOptionContent(model),
         repeatDay: this.getRepeatDayContent(model),
@@ -138,4 +138,12 @@ export class AccountsTableComponent {
         return 'В конце срока';
     }
   };
+
+  private getCanWithdrawContent(model: AccountData) {
+    return model.canWithdraw ? 'со снятием' : 'без снятия';
+  }
+
+  private getCanContributeContent(model: AccountData) {
+    return model.canContribute ? 'c пoпoлнением' : 'без пoполнeния';
+  }
 }
