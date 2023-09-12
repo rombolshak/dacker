@@ -4,7 +4,13 @@ import { AccountData } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { BehaviorSubject } from 'rxjs';
 import { TUI_ARROW, TuiBadgeModule, TuiTagModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiFormatDatePipeModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiFormatDatePipeModule,
+  TuiHostedDropdownModule,
+  TuiSvgModule,
+  TuiTooltipModule,
+} from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
 import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
@@ -42,6 +48,7 @@ type Key =
     AsPipe,
     TuiBadgeModule,
     TuiTagModule,
+    TuiTooltipModule,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],

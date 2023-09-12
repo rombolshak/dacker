@@ -27,7 +27,7 @@
       <th *tuiHead="'closingAt'" tuiTh>Дата закрытия</th>
       <th *tuiHead="'currentNominalRate'" tuiTh>Номинальная ставка</th>
       <th *tuiHead="'currentRealRate'" tuiTh>Реальная ставка</th>
-      <th *tuiHead="'interestInfo'" tuiTh [sorter]="null">Проценты</th>
+      <th *tuiHead="'interestInfo'" tuiTh [sorter]="null">Инфо</th>
     </tr>
   </thead>
   <tbody
@@ -47,24 +47,27 @@
       <td *tuiCell="'currentNominalRate'" tuiTd></td>
       <td *tuiCell="'currentRealRate'" tuiTd></td>
       <td *tuiCell="'interestInfo'" tuiTd>
-        <tui-tag
-          *ngIf="account.interestScheduleDescription.repeatType"
-          [value]="account.interestScheduleDescription.repeatType"
-          [autoColor]="true"></tui-tag>
-        <tui-tag
-          *ngIf="account.interestScheduleDescription.repeatDay"
-          [value]="account.interestScheduleDescription.repeatDay"
-          [autoColor]="true"></tui-tag>
-        <tui-tag
-          *ngIf="account.interestScheduleDescription.capitalization"
-          [value]="account.interestScheduleDescription.capitalization"
-          [autoColor]="true"></tui-tag>
-        <tui-tag
-          *ngIf="account.interestScheduleDescription.basis"
-          [value]="account.interestScheduleDescription.basis"
-          [autoColor]="true"></tui-tag>
-        <tui-tag [value]="account.additionalInfo.canContribute" [autoColor]="true"></tui-tag>
-        <tui-tag [value]="account.additionalInfo.canWithdraw" [autoColor]="true"></tui-tag>
+        <tui-tooltip [content]="infoTooltip"></tui-tooltip>
+        <ng-template #infoTooltip>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.repeatType"
+            [value]="account.interestScheduleDescription.repeatType"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.repeatDay"
+            [value]="account.interestScheduleDescription.repeatDay"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.capitalization"
+            [value]="account.interestScheduleDescription.capitalization"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.basis"
+            [value]="account.interestScheduleDescription.basis"
+            [autoColor]="true"></tui-tag>
+          <tui-tag [value]="account.additionalInfo.canContribute" [autoColor]="true"></tui-tag>
+          <tui-tag [value]="account.additionalInfo.canWithdraw" [autoColor]="true"></tui-tag>
+        </ng-template>
       </td>
     </tr>
   </tbody>
