@@ -21,7 +21,7 @@ describe('AccountDetailsComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: 'test' }),
+            paramMap: of(new Map<string, string>([['id', 'test']])),
           },
         },
       ],
