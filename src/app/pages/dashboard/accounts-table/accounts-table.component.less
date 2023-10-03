@@ -12,8 +12,30 @@
     }
   }
 
-  td {
+  td,
+  th {
+    .transition(background-color);
     padding: 0.5rem;
+    border-color: transparent;
+    border-right-color: var(--tui-base-04);
+
+    &:last-child {
+      border-right-color: transparent;
+    }
+  }
+
+  tr:nth-child(even) td {
+    background: var(--tui-base-02);
+  }
+
+  tr:hover td,
+  tr:focus-within td {
+    background-color: var(--tui-secondary);
+    cursor: pointer;
+  }
+
+  tbody {
+    border-color: transparent;
   }
 }
 

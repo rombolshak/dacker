@@ -15,6 +15,7 @@ import { TuiReorderModule } from '@app/components/reorder';
 import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
 import { AccountTableData } from '@app/pages/dashboard/accounts-table/account-table.data';
+import { RouterLink } from '@angular/router';
 
 type Key =
   | 'name'
@@ -49,6 +50,7 @@ type Key =
     TuiBadgeModule,
     TuiTagModule,
     TuiTooltipModule,
+    RouterLink,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
@@ -87,6 +89,7 @@ export class AccountsTableComponent {
 
   private toViewModel(model: AccountData): AccountTableData {
     return {
+      id: model.id,
       name: model.name,
       bank: model.bank,
       openedAt: TuiDay.fromLocalNativeDate(model.openedAt.toDate()),

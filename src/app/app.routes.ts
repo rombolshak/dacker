@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.routes') },
   {
     path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard/dashboard.component'),
+    loadChildren: () => import('./pages/dashboard/dashboard.routes'),
     ...canActivate(() => redirectToLogin),
   },
   {
