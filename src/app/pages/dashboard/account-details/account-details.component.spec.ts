@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import AccountDetailsComponent from './account-details.component';
+import { StorageService } from '@app/data-layer/storage.service';
+import { FakeStorageService } from '@app/data-layer/fake-storage.service';
 
 describe('AccountDetailsComponent', () => {
   let component: AccountDetailsComponent;
@@ -9,6 +11,12 @@ describe('AccountDetailsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AccountDetailsComponent],
+      providers: [
+        {
+          provide: StorageService,
+          useClass: FakeStorageService,
+        },
+      ],
     });
     fixture = TestBed.createComponent(AccountDetailsComponent);
     component = fixture.componentInstance;
