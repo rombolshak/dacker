@@ -1,3 +1,5 @@
+import { BankInfo } from '@app/pages/dashboard/services/bank-info';
+
 export const banks = [
   {
     name: 'Абсолют Банк',
@@ -1023,4 +1025,4 @@ export const banks = [
     name: 'ЯринтерБанк',
     id: 'yarinterbank',
   },
-];
+] as BankInfo[];

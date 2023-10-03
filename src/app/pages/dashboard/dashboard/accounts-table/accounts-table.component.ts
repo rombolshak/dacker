@@ -16,6 +16,7 @@ import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
 import { AccountTableData } from './account-table.data';
 import { RouterLink } from '@angular/router';
+import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 
 type Key =
   | 'name'
@@ -57,6 +58,8 @@ type Key =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountsTableComponent {
+  constructor(private readonly banks: BankInfoService) {}
+
   @Input()
   public set accounts(data: AccountData[]) {
     this.accountsData = data.map(this.toViewModel.bind(this));
@@ -91,7 +94,7 @@ export class AccountsTableComponent {
     return {
       id: model.id,
       name: model.name,
-      bank: model.bank,
+      bank: this.banks.findById(model.bank)?.name ?? '',
       openedAt: TuiDay.fromLocalNativeDate(model.openedAt.toDate()),
       duration: model.duration,
       closingAt: model.duration

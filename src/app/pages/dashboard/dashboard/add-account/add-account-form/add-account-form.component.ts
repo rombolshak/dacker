@@ -28,8 +28,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { AccountData, InterestBase, RepeatOption } from '@app/models/account.data';
-import { banks } from '../bank-list';
 import { AccountFormData } from '../account-form.data';
+import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
+import { BankInfo } from '@app/pages/dashboard/services/bank-info';
 
 function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn): ValidatorFn {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,7 +81,10 @@ export class AddAccountFormComponent {
   @Output()
   public cancel = new EventEmitter();
 
-  constructor(private readonly fb: NonNullableFormBuilder) {
+  constructor(
+    private readonly fb: NonNullableFormBuilder,
+    private readonly banks: BankInfoService,
+  ) {
     const datesControls = this.accountForm.controls.dates.controls;
     datesControls.openedDate.valueChanges.subscribe(() => {
       datesControls.closingDate.setValue(null, { emitEvent: false });
@@ -147,9 +151,9 @@ export class AddAccountFormComponent {
     }),
   });
 
-  banks = banks;
+  banksList = this.banks.getAllBanks();
 
-  readonly banksStringify = (item: { name: string }) => item.name ?? '';
+  readonly banksStringify = (item: BankInfo) => item.name ?? '';
 
   depositMaxDurationDays = 2000;
   openMinDate = TuiDay.currentLocal().append({ year: -2 });

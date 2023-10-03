@@ -6,6 +6,7 @@ import { TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
 import { finalize, Observable, switchMap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
+import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 
 @Component({
   selector: 'monitraks-account-details',
@@ -19,6 +20,7 @@ export default class AccountDetailsComponent {
   constructor(
     private data: DataService,
     private route: ActivatedRoute,
+    private readonly banks: BankInfoService,
   ) {
     this.accountData$ = this.route.paramMap.pipe(
       switchMap(params =>
@@ -34,6 +36,6 @@ export default class AccountDetailsComponent {
   isLoading = true;
 
   public getName(account: AccountData | null): string {
-    return account ? `${account.name} (${account.bank})` : 'Аккаунт не найден';
+    return account ? `${account.name} (${this.banks.findById(account.bank)?.name})` : 'Аккаунт не найден';
   }
 }
