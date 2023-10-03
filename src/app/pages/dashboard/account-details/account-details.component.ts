@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
+import { DataService } from '@app/data-layer/data.service';
+import { finalize, Observable, switchMap } from 'rxjs';
+import { AccountData } from '@app/models/account.data';
 
 @Component({
   selector: 'monitraks-account-details',
@@ -13,5 +16,24 @@ import { TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AccountDetailsComponent {
+  constructor(
+    private data: DataService,
+    private route: ActivatedRoute,
+  ) {
+    this.accountData$ = this.route.paramMap.pipe(
+      switchMap(params =>
+        this.data.accounts
+          .withId(params.get('id')!)
+          .get()
+          .pipe(finalize(() => (this.isLoading = false))),
+      ),
+    );
+  }
+
+  accountData$: Observable<AccountData | null>;
   isLoading = true;
+
+  public getName(account: AccountData | null): string {
+    return account ? `${account.name} (${account.bank})` : 'Аккаунт не найден';
+  }
 }
