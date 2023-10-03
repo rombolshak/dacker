@@ -1,5 +1,5 @@
 import { AccountData } from '@app/models/account.data';
-import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
+import { AccountFormData } from './account-form.data';
 import { Timestamp } from '@angular/fire/firestore';
 
 export class AccountDataConverter {

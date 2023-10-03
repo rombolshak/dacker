@@ -1,5 +1,5 @@
 import { AccountDataConverter } from './account-data-converter';
-import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
+import { AccountFormData } from './account-form.data';
 import { TuiDay } from '@taiga-ui/cdk';
 import { Timestamp } from '@angular/fire/firestore';
 

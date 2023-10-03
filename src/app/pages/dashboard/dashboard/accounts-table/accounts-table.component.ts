@@ -14,7 +14,7 @@ import {
 import { TuiReorderModule } from '@app/components/reorder';
 import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
-import { AccountTableData } from '@app/pages/dashboard/accounts-table/account-table.data';
+import { AccountTableData } from './account-table.data';
 import { RouterLink } from '@angular/router';
 
 type Key =

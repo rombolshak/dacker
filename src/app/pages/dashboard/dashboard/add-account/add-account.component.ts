@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiDialogContext } from '@taiga-ui/core';
 import { AccountData } from '@app/models/account.data';
-import { AddAccountFormComponent } from '@app/pages/dashboard/add-account/add-account-form/add-account-form.component';
-import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
-import { AccountDataConverter } from '@app/pages/dashboard/add-account/account-data-converter';
+import { AddAccountFormComponent } from './add-account-form/add-account-form.component';
+import { AccountFormData } from './account-form.data';
+import { AccountDataConverter } from './account-data-converter';
 
 @Component({
   selector: 'monitraks-add-account',

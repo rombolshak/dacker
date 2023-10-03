@@ -1,1 +1,8 @@
-<p>account-details works!</p>
+<h2 class="header-with-link">
+  <a tuiLink [routerLink]="'..'" class="back-link">< Вклады</a>
+  {{ isLoading ? 'Загрузка' : '' }}
+</h2>
+<div class="content">
+  <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
+  <ng-container *ngIf="!isLoading"></ng-container>
+</div>

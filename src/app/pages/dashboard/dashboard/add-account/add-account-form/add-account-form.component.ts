@@ -28,8 +28,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AccountData, InterestBase, RepeatOption } from '@app/models/account.data';
-import { banks } from '@app/pages/dashboard/add-account/bank-list';
-import { AccountFormData } from '@app/pages/dashboard/add-account/account-form.data';
+import { banks } from '../bank-list';
+import { AccountFormData } from '../account-form.data';
 
 function conditionalValidator(predicate: Predicate<void>, validator: ValidatorFn): ValidatorFn {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -6,10 +6,10 @@ import { AccountData } from '@app/models/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiButtonModule, TuiDialogService, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
-import { AddAccountComponent } from '@app/pages/dashboard/add-account/add-account.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { firestoreAutoId } from '@app/models/identifiable';
-import { AccountsTableComponent } from '@app/pages/dashboard/accounts-table/accounts-table.component';
+import { AccountsTableComponent } from './accounts-table/accounts-table.component';
+import { AddAccountComponent } from './add-account/add-account.component';
 
 @Component({
   selector: 'monitraks-dashboard',
