@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import AccountDetailsComponent from './account-details.component';
 import { StorageService } from '@app/data-layer/storage.service';
 import { FakeStorageService } from '@app/data-layer/fake-storage.service';
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AccountDetailsComponent', () => {
   let component: AccountDetailsComponent;
@@ -15,6 +17,12 @@ describe('AccountDetailsComponent', () => {
         {
           provide: StorageService,
           useClass: FakeStorageService,
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ id: 'test' }),
+          },
         },
       ],
     });
