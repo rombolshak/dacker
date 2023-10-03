@@ -16,18 +16,33 @@
   .header-with-link {
     flex: none;
     display: flex;
-    flex-direction: column;
-    margin: 1rem 0 2rem 0;
+    justify-content: space-between;
+    margin-bottom: 2rem;
     padding: 0 3rem;
     height: 6rem;
     font: var(--tui-font-heading-3);
     border-bottom: 1px solid var(--tui-base-03);
 
-    .back-link {
-      padding: 0;
-      height: 1rem;
-      font: var(--tui-font-text-s-2);
-      border-bottom: none;
+    .text {
+      display: flex;
+      flex-direction: column;
+      margin: 1rem 2rem 0 0;
+
+      .back-link {
+        padding: 0;
+        height: 1rem;
+        font: var(--tui-font-text-s-2);
+        border-bottom: none;
+      }
+    }
+
+    .actions {
+      display: flex;
+
+      .action {
+        align-items: center;
+        margin: 1rem;
+      }
     }
   }
 
@@ -35,5 +50,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 3rem;
+    padding: 0 3rem;
+    overflow: auto;
   }
 }

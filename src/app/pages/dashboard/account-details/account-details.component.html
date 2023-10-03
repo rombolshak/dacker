@@ -1,10 +1,18 @@
 <ng-container *tuiLet="accountData$ | async as account">
-  <h2 class="header-with-link">
-    <a tuiLink [routerLink]="'..'" class="back-link">< Вклады</a>
-    {{ isLoading ? 'Загрузка' : getName(account) }}
-  </h2>
+  <div class="header-with-link">
+    <div class="text">
+      <a tuiLink [routerLink]="'..'" class="back-link">< Вклады</a>
+      <span>{{ isLoading ? 'Загрузка' : getName(account) }}</span>
+    </div>
+    <ng-container *ngIf="!isLoading && account">
+      <div class="actions">
+        <button tuiAction type="button" class="action add-operation" icon="tuiIconPlusLarge">Добавить операцию</button>
+        <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть вклад</button>
+        <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large">Удалить вклад</button>
+      </div>
+    </ng-container>
+  </div>
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
-    <ng-container *ngIf="!isLoading && account"> </ng-container>
   </div>
 </ng-container>

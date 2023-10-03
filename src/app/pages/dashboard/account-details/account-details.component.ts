@@ -7,11 +7,12 @@ import { DataService } from '@app/data-layer/data.service';
 import { finalize, Observable, switchMap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
+import { TuiActionModule } from '@taiga-ui/kit';
 
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
-  imports: [CommonModule, TuiLetModule, RouterLink, TuiLinkModule, TuiLoaderModule],
+  imports: [CommonModule, TuiLetModule, RouterLink, TuiLinkModule, TuiLoaderModule, TuiActionModule],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
