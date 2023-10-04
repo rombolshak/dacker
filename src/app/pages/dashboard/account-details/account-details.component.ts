@@ -12,10 +12,10 @@ import {
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
-import { filter, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
+import { delay, filter, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
-import { TuiActionModule } from '@taiga-ui/kit';
+import { TuiActionModule, TuiAvatarModule } from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
 
 @Component({
@@ -30,6 +30,7 @@ import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/pro
     TuiActionModule,
     TuiHintModule,
     TuiGroupModule,
+    TuiAvatarModule,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
@@ -40,7 +41,7 @@ export default class AccountDetailsComponent {
     private route: ActivatedRoute,
     private readonly router: Router,
     private readonly data: DataService,
-    private readonly banks: BankInfoService,
+    public readonly banks: BankInfoService,
     private readonly dialogs: TuiDialogService,
     private readonly alerts: TuiAlertService,
   ) {

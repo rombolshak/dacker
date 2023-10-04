@@ -1,4 +1,4 @@
-<h2 class="header">Вклады</h2>
+<div class="header">Вклады</div>
 <div class="content" *tuiLet="accounts$ | async as accounts">
   <tui-loader [showLoader]="isLoading" size="xxl" [overlay]="true"> </tui-loader>
   <ng-container *ngIf="!isLoading">

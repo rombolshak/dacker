@@ -4,6 +4,17 @@
 :host {
   .page();
 
+  .header {
+    tui-loader {
+      width: 3rem;
+    }
+
+    tui-avatar,
+    tui-loader {
+      margin-right: 1rem;
+    }
+  }
+
   .actions-header {
     font: var(--tui-font-heading-5);
     margin: 0 0 1rem 0;
@@ -11,8 +22,10 @@
 
   .actions {
     display: flex;
+    justify-content: space-between;
 
     .action {
+      flex: 1;
       align-items: center;
       margin-right: 1rem;
       font: var(--tui-font-text-s);
@@ -22,6 +35,7 @@
       }
 
       &.add-operation {
+        flex: 2;
         --tui-action-color: var(--tui-positive);
         --tui-action-background: var(--tui-success-bg);
       }

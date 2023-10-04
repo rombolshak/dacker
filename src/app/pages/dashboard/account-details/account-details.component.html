@@ -1,9 +1,12 @@
 <ng-container *tuiLet="accountData$ | async as account">
-  <div class="header-with-link">
-    <div class="text">
-      <a tuiLink [routerLink]="'..'" class="back-link">< Вклады</a>
-      <span>{{ isLoading ? 'Загрузка' : (accountName$ | async) }}</span>
-    </div>
+  <div class="header">
+    <tui-loader *ngIf="isLoading" size="l" [showLoader]="true"></tui-loader>
+    <tui-avatar
+      *ngIf="account"
+      [avatarUrl]="'https://raw.githubusercontent.com/melpnz/rblp/master/icon/' + account.bank + '.svg'"
+      [text]="banks.findById(account.bank)?.name ?? ''">
+    </tui-avatar>
+    {{ isLoading ? 'Загрузка' : account?.name }}
   </div>
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
