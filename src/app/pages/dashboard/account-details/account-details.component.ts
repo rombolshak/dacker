@@ -2,7 +2,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TuiAlertService, TuiAppearance, TuiDialogService, TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
+import {
+  TuiAlertService,
+  TuiAppearance,
+  TuiDialogService,
+  TuiGroupModule,
+  TuiHintModule,
+  TuiLinkModule,
+  TuiLoaderModule,
+} from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
 import { filter, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
@@ -13,7 +21,16 @@ import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/pro
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
-  imports: [CommonModule, TuiLetModule, RouterLink, TuiLinkModule, TuiLoaderModule, TuiActionModule],
+  imports: [
+    CommonModule,
+    TuiLetModule,
+    RouterLink,
+    TuiLinkModule,
+    TuiLoaderModule,
+    TuiActionModule,
+    TuiHintModule,
+    TuiGroupModule,
+  ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

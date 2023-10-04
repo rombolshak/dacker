@@ -4,13 +4,22 @@
 :host {
   .page();
 
+  .actions-header {
+    font: var(--tui-font-heading-5);
+    margin: 0 0 1rem 0;
+  }
+
   .actions {
     display: flex;
 
     .action {
-      // flex: 1;
       align-items: center;
-      margin: 1rem;
+      margin-right: 1rem;
+      font: var(--tui-font-text-s);
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       &.add-operation {
         --tui-action-color: var(--tui-positive);

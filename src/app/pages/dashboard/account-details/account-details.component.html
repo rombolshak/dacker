@@ -4,17 +4,21 @@
       <a tuiLink [routerLink]="'..'" class="back-link">< Вклады</a>
       <span>{{ isLoading ? 'Загрузка' : (accountName$ | async) }}</span>
     </div>
-    <ng-container *ngIf="!isLoading && account">
-      <div class="actions">
-        <button tuiAction type="button" class="action add-operation" icon="tuiIconPlusLarge">Добавить операцию</button>
-        <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть вклад</button>
-        <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
-          Удалить вклад
-        </button>
-      </div>
-    </ng-container>
   </div>
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
+    <ng-container *ngIf="!isLoading && account">
+      <h5 class="actions-header">Действия</h5>
+      <div class="actions">
+        <button tuiAction type="button" class="action add-operation" icon="tuiIconPlusLarge">
+          Добавить транзакцию
+        </button>
+        <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large">Редактировать</button>
+        <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть</button>
+        <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
+          Удалить
+        </button>
+      </div>
+    </ng-container>
   </div>
 </ng-container>
