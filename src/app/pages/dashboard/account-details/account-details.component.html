@@ -11,18 +11,24 @@
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
     <ng-container *ngIf="!isLoading && account">
-      <h5 class="actions-header">Действия</h5>
-      <div class="actions">
-        <button tuiAction type="button" class="action add-operation" icon="tuiIconPlusLarge">
-          Добавить транзакцию
-        </button>
-        <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large" (click)="editAccount()">
-          Редактировать
-        </button>
-        <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть</button>
-        <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
-          Удалить
-        </button>
+      <div class="section">
+        <h5 class="section-header">Действия</h5>
+        <div class="actions">
+          <button tuiAction type="button" class="action add-transaction" icon="tuiIconPlusLarge">
+            Добавить транзакцию
+          </button>
+          <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large" (click)="editAccount()">
+            Редактировать
+          </button>
+          <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть</button>
+          <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
+            Удалить
+          </button>
+        </div>
+      </div>
+      <div class="section">
+        <h5 class="section-header">Транзакции</h5>
+        <div class="transactions"></div>
       </div>
     </ng-container>
   </div>

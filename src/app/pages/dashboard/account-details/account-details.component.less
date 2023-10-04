@@ -15,7 +15,15 @@
     }
   }
 
-  .actions-header {
+  .section {
+    margin: 2rem 0 0 0;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  .section-header {
     font: var(--tui-font-heading-5);
     margin: 0 0 1rem 0;
   }
@@ -34,7 +42,7 @@
         margin-right: 0;
       }
 
-      &.add-operation {
+      &.add-transaction {
         flex: 2;
         --tui-action-color: var(--tui-positive);
         --tui-action-background: var(--tui-success-bg);
