@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -12,11 +12,25 @@ import {
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
-import { delay, filter, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  finalize,
+  last,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { TuiActionModule, TuiAvatarModule } from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/add-account.component';
 
 @Component({
   selector: 'monitraks-account-details',
@@ -44,8 +58,13 @@ export default class AccountDetailsComponent {
     public readonly banks: BankInfoService,
     private readonly dialogs: TuiDialogService,
     private readonly alerts: TuiAlertService,
+    private readonly injector: Injector,
   ) {
-    const account$ = this.route.paramMap.pipe(map(params => this.data.accounts.withId(params.get('id')!)));
+    const account$ = this.reload$.pipe(
+      tap(() => (this.isLoading = true)),
+      switchMap(() => this.route.paramMap),
+      map(params => this.data.accounts.withId(params.get('id')!)),
+    );
 
     this.accountData$ = account$.pipe(
       switchMap(account => account.get().pipe(finalize(() => (this.isLoading = false)))),
@@ -93,4 +112,24 @@ export default class AccountDetailsComponent {
       )
       .subscribe();
   }
+
+  public editAccount(): void {
+    this.accountData$
+      .pipe(
+        take(1),
+        switchMap(data =>
+          this.dialogs.open<AccountData>(new PolymorpheusComponent(AddAccountComponent, this.injector), {
+            dismissible: false,
+            label: 'Редактирование данных',
+            size: 'l',
+            data: data,
+          }),
+        ),
+        tap(() => (this.isLoading = true)),
+        switchMap(data => this.data.accounts.withId(data.id).set(data)),
+      )
+      .subscribe(() => this.reload$.next(true));
+  }
+
+  private reload$ = new BehaviorSubject(true);
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, Predicate } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, Predicate } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TuiAvatarModule,
@@ -81,10 +81,28 @@ export class AddAccountFormComponent {
   @Output()
   public cancel = new EventEmitter();
 
+  @Input()
+  public set model(value: AccountFormData | null) {
+    if (value) {
+      this.accountForm.controls.interest.controls.moneySteps.controls.length = 1;
+      this.accountForm.controls.interest.controls.monthSteps.controls.length = 1;
+      this.accountForm.controls.interest.controls.rates.controls.length = 1;
+      this.accountForm.controls.interest.controls.rates.controls[0].controls.length = 1;
+      value.interest.monthSteps.forEach((_, i) => {
+        if (i > 0) this.addMonth();
+      });
+      value.interest.moneySteps.forEach((_, i) => {
+        if (i > 0) this.addMoney();
+      });
+      this.accountForm.setValue(value);
+    }
+  }
+
   constructor(
     private readonly fb: NonNullableFormBuilder,
     private readonly banks: BankInfoService,
   ) {
+    this.banksList = this.banks.getAllBanks();
     const datesControls = this.accountForm.controls.dates.controls;
     datesControls.openedDate.valueChanges.subscribe(() => {
       datesControls.closingDate.setValue(null, { emitEvent: false });
@@ -151,7 +169,7 @@ export class AddAccountFormComponent {
     }),
   });
 
-  banksList = this.banks.getAllBanks();
+  banksList: BankInfo[];
 
   readonly banksStringify = (item: BankInfo) => item.name ?? '';
 

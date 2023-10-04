@@ -16,7 +16,9 @@
         <button tuiAction type="button" class="action add-operation" icon="tuiIconPlusLarge">
           Добавить транзакцию
         </button>
-        <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large">Редактировать</button>
+        <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large" (click)="editAccount()">
+          Редактировать
+        </button>
         <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть</button>
         <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
           Удалить

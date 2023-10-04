@@ -16,10 +16,19 @@ import { AccountDataConverter } from './account-data-converter';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddAccountComponent {
-  constructor(@Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<AccountData>) {}
+  constructor(
+    @Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<AccountData, AccountData>,
+    private readonly converter: AccountDataConverter,
+  ) {
+    if (this.context.data) {
+      this.model = this.converter.fromModel(this.context.data);
+    }
+  }
+
+  model: AccountFormData | null = null;
 
   save(form: AccountFormData) {
-    this.context.completeWith(AccountDataConverter.toModel(form));
+    this.context.completeWith(this.converter.toModel(form));
   }
 
   close() {
