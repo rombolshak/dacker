@@ -4,6 +4,7 @@ import { TuiDay } from '@taiga-ui/cdk';
 import { Timestamp } from '@angular/fire/firestore';
 import { TestBed } from '@angular/core/testing';
 import { AccountData } from '@app/models/account.data';
+import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 
 describe('AccountDataConverter', () => {
   let service: AccountDataConverter;
@@ -98,7 +99,14 @@ describe('AccountDataConverter', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: BankInfoService,
+          useClass: BankInfoService,
+        },
+      ],
+    });
     service = TestBed.inject(AccountDataConverter);
   });
 
