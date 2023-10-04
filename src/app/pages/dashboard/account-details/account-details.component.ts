@@ -12,19 +12,7 @@ import {
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
-import {
-  BehaviorSubject,
-  filter,
-  finalize,
-  last,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { BehaviorSubject, filter, finalize, map, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { TuiActionModule, TuiAvatarModule } from '@taiga-ui/kit';
