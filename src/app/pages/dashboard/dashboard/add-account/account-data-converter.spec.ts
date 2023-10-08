@@ -5,6 +5,14 @@ import { Timestamp } from '@angular/fire/firestore';
 import { TestBed } from '@angular/core/testing';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
+import { BankInfo } from '@app/pages/dashboard/services/bank-info';
+
+class FakeBankInfoService {
+  public findById(id: string): BankInfo | null {
+    if (id === 'test-bank-id') return { name: 'test-bank', id: id };
+    return null;
+  }
+}
 
 describe('AccountDataConverter', () => {
   let service: AccountDataConverter;
@@ -103,7 +111,7 @@ describe('AccountDataConverter', () => {
       providers: [
         {
           provide: BankInfoService,
-          useClass: BankInfoService,
+          useClass: FakeBankInfoService,
         },
       ],
     });
