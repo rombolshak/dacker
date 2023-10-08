@@ -12,7 +12,7 @@ import {
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
-import { BehaviorSubject, filter, finalize, map, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { TuiActionModule, TuiAvatarModule } from '@taiga-ui/kit';
@@ -48,14 +48,10 @@ export default class AccountDetailsComponent {
     private readonly alerts: TuiAlertService,
     private readonly injector: Injector,
   ) {
-    const account$ = this.reload$.pipe(
-      tap(() => (this.isLoading = true)),
-      switchMap(() => this.route.paramMap),
-      map(params => this.data.accounts.withId(params.get('id')!)),
-    );
+    const account$ = this.route.paramMap.pipe(map(params => this.data.accounts.withId(params.get('id')!)));
 
     this.accountData$ = account$.pipe(
-      switchMap(account => account.get().pipe(finalize(() => (this.isLoading = false)))),
+      switchMap(account => account.get().pipe(tap(() => (this.isLoading = false)))),
       shareReplay(1),
     );
 
@@ -116,8 +112,6 @@ export default class AccountDetailsComponent {
         tap(() => (this.isLoading = true)),
         switchMap(data => this.data.accounts.withId(data.id).set(data)),
       )
-      .subscribe(() => this.reload$.next(true));
+      .subscribe();
   }
-
-  private reload$ = new BehaviorSubject(true);
 }

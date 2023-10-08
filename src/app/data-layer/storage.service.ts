@@ -3,15 +3,14 @@ import { Auth } from '@angular/fire/auth';
 import {
   collection,
   Firestore,
-  getDocs,
   CollectionReference,
   DocumentReference,
   doc,
-  getDoc,
   setDoc,
   deleteDoc,
+  onSnapshot,
 } from '@angular/fire/firestore';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 @Injectable({
@@ -25,12 +24,28 @@ export class StorageService {
 
   getAll<T>(collectionName: string): Observable<T[]> {
     const ref = collection(this.store, this.getAuthPart(), collectionName) as CollectionReference<T>;
-    return fromPromise(getDocs(ref)).pipe(map(result => result.docs.map(doc => doc.data())));
+    return new Observable(observer => {
+      return onSnapshot(
+        ref,
+        snapshot => {
+          observer.next(snapshot.docs.map(doc => doc.data()));
+        },
+        error => observer.error(error),
+      );
+    });
   }
 
   get<T>(entityPath: string): Observable<T | null> {
     const ref = doc(this.store, this.getAuthPart(), entityPath) as DocumentReference<T>;
-    return fromPromise(getDoc(ref)).pipe(map(result => result.data() ?? null));
+    return new Observable(observer => {
+      return onSnapshot(
+        ref,
+        snapshot => {
+          observer.next(snapshot.data());
+        },
+        error => observer.error(error),
+      );
+    });
   }
 
   set<T>(entityPath: string, data: T): Observable<void> {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '@app/data-layer/data.service';
-import { BehaviorSubject, finalize, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
@@ -36,7 +36,7 @@ export default class DashboardComponent {
   ) {
     this.accounts$ = this.reload$.pipe(
       tap(() => (this.isLoading = true)),
-      switchMap(() => data.accounts.getAll().pipe(finalize(() => (this.isLoading = false)))),
+      switchMap(() => data.accounts.getAll().pipe(tap(() => (this.isLoading = false)))),
     );
   }
 
