@@ -11,7 +11,17 @@ export class FakeStorageService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getAll<T>(collectionName: string): Observable<T[]> {
+    return of([]);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   set<T>(entityPath: string, data: T): Observable<void> {
+    return of();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  delete(entityPath: string): Observable<void> {
     return of();
   }
 }
