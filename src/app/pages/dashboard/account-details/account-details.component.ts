@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  TuiAlertService,
   TuiAppearance,
   TuiDialogService,
   TuiGroupModule,
@@ -45,7 +44,6 @@ export default class AccountDetailsComponent {
     private readonly data: DataService,
     public readonly banks: BankInfoService,
     private readonly dialogs: TuiDialogService,
-    private readonly alerts: TuiAlertService,
     private readonly injector: Injector,
   ) {
     const account$ = this.route.paramMap.pipe(map(params => this.data.accounts.withId(params.get('id')!)));
@@ -86,13 +84,9 @@ export default class AccountDetailsComponent {
         filter(decision => decision),
         tap(() => (this.isLoading = true)),
         switchMap(() => this.removeAccount$),
-        switchMap(() => this.accountName$),
         tap(() => {
           this.router.navigate(['..']);
         }),
-        switchMap(name =>
-          this.alerts.open(`Вклад ${name} удалён`, { label: 'Удаление вклада', status: 'success', autoClose: true }),
-        ),
       )
       .subscribe();
   }
@@ -109,7 +103,6 @@ export default class AccountDetailsComponent {
             data: data,
           }),
         ),
-        tap(() => (this.isLoading = true)),
         switchMap(data => this.data.accounts.withId(data.id).set(data)),
       )
       .subscribe();

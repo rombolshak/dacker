@@ -10,6 +10,7 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { firestoreAutoId } from '@app/models/identifiable';
 import { AccountsTableComponent } from './accounts-table/accounts-table.component';
 import { AddAccountComponent } from './add-account/add-account.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'monitraks-dashboard',
@@ -33,11 +34,10 @@ export default class DashboardComponent {
     private readonly data: DataService,
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {
-    this.accounts$ = this.reload$.pipe(
-      tap(() => (this.isLoading = true)),
-      switchMap(() => data.accounts.getAll().pipe(tap(() => (this.isLoading = false)))),
-    );
+    this.accounts$ = data.accounts.getAll().pipe(tap(() => (this.isLoading = false)));
   }
 
   accounts$: Observable<AccountData[]>;
@@ -58,7 +58,7 @@ export default class DashboardComponent {
     this.data.accounts
       .withId(model.id)
       .set(model)
-      .subscribe(() => this.reload$.next(true));
+      .subscribe(() => this.router.navigate([model.id], { relativeTo: this.route }));
   }
 
   private readonly addAccountDialog = this.dialogs.open<AccountData>(
@@ -70,6 +70,4 @@ export default class DashboardComponent {
       data: null,
     },
   );
-
-  private reload$ = new BehaviorSubject(true);
 }

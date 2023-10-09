@@ -1,0 +1,14 @@
+<tui-badge
+  class="active"
+  status="warning"
+  value="Загрузка..."
+  *ngIf="statusService.isLoading$ | async"
+  [@tuiFadeIn]="options">
+  <span class="status-circle"></span>
+</tui-badge>
+<div *tuiLet="savingState$ | async as savingState">
+  <tui-badge class="active" status="warning" value="Сохранение..." *ngIf="savingState === 'active'">
+    <span class="status-circle"></span>
+  </tui-badge>
+  <tui-badge status="success" value="Сохранено" *ngIf="savingState === 'completed'" [@tuiFadeIn]="options"></tui-badge>
+</div>

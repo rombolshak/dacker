@@ -2,6 +2,7 @@
   <div class="root">
     <monitraks-menu *ngIf="auth.isAuthenticated$ | async"></monitraks-menu>
     <div class="page-content">
+      <monitraks-storage-status></monitraks-storage-status>
       <router-outlet></router-outlet>
     </div>
   </div>
