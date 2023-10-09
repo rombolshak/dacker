@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import DashboardComponent from './dashboard.component';
 import { StorageService } from '@app/data-layer/storage.service';
 import { FakeStorageService } from '@app/data-layer/fake-storage.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -15,6 +16,10 @@ describe('DashboardComponent', () => {
         {
           provide: StorageService,
           useClass: FakeStorageService,
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {},
         },
       ],
     }).compileComponents();
