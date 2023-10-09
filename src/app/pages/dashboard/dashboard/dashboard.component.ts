@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '@app/data-layer/data.service';
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
