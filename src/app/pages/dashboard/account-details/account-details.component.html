@@ -28,7 +28,34 @@
       </div>
       <div class="section">
         <h5 class="section-header">Транзакции</h5>
-        <div class="transactions"></div>
+        <div class="transactions">
+          <form [formGroup]="transactionForm" class="new-transaction">
+            <div class="fields">
+              <tui-input-date [formControl]="transactionForm.controls.date" tuiTextfieldSize="m">Дата</tui-input-date>
+              <tui-select
+                [formControl]="transactionForm.controls.type"
+                [stringify]="operationTypeStringify"
+                tuiTextfieldSize="m">
+                Тип транзакции
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="operationTypes"
+                  [itemContent]="operationTypeStringify | tuiStringifyContent"></tui-data-list-wrapper>
+              </tui-select>
+              <tui-input [formControl]="transactionForm.controls.memo" tuiTextfieldSize="m">Заметки</tui-input>
+              <tui-input-number
+                [formControl]="transactionForm.controls.amount"
+                [tuiTextfieldPostfix]="'RUB' | tuiCurrency"
+                tuiTextfieldSize="m">
+                Сумма
+              </tui-input-number>
+            </div>
+            <div class="buttons">
+              <button tuiButton appearance="secondary" size="s">Отмена</button>
+              <button tuiButton appearance="primary" size="s">Сохранить</button>
+            </div>
+          </form>
+        </div>
       </div>
     </ng-container>
   </div>

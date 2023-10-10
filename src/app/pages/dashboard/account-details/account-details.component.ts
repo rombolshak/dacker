@@ -1,23 +1,38 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   TuiAppearance,
+  TuiButtonModule,
   TuiDialogService,
   TuiGroupModule,
   TuiHintModule,
   TuiLinkModule,
   TuiLoaderModule,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
 import { filter, map, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
-import { TuiActionModule, TuiAvatarModule } from '@taiga-ui/kit';
+import {
+  TuiActionModule,
+  TuiAvatarModule,
+  TuiDataListWrapperModule,
+  TuiInputDateModule,
+  TuiInputModule,
+  TuiInputNumberModule,
+  TuiSelectModule,
+  TuiStringifyContentPipeModule,
+} from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/add-account.component';
+import { FormBuilder, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { OperationData, OperationType } from '@app/models/operation.data';
+import { Timestamp } from '@angular/fire/firestore';
+import { TuiCurrencyPipeModule } from '@taiga-ui/addon-commerce';
 
 @Component({
   selector: 'monitraks-account-details',
@@ -32,6 +47,16 @@ import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/
     TuiHintModule,
     TuiGroupModule,
     TuiAvatarModule,
+    ReactiveFormsModule,
+    TuiInputDateModule,
+    TuiSelectModule,
+    TuiDataListWrapperModule,
+    TuiStringifyContentPipeModule,
+    TuiInputNumberModule,
+    TuiCurrencyPipeModule,
+    TuiTextfieldControllerModule,
+    TuiInputModule,
+    TuiButtonModule,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
@@ -45,6 +70,7 @@ export default class AccountDetailsComponent {
     public readonly banks: BankInfoService,
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector,
+    private readonly fb: FormBuilder,
   ) {
     const account$ = this.route.paramMap.pipe(map(params => this.data.accounts.withId(params.get('id')!)));
 
@@ -55,12 +81,35 @@ export default class AccountDetailsComponent {
 
     this.accountName$ = this.accountData$.pipe(map(data => this.getName(data)));
     this.removeAccount$ = account$.pipe(switchMap(account => account.delete()));
+
+    this.transactionForm = fb.group({
+      date: fb.control(TuiDay.currentLocal(), Validators.required),
+      type: fb.control<OperationType | null>(null, Validators.required),
+      amount: fb.control<number | null>(null, Validators.required),
+      memo: fb.control<string | null>(null),
+    });
   }
 
   accountData$: Observable<AccountData | null>;
   accountName$: Observable<string>;
   removeAccount$: Observable<void>;
   isLoading = true;
+
+  transactionForm;
+  operationTypes = ['contribution', 'withdrawal', 'interest', 'commission'] as OperationType[];
+
+  readonly operationTypeStringify = (type: OperationType): string => {
+    switch (type) {
+      case 'contribution':
+        return 'Пополнение';
+      case 'withdrawal':
+        return 'Снятие';
+      case 'interest':
+        return 'Проценты';
+      case 'commission':
+        return 'Комиссия';
+    }
+  };
 
   public getName(account: AccountData | null): string {
     return account ? `${account.name} (${this.banks.findById(account.bank)?.name})` : 'Аккаунт не найден';

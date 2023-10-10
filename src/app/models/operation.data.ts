@@ -1,7 +1,7 @@
 ﻿import { Identifiable } from '@app/models/identifiable';
 import { Timestamp } from '@angular/fire/firestore';
 
-type OperationType = 'contribution' | 'withdrawal' | 'interest' | 'comission';
+export type OperationType = 'contribution' | 'withdrawal' | 'interest' | 'commission';
 export interface OperationData extends Identifiable {
   date: Timestamp;
   type: OperationType;
