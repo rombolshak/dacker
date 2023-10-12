@@ -6,5 +6,5 @@ export interface OperationData extends Identifiable {
   date: Timestamp;
   type: OperationType;
   amount: number;
-  memo: string;
+  memo: string | null;
 }

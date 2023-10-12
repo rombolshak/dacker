@@ -21,11 +21,11 @@
     &:first-of-type {
       margin-top: 0;
     }
-  }
 
-  .section-header {
-    font: var(--tui-font-heading-5);
-    margin: 0 0 1rem 0;
+    .section-header {
+      font: var(--tui-font-heading-5);
+      margin: 0 0 1rem 0;
+    }
   }
 
   .actions {
@@ -55,7 +55,11 @@
     }
   }
 
+  .transactions {
+    padding: 0 1rem;
+  }
   .new-transaction {
+    max-width: 40rem;
     .fields {
       display: flex;
       justify-content: space-between;
@@ -78,6 +82,30 @@
       button {
         margin-left: 1rem;
       }
+    }
+  }
+
+  .transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 30rem;
+    min-width: 15rem;
+    height: var(--tui-height-l);
+    .inset-border();
+    font: var(--tui-font-text-s-2);
+
+    .amount {
+      text-align: right;
+    }
+
+    .type {
+      color: var(--tui-text-03);
+    }
+
+    .dashed {
+      text-decoration: underline;
+      text-decoration-style: dotted;
     }
   }
 }
