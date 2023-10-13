@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '@app/data-layer/data.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, takeUntil, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiButtonModule, TuiDialogService, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
@@ -28,6 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TuiDestroyService],
 })
 export default class DashboardComponent {
   constructor(
@@ -36,8 +37,12 @@ export default class DashboardComponent {
     private readonly injector: Injector,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    destroy$: TuiDestroyService,
   ) {
-    this.accounts$ = data.accounts.getAll().pipe(tap(() => (this.isLoading = false)));
+    this.accounts$ = data.accounts.getAll().pipe(
+      takeUntil(destroy$),
+      tap(() => (this.isLoading = false)),
+    );
   }
 
   accounts$: Observable<AccountData[]>;

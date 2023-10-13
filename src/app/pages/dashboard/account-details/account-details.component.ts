@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiAutoFocusModule, TuiDay, TuiLetModule } from '@taiga-ui/cdk';
+import { TuiAutoFocusModule, TuiDay, TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   TuiAppearance,
@@ -10,10 +10,11 @@ import {
   TuiHintModule,
   TuiLinkModule,
   TuiLoaderModule,
+  TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
-import { filter, map, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import {
@@ -60,10 +61,12 @@ import { TransactionViewModel } from '@app/pages/dashboard/account-details/trans
     TuiButtonModule,
     TuiAutoFocusModule,
     TuiMoneyModule,
+    TuiSvgModule,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TuiDestroyService],
 })
 export default class AccountDetailsComponent {
   constructor(
@@ -73,9 +76,13 @@ export default class AccountDetailsComponent {
     public readonly banks: BankInfoService,
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector,
-    private readonly fb: FormBuilder,
+    private readonly destroy$: TuiDestroyService,
+    fb: FormBuilder,
   ) {
-    const accountId$ = this.route.paramMap.pipe(map(params => params.get('id')!));
+    const accountId$ = this.route.paramMap.pipe(
+      takeUntil(destroy$),
+      map(params => params.get('id')!),
+    );
     const account$ = accountId$.pipe(map(id => this.data.accounts.withId(id)));
     const operations$ = account$.pipe(map(account => account.operations));
 
@@ -90,6 +97,7 @@ export default class AccountDetailsComponent {
     this.transactions$ = operations$.pipe(
       switchMap(operations => operations.getAll()),
       map(data => data.map(this.toViewModel).sort((a, b) => (a.date > b.date ? -1 : 1))),
+      shareReplay(1),
     );
     this.updateTransaction$ = (model: OperationData) =>
       operations$.pipe(switchMap(operations => operations.withId(model.id).set(model)));
