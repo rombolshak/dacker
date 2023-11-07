@@ -8,7 +8,7 @@ import {
 } from '@app/data-layer/request.builder';
 import { StorageService } from '@app/data-layer/storage.service';
 
-class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
+export class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
   constructor(storage: StorageService, accountPath: string) {
     super(storage, accountPath);
   }

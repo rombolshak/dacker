@@ -7,6 +7,7 @@
       [text]="banks.findById(account.bank)?.name ?? ''">
     </tui-avatar>
     {{ isLoading ? 'Загрузка' : account?.name }}
+    <tui-money [value]="(totalAmount$ | async) ?? 0"></tui-money>
   </div>
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>

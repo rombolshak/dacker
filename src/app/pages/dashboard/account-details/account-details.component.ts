@@ -36,6 +36,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { TuiCurrencyPipeModule, TuiMoneyModule } from '@taiga-ui/addon-commerce';
 import { firestoreAutoId } from '@app/models/identifiable';
 import { TransactionViewModel } from '@app/pages/dashboard/account-details/transaction.view-model';
+import { AccountInfoCalculatorProviderService } from '@app/services/account-info-calculator-provider.service';
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
@@ -74,6 +75,7 @@ export default class AccountDetailsComponent {
     private readonly router: Router,
     private readonly data: DataService,
     public readonly banks: BankInfoService,
+    private readonly calculatorProvider: AccountInfoCalculatorProviderService,
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector,
     private readonly destroy$: TuiDestroyService,
@@ -83,6 +85,10 @@ export default class AccountDetailsComponent {
       takeUntil(destroy$),
       map(params => params.get('id')!),
     );
+
+    const infoCalculator$ = accountId$.pipe(map(id => this.calculatorProvider.getCalculator(id)));
+    this.totalAmount$ = infoCalculator$.pipe(switchMap(calculator => calculator.currentAmount$));
+
     const account$ = accountId$.pipe(map(id => this.data.accounts.withId(id)));
     const operations$ = account$.pipe(map(account => account.operations));
 
@@ -115,6 +121,8 @@ export default class AccountDetailsComponent {
   accountData$: Observable<AccountData | null>;
   accountName$: Observable<string>;
   transactions$: Observable<TransactionViewModel[]>;
+
+  totalAmount$: Observable<number>;
   isLoading = true;
 
   showTransactionForm = false;
@@ -210,7 +218,6 @@ export default class AccountDetailsComponent {
   }
 
   private readonly toViewModel = (data: OperationData): TransactionViewModel => {
-    console.log(data.id === this._lastSavedTransactionId);
     return {
       id: data.id,
       date: TuiDay.fromLocalNativeDate(data.date.toDate()),
