@@ -133,5 +133,15 @@
         opacity: 1;
       }
     }
+
+    &.just-saved {
+      animation: pulse-color ease-in-out 300ms 2;
+    }
+
+    @keyframes pulse-color {
+      50% {
+        background-color: var(--tui-secondary);
+      }
+    }
   }
 }

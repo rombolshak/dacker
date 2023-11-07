@@ -77,18 +77,18 @@
           </div>
         </form>
         <div class="transactions" *tuiLet="transactions$ | async as transactions">
-          <div *ngFor="let transaction of transactions" class="transaction">
+          <div *ngFor="let transaction of transactions" class="transaction" [class.just-saved]="transaction.justSaved">
             <div class="date">
               {{ transaction.date }}
-              <tui-svg src="tuiIconEdit2"></tui-svg>
-              <tui-svg src="tuiIconTrash"></tui-svg>
+              <tui-svg src="tuiIconEdit2" (click)="editTransaction(transaction)"></tui-svg>
+              <tui-svg src="tuiIconTrash" (click)="removeTransaction(transaction.id)"></tui-svg>
             </div>
             <div class="amount">
               <tui-money
                 [value]="transaction.amount"
                 [colored]="true"
                 [tuiHint]="transaction.memo"
-                [class.dashed]="transaction.memo?.length"></tui-money>
+                [class.dashed]="transaction.memo.length"></tui-money>
               <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
             </div>
           </div>

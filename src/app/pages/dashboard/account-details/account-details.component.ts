@@ -101,9 +101,10 @@ export default class AccountDetailsComponent {
     );
     this.updateTransaction$ = (model: OperationData) =>
       operations$.pipe(switchMap(operations => operations.withId(model.id).set(model)));
+    this.removeTransaction$ = (id: string) => operations$.pipe(switchMap(operations => operations.withId(id).delete()));
 
     this.transactionForm = fb.group({
-      id: fb.control(null),
+      id: fb.control<string | null>(null),
       date: fb.nonNullable.control(TuiDay.currentLocal(), Validators.required),
       type: fb.control<OperationType | null>(null, Validators.required),
       amount: fb.control<number | null>(null, Validators.required),
@@ -121,6 +122,7 @@ export default class AccountDetailsComponent {
   operationTypes = ['contribution', 'withdrawal', 'interest', 'commission'] as OperationType[];
 
   private readonly updateTransaction$: (model: OperationData) => Observable<void>;
+  private readonly removeTransaction$: (id: string) => Observable<void>;
   private readonly removeAccount$: Observable<void>;
 
   public saveTransaction() {
@@ -135,6 +137,7 @@ export default class AccountDetailsComponent {
     } satisfies OperationData;
     this.transactionForm.reset();
     this.showTransactionForm = false;
+    this._lastSavedTransactionId = operationData.id;
     this.updateTransaction$(operationData).subscribe();
   }
 
@@ -155,7 +158,7 @@ export default class AccountDetailsComponent {
     return account ? `${account.name} (${this.banks.findById(account.bank)?.name})` : 'Аккаунт не найден';
   }
 
-  public deleteAccount() {
+  public deleteAccount(): void {
     this.dialogs
       .open<boolean>(CONFIRMATION_PROMPT, {
         label: 'Удаление вклада',
@@ -180,6 +183,10 @@ export default class AccountDetailsComponent {
       .subscribe();
   }
 
+  public removeTransaction(id: string): void {
+    this.removeTransaction$(id).subscribe();
+  }
+
   public editAccount(): void {
     this.accountData$
       .pipe(
@@ -197,13 +204,32 @@ export default class AccountDetailsComponent {
       .subscribe();
   }
 
+  public editTransaction(model: TransactionViewModel): void {
+    this.transactionForm.setValue(this.fromViewModel(model));
+    this.showTransactionForm = true;
+  }
+
   private readonly toViewModel = (data: OperationData): TransactionViewModel => {
+    console.log(data.id === this._lastSavedTransactionId);
     return {
       id: data.id,
       date: TuiDay.fromLocalNativeDate(data.date.toDate()),
       memo: data.memo ?? '',
       type: data.type,
       amount: data.amount >= 0 && ['withdrawal', 'commission'].includes(data.type) ? -data.amount : data.amount,
+      justSaved: data.id === this._lastSavedTransactionId,
     };
   };
+
+  private readonly fromViewModel = (model: TransactionViewModel) => {
+    return {
+      id: model.id,
+      date: model.date,
+      memo: model.memo,
+      type: model.type,
+      amount: model.amount < 0 && ['withdrawal', 'commission'].includes(model.type) ? -model.amount : model.amount,
+    };
+  };
+
+  private _lastSavedTransactionId: string | null = null;
 }

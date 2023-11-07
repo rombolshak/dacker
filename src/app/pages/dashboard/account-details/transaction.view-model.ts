@@ -7,4 +7,6 @@ export interface TransactionViewModel {
   amount: number;
   type: OperationType;
   memo: string;
+
+  justSaved: boolean;
 }
