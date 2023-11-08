@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { CommonModule } from '@angular/common';
 import { TuiDay } from '@taiga-ui/cdk';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { OperationData, OperationType } from '@app/models/operation.data';
+import { OperationType } from '@app/models/operation.data';
 import {
   TuiDataListWrapperModule,
   TuiInputDateModule,
@@ -12,8 +12,6 @@ import {
   TuiStringifyContentPipeModule,
 } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
-import { firestoreAutoId } from '@app/models/identifiable';
-import { Timestamp } from '@angular/fire/firestore';
 import { operationTypeStringify } from '@app/pages/dashboard/account-details/localization.helper';
 import { TuiCurrencyPipeModule } from '@taiga-ui/addon-commerce';
 

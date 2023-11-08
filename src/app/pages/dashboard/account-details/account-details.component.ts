@@ -57,7 +57,7 @@ export default class AccountDetailsComponent {
       map(params => params.get('id')!),
     );
 
-    const infoCalculator$ = accountId$.pipe(map(id => this.calculatorProvider.getCalculator(id)));
+    // const infoCalculator$ = accountId$.pipe(map(id => this.calculatorProvider.getCalculator(id)));
 
     const account$ = accountId$.pipe(map(id => this.data.accounts.withId(id)));
     const operations$ = account$.pipe(map(account => account.operations));
