@@ -7,93 +7,32 @@
       [text]="banks.findById(account.bank)?.name ?? ''">
     </tui-avatar>
     {{ isLoading ? 'Загрузка' : account?.name }}
-    <tui-money [value]="(totalAmount$ | async) ?? 0"></tui-money>
   </div>
   <div class="content">
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
     <ng-container *ngIf="!isLoading && account">
       <div class="section">
+        <monitraks-account-info></monitraks-account-info>
+      </div>
+      <div class="section">
         <h5 class="section-header">Действия</h5>
-        <div class="actions">
-          <button
-            tuiAction
-            type="button"
-            class="action add-transaction"
-            icon="tuiIconPlusLarge"
-            (click)="showTransactionForm = true">
-            Добавить транзакцию
-          </button>
-          <button tuiAction type="button" class="action edit" icon="tuiIconEdit2Large" (click)="editAccount()">
-            Редактировать
-          </button>
-          <button tuiAction type="button" class="action close" icon="tuiIconLockLarge">Закрыть</button>
-          <button tuiAction type="button" class="action delete" icon="tuiIconTrash2Large" (click)="deleteAccount()">
-            Удалить
-          </button>
-        </div>
+        <monitraks-account-actions
+          (addTransaction)="showTransactionForm = true"
+          (editAccount)="editAccount()"
+          (removeAccount)="deleteAccount()">
+        </monitraks-account-actions>
       </div>
       <div class="section">
         <h5 class="section-header">Транзакции</h5>
-        <form [formGroup]="transactionForm" class="new-transaction" *ngIf="showTransactionForm">
-          <div class="fields">
-            <tui-input-date [formControl]="transactionForm.controls.date" tuiTextfieldSize="m" tuiAutoFocus>
-              Дата
-            </tui-input-date>
-            <tui-select
-              [formControl]="transactionForm.controls.type"
-              [stringify]="operationTypeStringify"
-              tuiTextfieldSize="m">
-              Тип транзакции
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="operationTypes"
-                [itemContent]="operationTypeStringify | tuiStringifyContent"></tui-data-list-wrapper>
-            </tui-select>
-            <tui-input [formControl]="transactionForm.controls.memo" tuiTextfieldSize="m">Заметки</tui-input>
-            <tui-input-number
-              [formControl]="transactionForm.controls.amount"
-              [tuiTextfieldPostfix]="'RUB' | tuiCurrency"
-              tuiTextfieldSize="m">
-              Сумма
-            </tui-input-number>
-          </div>
-          <div class="buttons">
-            <button
-              type="reset"
-              tuiButton
-              appearance="secondary"
-              size="s"
-              (click)="transactionForm.reset(); showTransactionForm = false">
-              Отмена
-            </button>
-            <button
-              type="submit"
-              tuiButton
-              appearance="primary"
-              size="s"
-              (click)="saveTransaction()"
-              [disabled]="!transactionForm.valid">
-              Сохранить
-            </button>
-          </div>
-        </form>
-        <div class="transactions" *tuiLet="transactions$ | async as transactions">
-          <div *ngFor="let transaction of transactions" class="transaction" [class.just-saved]="transaction.justSaved">
-            <div class="date">
-              {{ transaction.date }}
-              <tui-svg src="tuiIconEdit2" (click)="editTransaction(transaction)"></tui-svg>
-              <tui-svg src="tuiIconTrash" (click)="removeTransaction(transaction.id)"></tui-svg>
-            </div>
-            <div class="amount">
-              <tui-money
-                [value]="transaction.amount"
-                [colored]="true"
-                [tuiHint]="transaction.memo"
-                [class.dashed]="transaction.memo.length"></tui-money>
-              <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
-            </div>
-          </div>
-        </div>
+        <monitraks-transaction-form
+          (saved)="saveTransaction($event)"
+          (cancel)="hideTransactionForm()"
+          [model]="transactionToEdit"
+          *ngIf="showTransactionForm"></monitraks-transaction-form>
+        <monitraks-transactions-list
+          [transactions]="transactions$ | async"
+          (edit)="editTransaction($event)"
+          (remove)="removeTransaction($event.id)"></monitraks-transactions-list>
       </div>
     </ng-container>
   </div>

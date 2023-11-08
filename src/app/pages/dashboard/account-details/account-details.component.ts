@@ -1,68 +1,40 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiAutoFocusModule, TuiDay, TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import {
-  TuiAppearance,
-  TuiButtonModule,
-  TuiDialogService,
-  TuiGroupModule,
-  TuiHintModule,
-  TuiLinkModule,
-  TuiLoaderModule,
-  TuiSvgModule,
-  TuiTextfieldControllerModule,
-} from '@taiga-ui/core';
+import { TuiDay, TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TuiAppearance, TuiDialogService, TuiLoaderModule } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
 import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
-import {
-  TuiActionModule,
-  TuiAvatarModule,
-  TuiDataListWrapperModule,
-  TuiInputDateModule,
-  TuiInputModule,
-  TuiInputNumberModule,
-  TuiSelectModule,
-  TuiStringifyContentPipeModule,
-} from '@taiga-ui/kit';
+import { TuiAvatarModule } from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/add-account.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { OperationData, OperationType } from '@app/models/operation.data';
+import { OperationData } from '@app/models/operation.data';
 import { Timestamp } from '@angular/fire/firestore';
-import { TuiCurrencyPipeModule, TuiMoneyModule } from '@taiga-ui/addon-commerce';
 import { firestoreAutoId } from '@app/models/identifiable';
 import { TransactionViewModel } from '@app/pages/dashboard/account-details/transaction.view-model';
 import { AccountInfoCalculatorProviderService } from '@app/services/account-info-calculator-provider.service';
+import { AccountActionsComponent } from '@app/pages/dashboard/account-details/account-actions/account-actions.component';
+import {
+  TransactionFields,
+  TransactionFormComponent,
+} from '@app/pages/dashboard/account-details/transaction-form/transaction-form.component';
+import { TransactionsListComponent } from '@app/pages/dashboard/account-details/transactions-list/transactions-list.component';
+import { AccountInfoComponent } from '@app/pages/dashboard/account-details/account-info/account-info.component';
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
   imports: [
     CommonModule,
-    TuiLetModule,
-    RouterLink,
-    TuiLinkModule,
     TuiLoaderModule,
-    TuiActionModule,
-    TuiHintModule,
-    TuiGroupModule,
     TuiAvatarModule,
-    ReactiveFormsModule,
-    TuiInputDateModule,
-    TuiSelectModule,
-    TuiDataListWrapperModule,
-    TuiStringifyContentPipeModule,
-    TuiInputNumberModule,
-    TuiCurrencyPipeModule,
-    TuiTextfieldControllerModule,
-    TuiInputModule,
-    TuiButtonModule,
-    TuiAutoFocusModule,
-    TuiMoneyModule,
-    TuiSvgModule,
+    TuiLetModule,
+    AccountActionsComponent,
+    TransactionFormComponent,
+    TransactionsListComponent,
+    AccountInfoComponent,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
@@ -79,7 +51,6 @@ export default class AccountDetailsComponent {
     private readonly dialogs: TuiDialogService,
     private readonly injector: Injector,
     private readonly destroy$: TuiDestroyService,
-    fb: FormBuilder,
   ) {
     const accountId$ = this.route.paramMap.pipe(
       takeUntil(destroy$),
@@ -87,7 +58,6 @@ export default class AccountDetailsComponent {
     );
 
     const infoCalculator$ = accountId$.pipe(map(id => this.calculatorProvider.getCalculator(id)));
-    this.totalAmount$ = infoCalculator$.pipe(switchMap(calculator => calculator.currentAmount$));
 
     const account$ = accountId$.pipe(map(id => this.data.accounts.withId(id)));
     const operations$ = account$.pipe(map(account => account.operations));
@@ -108,34 +78,17 @@ export default class AccountDetailsComponent {
     this.updateTransaction$ = (model: OperationData) =>
       operations$.pipe(switchMap(operations => operations.withId(model.id).set(model)));
     this.removeTransaction$ = (id: string) => operations$.pipe(switchMap(operations => operations.withId(id).delete()));
-
-    this.transactionForm = fb.group({
-      id: fb.control<string | null>(null),
-      date: fb.nonNullable.control(TuiDay.currentLocal(), Validators.required),
-      type: fb.control<OperationType | null>(null, Validators.required),
-      amount: fb.control<number | null>(null, Validators.required),
-      memo: fb.control<string | null>(null),
-    });
   }
 
   accountData$: Observable<AccountData | null>;
   accountName$: Observable<string>;
   transactions$: Observable<TransactionViewModel[]>;
-
-  totalAmount$: Observable<number>;
   isLoading = true;
 
   showTransactionForm = false;
-  transactionForm;
-  operationTypes = ['contribution', 'withdrawal', 'interest', 'commission'] as OperationType[];
+  transactionToEdit: TransactionFields | null = null;
 
-  private readonly updateTransaction$: (model: OperationData) => Observable<void>;
-  private readonly removeTransaction$: (id: string) => Observable<void>;
-  private readonly removeAccount$: Observable<void>;
-
-  public saveTransaction() {
-    if (!this.transactionForm.valid) return;
-    const formData = this.transactionForm.getRawValue();
+  public saveTransaction(formData: TransactionFields) {
     const operationData = {
       id: formData.id ?? firestoreAutoId(),
       date: Timestamp.fromDate(formData.date!.toLocalNativeDate()),
@@ -143,24 +96,15 @@ export default class AccountDetailsComponent {
       amount: formData.amount!,
       memo: formData.memo,
     } satisfies OperationData;
-    this.transactionForm.reset();
-    this.showTransactionForm = false;
+    this.hideTransactionForm();
     this._lastSavedTransactionId = operationData.id;
     this.updateTransaction$(operationData).subscribe();
   }
 
-  public readonly operationTypeStringify = (type: OperationType): string => {
-    switch (type) {
-      case 'contribution':
-        return 'Пополнение';
-      case 'withdrawal':
-        return 'Снятие';
-      case 'interest':
-        return 'Проценты';
-      case 'commission':
-        return 'Комиссия';
-    }
-  };
+  public hideTransactionForm() {
+    this.transactionToEdit = null;
+    this.showTransactionForm = false;
+  }
 
   public getName(account: AccountData | null): string {
     return account ? `${account.name} (${this.banks.findById(account.bank)?.name})` : 'Аккаунт не найден';
@@ -213,7 +157,7 @@ export default class AccountDetailsComponent {
   }
 
   public editTransaction(model: TransactionViewModel): void {
-    this.transactionForm.setValue(this.fromViewModel(model));
+    this.transactionToEdit = this.fromViewModel(model);
     this.showTransactionForm = true;
   }
 
@@ -239,4 +183,8 @@ export default class AccountDetailsComponent {
   };
 
   private _lastSavedTransactionId: string | null = null;
+
+  private readonly updateTransaction$: (model: OperationData) => Observable<void>;
+  private readonly removeTransaction$: (id: string) => Observable<void>;
+  private readonly removeAccount$: Observable<void>;
 }

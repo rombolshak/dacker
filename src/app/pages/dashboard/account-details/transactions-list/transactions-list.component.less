@@ -1,0 +1,63 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+:host {
+  padding: 0 1rem;
+  .transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 30rem;
+    min-width: 15rem;
+    height: var(--tui-height-l);
+    font: var(--tui-font-text-s-2);
+    .inset-border();
+    .transition(background-color);
+
+    tui-svg {
+      opacity: 0;
+      .transition(opacity);
+      margin-left: 0.5rem;
+      color: var(--tui-link);
+
+      &:hover {
+        cursor: pointer;
+        color: var(--tui-link-hover);
+      }
+    }
+
+    .date {
+      display: flex;
+      align-items: center;
+    }
+
+    .amount {
+      text-align: right;
+    }
+
+    .type {
+      color: var(--tui-text-03);
+    }
+
+    .dashed {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+    &:hover {
+      background-color: var(--tui-base-02);
+
+      tui-svg {
+        opacity: 1;
+      }
+    }
+
+    &.just-saved {
+      animation: pulse-color ease-in-out 300ms 2;
+    }
+
+    @keyframes pulse-color {
+      50% {
+        background-color: var(--tui-secondary);
+      }
+    }
+  }
+}
