@@ -7,26 +7,33 @@
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Доход</h3>
-  <p class="tui-island__content"><tui-money [value]="45212"></tui-money></p>
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
+    <tui-money [value]="fullInfo.receivedProfit"></tui-money>
+  </p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Ставка</h3>
-  <p class="tui-island__content">7%</p>
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">{{ fullInfo.rate }}%</p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Доходность</h3>
-  <p class="tui-island__content"><tui-money [value]="45212"></tui-money></p>
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content" *ngIf="fullInfo !== null"><tui-money [value]="45212"></tui-money></p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Закрытие</h3>
-  <p class="tui-island__content">
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content" *ngIf="fullInfo !== null">
     <span>через 297 дней</span>
     <span>01.12.2024</span>
   </p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Параметры</h3>
-  <p class="tui-island__content">
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content" *ngIf="fullInfo !== null">
     <span>с пополнением</span>
     <span>без снятия</span>
   </p>
