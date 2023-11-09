@@ -12,7 +12,7 @@
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
     <ng-container *ngIf="!isLoading && account">
       <div class="section">
-        <monitraks-account-info></monitraks-account-info>
+        <monitraks-account-info [fullInfo]="fullInfo$ | async"></monitraks-account-info>
       </div>
       <div class="section">
         <h5 class="section-header">Действия</h5>

@@ -23,6 +23,7 @@ import {
 } from '@app/pages/dashboard/account-details/transaction-form/transaction-form.component';
 import { TransactionsListComponent } from '@app/pages/dashboard/account-details/transactions-list/transactions-list.component';
 import { AccountInfoComponent } from '@app/pages/dashboard/account-details/account-info/account-info.component';
+import { AccountFullData } from '@app/models/account-full.data';
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
@@ -57,7 +58,10 @@ export default class AccountDetailsComponent {
       map(params => params.get('id')!),
     );
 
-    // const infoCalculator$ = accountId$.pipe(map(id => this.calculatorProvider.getCalculator(id)));
+    this.fullInfo$ = accountId$.pipe(
+      map(id => this.calculatorProvider.getCalculator(id)),
+      switchMap(calculator => calculator.calculatedData$),
+    );
 
     const account$ = accountId$.pipe(map(id => this.data.accounts.withId(id)));
     const operations$ = account$.pipe(map(account => account.operations));
@@ -80,6 +84,7 @@ export default class AccountDetailsComponent {
     this.removeTransaction$ = (id: string) => operations$.pipe(switchMap(operations => operations.withId(id).delete()));
   }
 
+  fullInfo$: Observable<AccountFullData>;
   accountData$: Observable<AccountData | null>;
   accountName$: Observable<string>;
   transactions$: Observable<TransactionViewModel[]>;
