@@ -7,7 +7,6 @@ import { TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiButtonModule, TuiDialogService, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { firestoreAutoId } from '@app/models/identifiable';
 import { AccountsTableComponent } from './accounts-table/accounts-table.component';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,10 +54,6 @@ export default class DashboardComponent {
   }
 
   private updateAccount(model: AccountData): void {
-    if (model.id === '') {
-      model.id = firestoreAutoId();
-    }
-
     this.isLoading = true;
     this.data.accounts
       .withId(model.id)

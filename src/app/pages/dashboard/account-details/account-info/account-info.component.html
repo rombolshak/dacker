@@ -2,14 +2,14 @@
   <h3 class="tui-island__category">Сумма</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
   <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
-    <tui-money [value]="fullInfo.currentAmount"></tui-money>
+    <tui-money [value]="fullInfo.currentMoney | moneyAmount"></tui-money>
   </p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Доход</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
   <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
-    <tui-money [value]="fullInfo.receivedProfit"></tui-money>
+    <tui-money [value]="fullInfo.receivedProfit | moneyAmount"></tui-money>
   </p>
 </tui-island>
 <tui-island size="s">

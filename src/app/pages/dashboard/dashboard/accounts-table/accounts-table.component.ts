@@ -12,7 +12,7 @@ import {
   TuiTooltipModule,
 } from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
-import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
+import { TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
 import { AccountTableData } from './account-table.data';
 import { RouterLink } from '@angular/router';
@@ -95,11 +95,9 @@ export class AccountsTableComponent {
       id: model.id,
       name: model.name,
       bank: this.banks.findById(model.bank)?.name ?? '',
-      openedAt: TuiDay.fromLocalNativeDate(model.openedAt.toDate()),
+      openedAt: model.openedAt,
       duration: model.duration,
-      closingAt: model.duration
-        ? TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration })
-        : null,
+      closingAt: model.duration ? model.openedAt.append({ day: model.duration }) : null,
       additionalInfo: {
         canWithdraw: this.getCanWithdrawContent(model),
         canContribute: this.getCanContributeContent(model),

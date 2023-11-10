@@ -6,7 +6,7 @@
   </div>
   <div class="amount">
     <tui-money
-      [value]="transaction.amount"
+      [value]="transaction.amount | moneyAmount"
       [colored]="true"
       [tuiHint]="transaction.memo"
       [class.dashed]="transaction.memo.length"></tui-money>

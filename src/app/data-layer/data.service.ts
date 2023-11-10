@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AccountData } from '@app/models/account.data';
-import { OperationData } from '@app/models/operation.data';
+import { AccountData, accountDataConverter } from '@app/models/account.data';
+import { OperationData, operationDataConverter } from '@app/models/operation.data';
 import {
   DefaultEntityListRequestBuilder,
   EntityListRequestBuilder,
@@ -10,10 +10,14 @@ import { StorageService } from '@app/data-layer/storage.service';
 
 export class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
   constructor(storage: StorageService, accountPath: string) {
-    super(storage, accountPath);
+    super(storage, accountPath, accountDataConverter);
   }
 
-  public operations = new DefaultEntityListRequestBuilder<OperationData>(this.storage, `${this.entityPath}/operations`);
+  public operations = new DefaultEntityListRequestBuilder<OperationData>(
+    this.storage,
+    `${this.entityPath}/operations`,
+    operationDataConverter,
+  );
 }
 
 @Injectable({
@@ -25,6 +29,7 @@ export class DataService {
   public accounts = new EntityListRequestBuilder<AccountData, AccountRequestBuilder>(
     this.storage,
     'accounts',
+    accountDataConverter,
     id => new AccountRequestBuilder(this.storage, `accounts/${id}`),
   );
   // public operations: OperationsRequestBuilder;

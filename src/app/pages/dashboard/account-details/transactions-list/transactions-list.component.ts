@@ -4,11 +4,12 @@ import { TransactionViewModel } from '@app/pages/dashboard/account-details/trans
 import { operationTypeStringify } from '../localization.helper';
 import { TuiHintModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiMoneyModule } from '@taiga-ui/addon-commerce';
+import { MoneyAmountPipe } from '@app/pipes/money-amount.pipe';
 
 @Component({
   selector: 'monitraks-transactions-list',
   standalone: true,
-  imports: [CommonModule, TuiSvgModule, TuiMoneyModule, TuiHintModule],
+  imports: [CommonModule, TuiSvgModule, TuiMoneyModule, TuiHintModule, MoneyAmountPipe],
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

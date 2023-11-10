@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiDay, TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiAppearance, TuiDialogService, TuiLoaderModule } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
@@ -11,8 +11,7 @@ import { TuiAvatarModule } from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/add-account.component';
-import { OperationData } from '@app/models/operation.data';
-import { Timestamp } from '@angular/fire/firestore';
+import { OperationData, OperationData2 } from '@app/models/operation.data';
 import { firestoreAutoId } from '@app/models/identifiable';
 import { TransactionViewModel } from '@app/pages/dashboard/account-details/transaction.view-model';
 import { AccountInfoCalculatorProviderService } from '@app/services/account-info-calculator-provider.service';
@@ -24,6 +23,7 @@ import {
 import { TransactionsListComponent } from '@app/pages/dashboard/account-details/transactions-list/transactions-list.component';
 import { AccountInfoComponent } from '@app/pages/dashboard/account-details/account-info/account-info.component';
 import { AccountFullData } from '@app/models/account-full.data';
+import { Money } from '@app/models/money';
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
@@ -94,13 +94,13 @@ export default class AccountDetailsComponent {
   transactionToEdit: TransactionFields | null = null;
 
   public saveTransaction(formData: TransactionFields) {
-    const operationData = {
-      id: formData.id ?? firestoreAutoId(),
-      date: Timestamp.fromDate(formData.date!.toLocalNativeDate()),
-      type: formData.type!,
-      amount: formData.amount!,
-      memo: formData.memo,
-    } satisfies OperationData;
+    const operationData = new OperationData2(
+      formData.id ?? firestoreAutoId(),
+      formData.date!,
+      formData.type!,
+      Money.fromView(formData.amount!),
+      formData.memo,
+    ) satisfies OperationData;
     this.hideTransactionForm();
     this._lastSavedTransactionId = operationData.id;
     this.updateTransaction$(operationData).subscribe();
@@ -169,21 +169,21 @@ export default class AccountDetailsComponent {
   private readonly toViewModel = (data: OperationData): TransactionViewModel => {
     return {
       id: data.id,
-      date: TuiDay.fromLocalNativeDate(data.date.toDate()),
+      date: data.date,
       memo: data.memo ?? '',
       type: data.type,
-      amount: data.amount >= 0 && ['withdrawal', 'commission'].includes(data.type) ? -data.amount : data.amount,
+      amount: ['withdrawal', 'commission'].includes(data.type) ? data.money.toNegative() : data.money,
       justSaved: data.id === this._lastSavedTransactionId,
     };
   };
 
-  private readonly fromViewModel = (model: TransactionViewModel) => {
+  private readonly fromViewModel = (model: TransactionViewModel): TransactionFields => {
     return {
       id: model.id,
       date: model.date,
       memo: model.memo,
       type: model.type,
-      amount: model.amount < 0 && ['withdrawal', 'commission'].includes(model.type) ? -model.amount : model.amount,
+      amount: model.amount.toPositive().toView(),
     };
   };
 

@@ -3,12 +3,11 @@ import { Auth } from '@angular/fire/auth';
 import {
   collection,
   Firestore,
-  CollectionReference,
-  DocumentReference,
   doc,
   setDoc,
   deleteDoc,
   onSnapshot,
+  FirestoreDataConverter,
 } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -24,8 +23,8 @@ export class StorageService {
     private statusService: StorageStatusService,
   ) {}
 
-  getAll<T>(collectionName: string): Observable<T[]> {
-    const ref = collection(this.store, this.getAuthPart(), collectionName) as CollectionReference<T>;
+  getAll<T>(collectionName: string, converter: FirestoreDataConverter<T>): Observable<T[]> {
+    const ref = collection(this.store, this.getAuthPart(), collectionName).withConverter(converter);
     return new Observable(observer => {
       this.statusService.initLoading(collectionName);
       return onSnapshot(
@@ -39,8 +38,8 @@ export class StorageService {
     });
   }
 
-  get<T>(entityPath: string): Observable<T | null> {
-    const ref = doc(this.store, this.getAuthPart(), entityPath) as DocumentReference<T>;
+  get<T>(entityPath: string, converter: FirestoreDataConverter<T>): Observable<T | null> {
+    const ref = doc(this.store, this.getAuthPart(), entityPath).withConverter(converter);
     return new Observable(observer => {
       this.statusService.initLoading(entityPath);
       return onSnapshot(
@@ -54,8 +53,8 @@ export class StorageService {
     });
   }
 
-  set<T>(entityPath: string, data: T): Observable<void> {
-    const ref = doc(this.store, this.getAuthPart(), entityPath) as DocumentReference<T>;
+  set<T>(entityPath: string, data: T, converter: FirestoreDataConverter<T>): Observable<void> {
+    const ref = doc(this.store, this.getAuthPart(), entityPath).withConverter(converter);
     this.statusService.initSaving(entityPath);
     return fromPromise(setDoc(ref, data)).pipe(tap(() => this.statusService.finishSaving(entityPath)));
   }

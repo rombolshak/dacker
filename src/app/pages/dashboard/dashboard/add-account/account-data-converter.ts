@@ -1,9 +1,9 @@
-import { AccountData } from '@app/models/account.data';
+import { AccountData, AccountData2 } from '@app/models/account.data';
 import { AccountFormData } from './account-form.data';
-import { Timestamp } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
-import { TuiDay } from '@taiga-ui/cdk';
+import { Money } from '@app/models/money';
+import { firestoreAutoId } from '@app/models/identifiable';
 
 @Injectable({
   providedIn: 'root',
@@ -11,29 +11,28 @@ import { TuiDay } from '@taiga-ui/cdk';
 export class AccountDataConverter {
   constructor(private readonly banks: BankInfoService) {}
   public toModel(formData: AccountFormData): AccountData {
-    return {
-      id: formData.id,
-      name: formData.name,
-      bank: formData.bank.id,
-      openedAt: Timestamp.fromDate(formData.dates.openedDate.toLocalNativeDate()),
-      duration: formData.dates.isOpenEnded ? null : formData.dates.durationDays,
-      canWithdraw: formData.canWithdraw,
-      canContribute: formData.canContribute,
-      interestSchedule: {
+    const id = formData.id === '' ? firestoreAutoId() : formData.id;
+    return new AccountData2(
+      id,
+      formData.name,
+      formData.bank.id,
+      formData.dates.openedDate,
+      formData.dates.isOpenEnded ? null : formData.dates.durationDays,
+      formData.interest.monthSteps.map((month, i) => {
+        const rates = formData.interest.moneySteps.map((step, j) => {
+          return { money: Money.fromView(step), rate: formData.interest.rates[i][j] };
+        });
+        return { month: month, rates: rates };
+      }),
+      formData.canWithdraw,
+      formData.canContribute,
+      {
         type: formData.interestSchedule.repeatOption!,
         day: formData.interestSchedule.repeatDay,
         isCapitalizing: formData.interestSchedule.isCapitalizing,
       },
-
-      interest: formData.interest.monthSteps.map((month, i) => {
-        const rates = formData.interest.moneySteps.map((step, j) => {
-          return { money: step, rate: formData.interest.rates[i][j] };
-        });
-        return { month: month, rates: rates };
-      }),
-
-      interestBase: formData.interestSchedule.basis,
-    } satisfies AccountData;
+      formData.interestSchedule.basis,
+    );
   }
 
   public fromModel(model: AccountData): AccountFormData {
@@ -42,13 +41,10 @@ export class AccountDataConverter {
       name: model.name,
       bank: this.banks.findById(model.bank)!,
       dates: {
-        openedDate: TuiDay.fromLocalNativeDate(model.openedAt.toDate()),
+        openedDate: model.openedAt,
         isOpenEnded: model.duration === null,
         durationDays: model.duration,
-        closingDate:
-          model.duration === null
-            ? null
-            : TuiDay.fromLocalNativeDate(model.openedAt.toDate()).append({ day: model.duration }),
+        closingDate: model.duration === null ? null : model.openedAt.append({ day: model.duration }),
       },
       canWithdraw: model.canWithdraw,
       canContribute: model.canContribute,
@@ -59,7 +55,7 @@ export class AccountDataConverter {
         repeatDay: model.interestSchedule.day,
       },
       interest: {
-        moneySteps: model.interest[0].rates.map(r => r.money),
+        moneySteps: model.interest[0].rates.map(r => r.money.toView()),
         monthSteps: model.interest.map(m => m.month),
         rates: model.interest.map(m => m.rates.map(r => r.rate)),
       },
