@@ -1,11 +1,11 @@
 import { AccountDataConverter } from './account-data-converter';
 import { AccountFormData } from './account-form.data';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Timestamp } from '@angular/fire/firestore';
 import { TestBed } from '@angular/core/testing';
-import { AccountData } from '@app/models/account.data';
+import { AccountData, AccountData2 } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { BankInfo } from '@app/pages/dashboard/services/bank-info';
+import { Money } from '@app/models/money';
 
 class FakeBankInfoService {
   public findById(id: string): BankInfo | null {
@@ -49,30 +49,22 @@ describe('AccountDataConverter', () => {
     },
   };
 
-  const modelData: AccountData = {
-    name: 'test-name',
-    id: 'test-id',
-    bank: 'test-bank-id',
-    canContribute: true,
-    canWithdraw: false,
-    interestBase: 'monthlyMin',
-    interestSchedule: {
-      type: 'monthly',
-      day: 22,
-      isCapitalizing: true,
-    },
-    openedAt: Timestamp.fromDate(TuiDay.currentLocal().toLocalNativeDate()),
-    duration: 111,
-    interest: [
+  const modelData: AccountData = new AccountData2(
+    'test-id',
+    'test-name',
+    'test-bank-id',
+    TuiDay.currentLocal(),
+    111,
+    [
       {
         month: 1,
         rates: [
           {
-            money: 10000,
+            money: Money.fromView(10000),
             rate: 1,
           },
           {
-            money: 50000,
+            money: Money.fromView(50000),
             rate: 2,
           },
         ],
@@ -81,11 +73,11 @@ describe('AccountDataConverter', () => {
         month: 4,
         rates: [
           {
-            money: 10000,
+            money: Money.fromView(10000),
             rate: 3,
           },
           {
-            money: 50000,
+            money: Money.fromView(50000),
             rate: 4,
           },
         ],
@@ -94,17 +86,25 @@ describe('AccountDataConverter', () => {
         month: 7,
         rates: [
           {
-            money: 10000,
+            money: Money.fromView(10000),
             rate: 5,
           },
           {
-            money: 50000,
+            money: Money.fromView(50000),
             rate: 6,
           },
         ],
       },
     ],
-  };
+    false,
+    true,
+    {
+      type: 'monthly',
+      day: 22,
+      isCapitalizing: true,
+    },
+    'monthlyMin',
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -124,6 +124,8 @@ describe('AccountDataConverter', () => {
 
   it('should convert fill all fields', () => {
     const result = service.toModel(formData);
+    console.log(result);
+    console.log(modelData);
     expect(result).toEqual(modelData);
   });
 
