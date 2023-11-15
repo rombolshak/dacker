@@ -1,9 +1,10 @@
-import { AccountData, AccountData2 } from '@app/models/account.data';
+import { AccountData } from '@app/models/account.data';
 import { AccountFormData } from './account-form.data';
 import { Injectable } from '@angular/core';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { Money } from '@app/models/money';
 import { firestoreAutoId } from '@app/models/identifiable';
+import { AccountData2 } from '@app/models/account/accountData2';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,7 @@ export class AccountDataConverter {
   }
 
   public fromModel(model: AccountData): AccountFormData {
+    console.log(model.interest);
     return {
       id: model.id,
       name: model.name,

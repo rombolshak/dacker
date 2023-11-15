@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AccountData, accountDataConverter } from '@app/models/account.data';
-import { OperationData, operationDataConverter } from '@app/models/operation.data';
+import { AccountData } from '@app/models/account.data';
+import { OperationData } from '@app/models/operation.data';
 import {
   DefaultEntityListRequestBuilder,
   EntityListRequestBuilder,
   EntityRequestBuilder,
 } from '@app/data-layer/request.builder';
 import { StorageService } from '@app/data-layer/storage.service';
+import { accountDataConverter } from '@app/data-layer/converters/accountDataConverter';
+import { operationDataConverter } from '@app/data-layer/converters/operationDataConverter';
 
 export class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
   constructor(storage: StorageService, accountPath: string) {

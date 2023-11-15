@@ -18,10 +18,12 @@ export class AccountInfoCalculator {
 
   private calculate(accountData: AccountData, operations: OperationData[]): AccountFullData {
     return {
-      id: accountData.id,
+      accountData: accountData,
       currentMoney: operations.reduce((total, value) => total.add(this.getCorrectedAmount(value)), Money.zero),
       receivedProfit: operations.reduce((total, value) => total.add(this.getProfit(value)), Money.zero),
       rate: this.getCurrentRate(accountData, operations),
+      transactions: operations,
+      futureTransactions: [],
     };
   }
 
@@ -92,10 +94,10 @@ export class AccountInfoCalculator {
     const currentAmount = currentOperations[currentOperations.length - 1].amount;
 
     const profitableAmount = accountData.interestBase === 'everyDay' ? currentAmount : minAmount;
-    const monthRate = accountData.interest
+    const monthRate = [...accountData.interest]
       .sort((a, b) => b.month - a.month)
       .find(mr => mr.month <= currentPeriodNumber)!;
-    const amountRate = monthRate.rates
+    const amountRate = [...monthRate.rates]
       .sort((a, b) => b.money.amount - a.money.amount)
       .find(ar => ar.money.amount <= profitableAmount)!;
     return amountRate.rate;

@@ -2,10 +2,11 @@ import { AccountDataConverter } from './account-data-converter';
 import { AccountFormData } from './account-form.data';
 import { TuiDay } from '@taiga-ui/cdk';
 import { TestBed } from '@angular/core/testing';
-import { AccountData, AccountData2 } from '@app/models/account.data';
+import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
 import { BankInfo } from '@app/pages/dashboard/services/bank-info';
 import { Money } from '@app/models/money';
+import { AccountData2 } from '@app/models/account/accountData2';
 
 class FakeBankInfoService {
   public findById(id: string): BankInfo | null {
