@@ -1,3 +1,13 @@
+<div *ngFor="let transaction of futureTransactions" class="transaction">
+  <div class="date">
+    {{ transaction.date }}
+  </div>
+  <div class="amount">
+    <tui-money [value]="transaction.amount | moneyAmount" [colored]="false"></tui-money>
+    <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
+  </div>
+</div>
+
 <div *ngFor="let transaction of transactions" class="transaction" [class.just-saved]="transaction.justSaved">
   <div class="date">
     {{ transaction.date }}

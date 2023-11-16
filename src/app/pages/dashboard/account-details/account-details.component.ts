@@ -72,6 +72,9 @@ export default class AccountDetailsComponent {
       map(account => account.transactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? -1 : 1))),
       shareReplay(1),
     );
+    this.futureTransactions$ = this.fullInfo$.pipe(
+      map(account => account.futureTransactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? -1 : 1))),
+    );
 
     this.removeAccount$ = account$.pipe(switchMap(account => account.delete()));
     this.updateTransaction$ = (model: OperationData) =>
@@ -83,6 +86,7 @@ export default class AccountDetailsComponent {
   fullInfo$: Observable<AccountFullData>;
   accountName$: Observable<string>;
   transactions$: Observable<TransactionViewModel[]>;
+  futureTransactions$: Observable<TransactionViewModel[]>;
   isLoading = true;
 
   showTransactionForm = false;

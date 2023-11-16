@@ -43,11 +43,12 @@ export class EntityListRequestBuilder<
     protected readonly storage: StorageService,
     protected readonly collectionPath: string,
     protected readonly converter: FirestoreDataConverter<TEntity>,
+    protected readonly sortField: keyof TEntity,
     private entityBuilderFactory: (id: string) => TEntityRequestBuilder,
   ) {}
 
   public getAll(): Observable<TEntity[]> {
-    return this.storage.getAll<TEntity>(this.collectionPath, this.converter);
+    return this.storage.getAll<TEntity>(this.collectionPath, this.converter, this.sortField);
   }
 
   public withId(id: string): TEntityRequestBuilder {
@@ -59,11 +60,17 @@ export class DefaultEntityListRequestBuilder<TEntity extends Identifiable> exten
   TEntity,
   EntityRequestBuilder<TEntity>
 > {
-  constructor(storage: StorageService, collectionPath: string, converter: FirestoreDataConverter<TEntity>) {
+  constructor(
+    storage: StorageService,
+    collectionPath: string,
+    converter: FirestoreDataConverter<TEntity>,
+    sortField: keyof TEntity,
+  ) {
     super(
       storage,
       collectionPath,
       converter,
+      sortField,
       id => new EntityRequestBuilder<TEntity>(storage, `${collectionPath}/${id}`, converter),
     );
   }

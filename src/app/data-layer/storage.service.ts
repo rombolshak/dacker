@@ -8,6 +8,8 @@ import {
   deleteDoc,
   onSnapshot,
   FirestoreDataConverter,
+  orderBy,
+  query,
 } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -23,12 +25,13 @@ export class StorageService {
     private statusService: StorageStatusService,
   ) {}
 
-  getAll<T>(collectionName: string, converter: FirestoreDataConverter<T>): Observable<T[]> {
+  getAll<T>(collectionName: string, converter: FirestoreDataConverter<T>, sortField: keyof T): Observable<T[]> {
     const ref = collection(this.store, this.getAuthPart(), collectionName).withConverter(converter);
+    const q = query(ref, orderBy(sortField as string));
     return new Observable(observer => {
       this.statusService.initLoading(collectionName);
       return onSnapshot(
-        ref,
+        q,
         snapshot => {
           observer.next(snapshot.docs.map(doc => doc.data()));
           this.statusService.finishLoading(collectionName);

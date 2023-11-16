@@ -18,6 +18,9 @@ export class TransactionsListComponent {
   @Input()
   public transactions: TransactionViewModel[] | null = null;
 
+  @Input()
+  public futureTransactions: TransactionViewModel[] | null = null;
+
   @Output()
   public edit = new EventEmitter<TransactionViewModel>();
 

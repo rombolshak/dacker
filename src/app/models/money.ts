@@ -1,5 +1,7 @@
 ﻿export class Money {
-  constructor(public readonly amount: number) {}
+  constructor(public readonly amount: number) {
+    this.amount = Math.round(this.amount);
+  }
 
   toView(): number {
     return this.amount / 100;
@@ -11,9 +13,13 @@
 
   static zero: Money = new Money(0);
 
-  add(other: Money | number): Money {
-    if (typeof other === 'number') return new Money(this.amount + other);
+  add(other: Money): Money {
+    // if (typeof other === 'number') return new Money(this.amount + other);
     return new Money(this.amount + other.amount);
+  }
+
+  getProfit(rate: number, duration: number): Money {
+    return new Money((((this.amount * rate) / 100) * duration) / 365);
   }
 
   isNegative(): boolean {
@@ -28,5 +34,9 @@
   toNegative(): Money {
     if (this.isNegative()) return this;
     return new Money(-this.amount);
+  }
+
+  valueOf(): number {
+    return this.amount;
   }
 }

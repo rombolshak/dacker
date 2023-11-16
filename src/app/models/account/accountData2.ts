@@ -4,7 +4,7 @@ import { Money } from '@app/models/money';
 import { InterestBase, RepeatOption } from '@app/models/account.data';
 
 type MoneyStepRate2 = { money: Money; rate: number };
-type MonthInterest2 = { month: number; rates: readonly MoneyStepRate2[] };
+export type MonthInterest2 = { month: number; rates: readonly MoneyStepRate2[] };
 type AccountInterest2 = readonly MonthInterest2[];
 type InterestSchedule = { type: RepeatOption; day: number | null; isCapitalizing: boolean };
 

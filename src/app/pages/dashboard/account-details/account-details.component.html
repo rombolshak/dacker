@@ -31,6 +31,7 @@
           *ngIf="showTransactionForm"></monitraks-transaction-form>
         <monitraks-transactions-list
           [transactions]="transactions$ | async"
+          [futureTransactions]="futureTransactions$ | async"
           (edit)="editTransaction($event)"
           (remove)="removeTransaction($event.id)"></monitraks-transactions-list>
       </div>

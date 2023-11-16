@@ -19,6 +19,7 @@ export class AccountRequestBuilder extends EntityRequestBuilder<AccountData> {
     this.storage,
     `${this.entityPath}/operations`,
     operationDataConverter,
+    'date',
   );
 }
 
@@ -32,6 +33,7 @@ export class DataService {
     this.storage,
     'accounts',
     accountDataConverter,
+    'openedAt',
     id => new AccountRequestBuilder(this.storage, `accounts/${id}`),
   );
   // public operations: OperationsRequestBuilder;
