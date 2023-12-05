@@ -70,7 +70,7 @@ export class AccountInfoCalculator {
       const next = paymentDays[i];
       const money = this.getTransactionsResultAt([...operations, ...futureTransactions], last);
       const profit = this.getPeriodProfit(accountData, operations, last, next, money);
-      futureTransactions.push(new OperationData2(`future-${i}`, next, 'interest', profit, null));
+      futureTransactions.push(new OperationData2('', next, 'interest', profit, null));
     }
 
     return futureTransactions;

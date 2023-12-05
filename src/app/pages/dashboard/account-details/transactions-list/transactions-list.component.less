@@ -1,4 +1,19 @@
 @import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+.pulse-animation(@class, @color, @duration: 300ms, @repeats: 1) {
+  @animation-name: ~'pulse-color-@{class}';
+  @keyframes @animation-name {
+    50% {
+      background-color: @color;
+    }
+  }
+
+  &.@{class} {
+    // prettier-ignore
+    animation: @animation-name ease-in-out @duration @repeats;
+  }
+}
+
 :host {
   padding: 0 1rem;
   .transaction {
@@ -51,13 +66,13 @@
     }
 
     &.just-saved {
-      animation: pulse-color ease-in-out 300ms 2;
+      .pulse-animation(just-saved, var(--tui-secondary), 300ms, 2);
     }
 
-    @keyframes pulse-color {
-      50% {
-        background-color: var(--tui-secondary);
-      }
+    &.future {
+      color: var(--tui-base-05);
+
+      .pulse-animation(passed, var(--tui-warning-bg), 2s, 100);
     }
   }
 }

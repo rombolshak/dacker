@@ -1,6 +1,14 @@
-<div *ngFor="let transaction of futureTransactions" class="transaction">
+<div
+  *ngFor="let transaction of futureTransactions"
+  class="transaction future"
+  [class.passed]="isTransactionPassed(transaction)">
   <div class="date">
     {{ transaction.date }}
+    <tui-svg *ngIf="isTransactionPassed(transaction)" src="tuiIconEdit2" (click)="edit.emit(transaction)"></tui-svg>
+    <tui-svg
+      *ngIf="isTransactionPassed(transaction)"
+      src="tuiIconCheckCircle"
+      (click)="approve.emit(transaction)"></tui-svg>
   </div>
   <div class="amount">
     <tui-money [value]="transaction.amount | moneyAmount" [colored]="false"></tui-money>

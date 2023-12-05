@@ -33,7 +33,8 @@
           [transactions]="transactions$ | async"
           [futureTransactions]="futureTransactions$ | async"
           (edit)="editTransaction($event)"
-          (remove)="removeTransaction($event.id)"></monitraks-transactions-list>
+          (remove)="removeTransaction($event.id)"
+          (approve)="approveTransaction($event)"></monitraks-transactions-list>
       </div>
     </ng-container>
   </div>

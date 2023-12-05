@@ -5,6 +5,7 @@ import { operationTypeStringify } from '../localization.helper';
 import { TuiHintModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiMoneyModule } from '@taiga-ui/addon-commerce';
 import { MoneyAmountPipe } from '@app/pipes/money-amount.pipe';
+import { TuiDay } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'monitraks-transactions-list',
@@ -27,5 +28,12 @@ export class TransactionsListComponent {
   @Output()
   public remove = new EventEmitter<TransactionViewModel>();
 
+  @Output()
+  public approve = new EventEmitter<TransactionViewModel>();
+
   operationTypeStringify = operationTypeStringify;
+
+  public readonly isTransactionPassed = (model: TransactionViewModel) => {
+    return model.date.daySameOrBefore(TuiDay.currentLocal());
+  };
 }

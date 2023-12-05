@@ -94,7 +94,7 @@ export default class AccountDetailsComponent {
 
   public saveTransaction(formData: TransactionFields) {
     const operationData = new OperationData2(
-      formData.id ?? firestoreAutoId(),
+      formData.id.length > 0 ? formData.id : firestoreAutoId(),
       formData.date!,
       formData.type!,
       Money.fromView(formData.amount!),
@@ -165,6 +165,10 @@ export default class AccountDetailsComponent {
   public editTransaction(model: TransactionViewModel): void {
     this.transactionToEdit = this.fromViewModel(model);
     this.showTransactionForm = true;
+  }
+
+  public approveTransaction(model: TransactionViewModel): void {
+    this.saveTransaction(this.fromViewModel(model));
   }
 
   private readonly toViewModel = (data: OperationData): TransactionViewModel => {

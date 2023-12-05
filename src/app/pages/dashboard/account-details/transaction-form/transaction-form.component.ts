@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiDay } from '@taiga-ui/cdk';
+import { TuiAutoFocusModule, TuiDay } from '@taiga-ui/cdk';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OperationType } from '@app/models/operation.data';
 import {
@@ -22,7 +22,7 @@ export type TransactionFields = {
   date: TuiDay;
   amount: number | null;
   memo: string | null;
-  id: string | null;
+  id: string;
   type: OperationType | null;
 };
 type TransactionForm = ControlsOf<TransactionFields>;
@@ -42,6 +42,7 @@ type TransactionForm = ControlsOf<TransactionFields>;
     TuiDataListWrapperModule,
     TuiStringifyContentPipeModule,
     TuiCurrencyPipeModule,
+    TuiAutoFocusModule,
   ],
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.less'],
@@ -63,7 +64,7 @@ export class TransactionFormComponent {
 
   constructor(fb: FormBuilder) {
     this.transactionForm = fb.group({
-      id: fb.control<string | null>(null),
+      id: fb.nonNullable.control<string>(''),
       date: fb.nonNullable.control(TuiDay.currentLocal(), Validators.required),
       type: fb.control<OperationType | null>(null, Validators.required),
       amount: fb.control<number | null>(null, Validators.required),
