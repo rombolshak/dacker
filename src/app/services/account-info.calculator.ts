@@ -3,7 +3,7 @@ import { combineLatest, filter, map, Observable } from 'rxjs';
 import { OperationData } from '@app/models/operation.data';
 import { AccountFullData } from '@app/models/account-full.data';
 import { AccountData, MonthInterest } from '@app/models/account.data';
-import { TuiDay, TuiDayLike, TuiMonth } from '@taiga-ui/cdk';
+import { TuiDay, TuiDayLike, TuiMonth, TuiYear } from '@taiga-ui/cdk';
 import { Money } from '@app/models/money';
 import { OperationData2 } from '@app/models/operation/operationData2';
 
@@ -146,13 +146,36 @@ export class AccountInfoCalculator {
     // eslint-disable-next-line no-constant-condition
     while (true) {
       if (closingDate === null && result.length === 3) break;
-      const nextPayment = afterDay.append(period);
+
+      const nextPayment = this.getNextPayment(account, afterDay, period);
       if (closingDate !== null && nextPayment.dayAfter(closingDate)) break;
       result.push(nextPayment);
       afterDay = nextPayment;
     }
 
     return result;
+  }
+
+  private getNextPayment(account: AccountData, afterDay: TuiDay, period: TuiDayLike) {
+    const isEndOfMonthSchedule = account.interestSchedule.type === 'monthly' && account.interestSchedule.day === 31;
+    if (isEndOfMonthSchedule) {
+      const lastDayOfMonth = TuiDay.normalizeOf(
+        afterDay.year,
+        afterDay.month,
+        TuiDay.getMonthDaysCount(afterDay.month, TuiYear.isLeapYear(afterDay.year)),
+      );
+
+      if (afterDay.dayBefore(lastDayOfMonth)) return lastDayOfMonth;
+
+      const nextMonth = lastDayOfMonth.append({ month: 1 });
+      return TuiDay.normalizeOf(
+        nextMonth.year,
+        nextMonth.month,
+        TuiDay.getMonthDaysCount(nextMonth.month, TuiYear.isLeapYear(nextMonth.year)),
+      );
+    }
+
+    return afterDay.append(period);
   }
 
   private getLastPaymentDay(account: AccountData, operations: OperationData[]): TuiDay {
