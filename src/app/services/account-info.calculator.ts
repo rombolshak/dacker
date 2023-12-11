@@ -6,6 +6,7 @@ import { AccountData, MonthInterest } from '@app/models/account.data';
 import { TuiDay, TuiDayLike, TuiMonth, TuiYear } from '@taiga-ui/cdk';
 import { Money } from '@app/models/money';
 import { OperationData2 } from '@app/models/operation/operationData2';
+import { calculate } from '@webcarrot/xirr';
 
 export class AccountInfoCalculator {
   constructor(accountRequestBuilder: AccountRequestBuilder) {
@@ -22,6 +23,9 @@ export class AccountInfoCalculator {
 
     const currentMoney = this.getTransactionsResultAt(operations, today, accountData.interestSchedule.isCapitalizing);
     const currentRate = this.getRate(accountData, today, currentMoney);
+    const closingDate =
+      accountData.duration !== null ? accountData.openedAt.append({ day: accountData.duration }) : null;
+    const remainingDuration = closingDate !== null ? TuiDay.lengthBetween(today, closingDate) : null;
 
     return {
       accountData: accountData,
@@ -30,6 +34,9 @@ export class AccountInfoCalculator {
       receivedProfit: operations.reduce((total, value) => total.add(this.getProfit(value)), Money.zero),
       rate: currentRate,
       futureTransactions: this.getFutureTransactions(accountData, operations),
+      closingDate: closingDate,
+      remainingDuration: remainingDuration,
+      xirr: this.getXirr(operations, currentRate, today),
     };
   }
 
@@ -211,6 +218,37 @@ export class AccountInfoCalculator {
         return { month: 6 };
       case 'annually':
         return { year: 1 };
+    }
+  }
+
+  private getXirr(operations: OperationData[], currentRate: number, today: TuiDay) {
+    if (operations.length < 2) return 0;
+    const firstDate = operations[0].date;
+    const currentMoney = this.getTransactionsResultAt(operations, today, false);
+    const normalizedOps = [
+      ...operations.map(op => {
+        return {
+          amount: this.getXirrAmount(op),
+          date: TuiDay.lengthBetween(firstDate, op.date) / 365,
+        };
+      }),
+      {
+        amount: currentMoney.amount,
+        date: TuiDay.lengthBetween(firstDate, today) / 365,
+      },
+    ];
+
+    return calculate(normalizedOps, currentRate / 100, 1e-4) * 100;
+  }
+
+  private getXirrAmount(operation: OperationData): number {
+    switch (operation.type) {
+      case 'contribution':
+      case 'withdrawal':
+        return -operation.money.amount;
+      case 'interest':
+      case 'commission':
+        return operation.money.amount;
     }
   }
 }

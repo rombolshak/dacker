@@ -1,4 +1,4 @@
-<tui-island size="m">
+<tui-island size="s">
   <h3 class="tui-island__category">Сумма</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
   <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
@@ -20,14 +20,16 @@
 <tui-island size="s">
   <h3 class="tui-island__category">Доходность</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
-  <p class="tui-island__content" *ngIf="fullInfo !== null"><tui-money [value]="45212"></tui-money></p>
+  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">{{ fullInfo.xirr.toFixed(3) }}%</p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Закрытие</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
   <p class="tui-island__content" *ngIf="fullInfo !== null">
-    <span>через 297 дней</span>
-    <span>01.12.2024</span>
+    <ng-container *ngIf="fullInfo.closingDate !== null">
+      <span>через {{ fullInfo.remainingDuration }} дней</span>
+      <span>{{ fullInfo.closingDate }}</span>
+    </ng-container>
   </p>
 </tui-island>
 <tui-island size="s">

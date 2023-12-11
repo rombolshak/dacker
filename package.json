@@ -36,6 +36,7 @@
     "@taiga-ui/styles": "^3.42.1",
     "@tinkoff/ng-dompurify": "4.0.0",
     "@tinkoff/ng-polymorpheus": "^4.1.0",
+    "@webcarrot/xirr": "^1.0.3",
     "dompurify": "3.0.5",
     "firebase": "^9.23.0",
     "normalize.css": "^8.0.1",
