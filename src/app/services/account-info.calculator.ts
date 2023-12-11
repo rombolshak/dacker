@@ -20,7 +20,7 @@ export class AccountInfoCalculator {
   private calculate(accountData: AccountData, operations: OperationData[]): AccountFullData {
     const today = TuiDay.currentLocal();
 
-    const currentMoney = this.getTransactionsResultAt(operations, today);
+    const currentMoney = this.getTransactionsResultAt(operations, today, accountData.interestSchedule.isCapitalizing);
     const currentRate = this.getRate(accountData, today, currentMoney);
 
     return {
@@ -33,30 +33,25 @@ export class AccountInfoCalculator {
     };
   }
 
-  private getCorrectedAmount(transaction: OperationData): Money {
-    if (this.isNegativeTransaction(transaction)) return transaction.money.toNegative();
-    return transaction.money.toPositive();
-  }
-
   private getProfit(transaction: OperationData): Money {
     switch (transaction.type) {
       case 'commission':
       case 'interest':
-        return this.getCorrectedAmount(transaction);
+        return transaction.money;
       case 'withdrawal':
       case 'contribution':
         return Money.zero;
     }
   }
 
-  private isNegativeTransaction(transaction: OperationData): boolean {
+  private getCapitalized(transaction: OperationData, isAccountCapitalized: boolean): Money {
     switch (transaction.type) {
       case 'commission':
-      case 'withdrawal':
-        return true;
       case 'interest':
+        return isAccountCapitalized ? transaction.money : Money.zero;
+      case 'withdrawal':
       case 'contribution':
-        return false;
+        return transaction.money;
     }
   }
 
@@ -68,7 +63,11 @@ export class AccountInfoCalculator {
     for (let i = 0; i < paymentDays.length; i++) {
       const last = i === 0 ? lastPaymentDay : paymentDays[i - 1];
       const next = paymentDays[i];
-      const money = this.getTransactionsResultAt([...operations, ...futureTransactions], last);
+      const money = this.getTransactionsResultAt(
+        [...operations, ...futureTransactions],
+        last,
+        accountData.interestSchedule.isCapitalizing,
+      );
       const profit = this.getPeriodProfit(accountData, operations, last, next, money);
       futureTransactions.push(new OperationData2('', next, 'interest', profit, null));
     }
@@ -90,7 +89,11 @@ export class AccountInfoCalculator {
     const profitableAmounts = periodOperations.reduce(
       (result, current, index, allOps) => {
         const prevAmount =
-          index === 0 ? moneyAtPeriodStart : result[index - 1].money.add(this.getCorrectedAmount(allOps[index - 1]));
+          index === 0
+            ? moneyAtPeriodStart
+            : result[index - 1].money.add(
+                this.getCapitalized(allOps[index - 1], accountData.interestSchedule.isCapitalizing),
+              );
         const duration = TuiDay.lengthBetween(index === 0 ? lastPaymentDay : allOps[index - 1].date, current.date);
         return [...result, { money: prevAmount, duration: duration }];
       },
@@ -106,6 +109,16 @@ export class AccountInfoCalculator {
         return total.add(current.money.getProfit(rate, current.duration));
       }, Money.zero);
     }
+  }
+
+  private getTransactionsResultAt(
+    transactions: readonly OperationData[],
+    date: TuiDay,
+    isAccountCapitalized: boolean,
+  ): Money {
+    return transactions
+      .filter(t => t.date.daySameOrBefore(date))
+      .reduce((total, current) => total.add(this.getCapitalized(current, isAccountCapitalized)), Money.zero);
   }
 
   private getRate(account: AccountData, day: TuiDay, amount: Money): number {
@@ -199,11 +212,5 @@ export class AccountInfoCalculator {
       case 'annually':
         return { year: 1 };
     }
-  }
-
-  private getTransactionsResultAt(transactions: readonly OperationData[], date: TuiDay): Money {
-    return transactions
-      .filter(t => t.date.daySameOrBefore(date))
-      .reduce((total, current) => total.add(this.getCorrectedAmount(current)), Money.zero);
   }
 }

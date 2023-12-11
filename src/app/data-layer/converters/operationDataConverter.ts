@@ -1,8 +1,20 @@
 import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from '@angular/fire/firestore';
 import { TuiDay } from '@taiga-ui/cdk';
 import { Money } from '@app/models/money';
-import { OperationData, OperationDataDto } from '@app/models/operation.data';
+import { OperationData, OperationDataDto, OperationType } from '@app/models/operation.data';
 import { OperationData2 } from '@app/models/operation/operationData2';
+
+function createMoney(amount: number, operationType: OperationType, v1: boolean = false): Money {
+  if (amount < 0) amount = -amount;
+  switch (operationType) {
+    case 'contribution':
+    case 'interest':
+      return v1 ? Money.fromView(amount) : new Money(amount);
+    case 'withdrawal':
+    case 'commission':
+      return v1 ? Money.fromView(-amount) : new Money(-amount);
+  }
+}
 
 export const operationDataConverter: FirestoreDataConverter<OperationData> = {
   fromFirestore(snapshot: QueryDocumentSnapshot<OperationDataDto>): OperationData {
@@ -12,7 +24,7 @@ export const operationDataConverter: FirestoreDataConverter<OperationData> = {
         data.id,
         TuiDay.fromLocalNativeDate(data.date.toDate()),
         data.type,
-        new Money(data.money.amount),
+        createMoney(data.money.amount, data.type),
         data.memo,
       );
     }
@@ -21,7 +33,7 @@ export const operationDataConverter: FirestoreDataConverter<OperationData> = {
       data.id,
       TuiDay.fromLocalNativeDate(data.date.toDate()),
       data.type,
-      Money.fromView(data.amount),
+      createMoney(data.amount, data.type, true),
       data.memo,
     );
   },
@@ -32,7 +44,7 @@ export const operationDataConverter: FirestoreDataConverter<OperationData> = {
       date: Timestamp.fromDate(modelObject.date.toLocalNativeDate()),
       type: modelObject.type,
       money: {
-        amount: modelObject.money.amount,
+        amount: modelObject.money.toPositive().amount,
       },
       memo: modelObject.memo,
     };

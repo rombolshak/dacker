@@ -13,4 +13,20 @@ export class OperationData2 implements Identifiable {
     public readonly money: Money,
     public readonly memo: string | null,
   ) {}
+
+  private getCorrectedAmount(): Money {
+    if (this.isNegativeTransaction()) return this.money.toNegative();
+    return this.money.toPositive();
+  }
+
+  private isNegativeTransaction(): boolean {
+    switch (this.type) {
+      case 'commission':
+      case 'withdrawal':
+        return true;
+      case 'interest':
+      case 'contribution':
+        return false;
+    }
+  }
 }
