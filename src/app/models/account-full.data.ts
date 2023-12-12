@@ -6,6 +6,7 @@ import { TuiDay } from '@taiga-ui/cdk';
 export interface AccountFullData {
   currentMoney: Money;
   receivedProfit: Money;
+  totalProfit: Money;
   rate: number;
   xirr: number;
 

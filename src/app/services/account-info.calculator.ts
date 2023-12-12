@@ -27,18 +27,26 @@ export class AccountInfoCalculator {
     const closingDate =
       accountData.duration !== null ? accountData.openedAt.append({ day: accountData.duration }) : null;
     const remainingDuration = closingDate !== null ? TuiDay.lengthBetween(today, closingDate) : null;
+    const futureOperations = this.getFutureTransactions(accountData, operations);
+    const profit = this.getOperationsProfit(operations);
+    const futureProfit = this.getOperationsProfit(futureOperations);
 
     return {
       accountData: accountData,
       transactions: operations,
       currentMoney: currentMoney,
-      receivedProfit: operations.reduce((total, value) => total.add(this.getProfit(value)), Money.zero),
+      receivedProfit: profit,
+      totalProfit: futureProfit,
       rate: currentRate,
-      futureTransactions: this.getFutureTransactions(accountData, operations),
+      futureTransactions: futureOperations,
       closingDate: closingDate,
       remainingDuration: remainingDuration,
       xirr: this.getXirr(operations, currentRate),
     };
+  }
+
+  private getOperationsProfit(ops: OperationData[]): Money {
+    return ops.reduce((total, value) => total.add(this.getProfit(value)), Money.zero);
   }
 
   private getProfit(transaction: OperationData): Money {
