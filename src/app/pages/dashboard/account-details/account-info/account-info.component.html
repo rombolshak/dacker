@@ -6,11 +6,17 @@
   </p>
 </tui-island>
 <tui-island size="s">
-  <h3 class="tui-island__category">Доход</h3>
+  <h3 class="tui-island__category">Доход текущий</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
   <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
-    <tui-money [value]="fullInfo.receivedProfit | moneyAmount" class="current-profit"></tui-money>
-    <tui-money [value]="fullInfo.totalProfit | moneyAmount" [singleColor]="true" class="future-profit"></tui-money>
+    <tui-money [value]="fullInfo.receivedProfit | moneyAmount"></tui-money>
+  </p>
+</tui-island>
+<tui-island size="s">
+  <h3 class="tui-island__category">Доход ожидаемый</h3>
+  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
+  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">
+    <tui-money [value]="fullInfo.totalProfit | moneyAmount"></tui-money>
   </p>
 </tui-island>
 <tui-island size="s">

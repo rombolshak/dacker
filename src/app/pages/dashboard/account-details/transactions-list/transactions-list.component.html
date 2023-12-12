@@ -1,3 +1,11 @@
+<div class="transaction show-more" (click)="isFullFutureShow = !isFullFutureShow" *ngIf="isShowMoreVisible">
+  <button tuiLink type="button" [pseudo]="true">
+    <tui-svg src="tuiIconChevronRight" [class.open]="isFullFutureShow"></tui-svg>
+    <span *ngIf="!isFullFutureShow">еще {{ futureListHideCount }} в будущем</span>
+    <span *ngIf="isFullFutureShow">свернуть</span>
+  </button>
+</div>
+
 <tui-elastic-container>
   <div class="transaction-list">
     <div
@@ -16,14 +24,6 @@
         <tui-money [value]="transaction.amount | moneyAmount" [colored]="false"></tui-money>
         <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
       </div>
-    </div>
-
-    <div class="transaction show-more" (click)="isFullFutureShow = !isFullFutureShow" *ngIf="isShowMoreVisible">
-      <button tuiLink type="button" [pseudo]="true">
-        <tui-svg src="tuiIconChevronRight" [class.open]="isFullFutureShow"></tui-svg>
-        <span *ngIf="!isFullFutureShow">еще {{ futureListHideCount }} в будущем</span>
-        <span *ngIf="isFullFutureShow">свернуть</span>
-      </button>
     </div>
   </div>
 </tui-elastic-container>
