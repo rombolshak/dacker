@@ -7,6 +7,7 @@ import { TuiDay, TuiDayLike, TuiMonth, TuiYear } from '@taiga-ui/cdk';
 import { Money } from '@app/models/money';
 import { OperationData2 } from '@app/models/operation/operationData2';
 import { calculate } from '@webcarrot/xirr';
+import { normalizedDuration } from '@app/services/TuiDay.helper';
 
 export class AccountInfoCalculator {
   constructor(accountRequestBuilder: AccountRequestBuilder) {
@@ -36,7 +37,7 @@ export class AccountInfoCalculator {
       futureTransactions: this.getFutureTransactions(accountData, operations),
       closingDate: closingDate,
       remainingDuration: remainingDuration,
-      xirr: this.getXirr(operations, currentRate, today),
+      xirr: this.getXirr(operations, currentRate),
     };
   }
 
@@ -101,7 +102,7 @@ export class AccountInfoCalculator {
             : result[index - 1].money.add(
                 this.getCapitalized(allOps[index - 1], accountData.interestSchedule.isCapitalizing),
               );
-        const duration = TuiDay.lengthBetween(index === 0 ? lastPaymentDay : allOps[index - 1].date, current.date);
+        const duration = normalizedDuration(index === 0 ? lastPaymentDay : allOps[index - 1].date, current.date);
         return [...result, { money: prevAmount, duration: duration }];
       },
       <{ money: Money; duration: number }[]>[],
@@ -109,7 +110,7 @@ export class AccountInfoCalculator {
     if (accountData.interestBase === 'monthlyMin') {
       const minAmount = new Money(Math.min(...profitableAmounts.map(pa => pa.money.amount)));
       const rate = this.getRate(accountData, nextPaymentDay, minAmount);
-      return minAmount.getProfit(rate, TuiDay.lengthBetween(lastPaymentDay, nextPaymentDay));
+      return minAmount.getProfit(rate, normalizedDuration(lastPaymentDay, nextPaymentDay));
     } else {
       return profitableAmounts.reduce((total, current) => {
         const rate = this.getRate(accountData, nextPaymentDay, current.money);
@@ -221,10 +222,11 @@ export class AccountInfoCalculator {
     }
   }
 
-  private getXirr(operations: OperationData[], currentRate: number, today: TuiDay) {
+  private getXirr(operations: OperationData[], currentRate: number) {
     if (operations.length < 2) return 0;
     const firstDate = operations[0].date;
-    const currentMoney = this.getTransactionsResultAt(operations, today, false);
+    const lastDate = operations[operations.length - 1].date;
+    const currentMoney = this.getTransactionsResultAt(operations, lastDate, false);
     const normalizedOps = [
       ...operations.map(op => {
         return {
@@ -234,7 +236,7 @@ export class AccountInfoCalculator {
       }),
       {
         amount: currentMoney.amount,
-        date: TuiDay.lengthBetween(firstDate, today) / 365,
+        date: TuiDay.lengthBetween(firstDate, lastDate) / 365,
       },
     ];
 

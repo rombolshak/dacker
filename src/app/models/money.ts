@@ -1,4 +1,6 @@
-﻿export class Money {
+﻿import { normalizedDuration } from '@app/services/TuiDay.helper';
+
+export class Money {
   constructor(public readonly amount: number) {
     this.amount = Math.round(this.amount);
   }
@@ -18,8 +20,8 @@
     return new Money(this.amount + other.amount);
   }
 
-  getProfit(rate: number, duration: number): Money {
-    return new Money((((this.amount * rate) / 100) * duration) / 365);
+  getProfit(rate: number, normalizedDuration: number): Money {
+    return new Money(((this.amount * rate) / 100) * normalizedDuration);
   }
 
   isNegative(): boolean {
