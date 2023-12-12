@@ -1,33 +1,47 @@
-<div
-  *ngFor="let transaction of futureTransactions"
-  class="transaction future"
-  [class.passed]="isTransactionPassed(transaction)">
-  <div class="date">
-    {{ transaction.date }}
-    <tui-svg *ngIf="isTransactionPassed(transaction)" src="tuiIconEdit2" (click)="edit.emit(transaction)"></tui-svg>
-    <tui-svg
-      *ngIf="isTransactionPassed(transaction)"
-      src="tuiIconCheckCircle"
-      (click)="approve.emit(transaction)"></tui-svg>
-  </div>
-  <div class="amount">
-    <tui-money [value]="transaction.amount | moneyAmount" [colored]="false"></tui-money>
-    <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
-  </div>
-</div>
+<tui-elastic-container>
+  <div class="transaction-list">
+    <div
+      *ngFor="let transaction of futureTransactions | slice: 0 : futureListShowCount"
+      class="transaction future"
+      [class.passed]="isTransactionPassed(transaction)">
+      <div class="date">
+        {{ transaction.date }}
+        <tui-svg *ngIf="isTransactionPassed(transaction)" src="tuiIconEdit2" (click)="edit.emit(transaction)"></tui-svg>
+        <tui-svg
+          *ngIf="isTransactionPassed(transaction)"
+          src="tuiIconCheckCircle"
+          (click)="approve.emit(transaction)"></tui-svg>
+      </div>
+      <div class="amount">
+        <tui-money [value]="transaction.amount | moneyAmount" [colored]="false"></tui-money>
+        <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
+      </div>
+    </div>
 
-<div *ngFor="let transaction of transactions" class="transaction" [class.just-saved]="transaction.justSaved">
-  <div class="date">
-    {{ transaction.date }}
-    <tui-svg src="tuiIconEdit2" (click)="edit.emit(transaction)"></tui-svg>
-    <tui-svg src="tuiIconTrash" (click)="remove.emit(transaction)"></tui-svg>
+    <div class="transaction show-more" (click)="isFullFutureShow = !isFullFutureShow" *ngIf="isShowMoreVisible">
+      <button tuiLink type="button" [pseudo]="true">
+        <tui-svg src="tuiIconChevronRight" [class.open]="isFullFutureShow"></tui-svg>
+        <span *ngIf="!isFullFutureShow">еще {{ futureListHideCount }} в будущем</span>
+        <span *ngIf="isFullFutureShow">свернуть</span>
+      </button>
+    </div>
   </div>
-  <div class="amount">
-    <tui-money
-      [value]="transaction.amount | moneyAmount"
-      [colored]="true"
-      [tuiHint]="transaction.memo"
-      [class.dashed]="transaction.memo.length"></tui-money>
-    <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
+</tui-elastic-container>
+
+<div class="transaction-list">
+  <div *ngFor="let transaction of transactions" class="transaction" [class.just-saved]="transaction.justSaved">
+    <div class="date">
+      {{ transaction.date }}
+      <tui-svg src="tuiIconEdit2" (click)="edit.emit(transaction)"></tui-svg>
+      <tui-svg src="tuiIconTrash" (click)="remove.emit(transaction)"></tui-svg>
+    </div>
+    <div class="amount">
+      <tui-money
+        [value]="transaction.amount | moneyAmount"
+        [colored]="true"
+        [tuiHint]="transaction.memo"
+        [class.dashed]="transaction.memo.length"></tui-money>
+      <div class="type">{{ operationTypeStringify(transaction.type) }}</div>
+    </div>
   </div>
 </div>

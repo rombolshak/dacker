@@ -2,15 +2,25 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { CommonModule } from '@angular/common';
 import { TransactionViewModel } from '@app/pages/dashboard/account-details/transaction.view-model';
 import { operationTypeStringify } from '../localization.helper';
-import { TuiHintModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiHintModule, TuiLinkModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiMoneyModule } from '@taiga-ui/addon-commerce';
 import { MoneyAmountPipe } from '@app/pipes/money-amount.pipe';
-import { TuiDay } from '@taiga-ui/cdk';
+import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
+import { TuiElasticContainerModule } from '@taiga-ui/kit';
 
 @Component({
   selector: 'monitraks-transactions-list',
   standalone: true,
-  imports: [CommonModule, TuiSvgModule, TuiMoneyModule, TuiHintModule, MoneyAmountPipe],
+  imports: [
+    CommonModule,
+    TuiSvgModule,
+    TuiMoneyModule,
+    TuiHintModule,
+    MoneyAmountPipe,
+    TuiLetModule,
+    TuiElasticContainerModule,
+    TuiLinkModule,
+  ],
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +43,23 @@ export class TransactionsListComponent {
 
   operationTypeStringify = operationTypeStringify;
 
+  public isFullFutureShow = false;
+
   public readonly isTransactionPassed = (model: TransactionViewModel) => {
     return model.date.daySameOrBefore(TuiDay.currentLocal());
   };
+
+  public get futureListShowCount(): number {
+    if (!this.futureTransactions) return 0;
+    return this.isFullFutureShow ? this.futureTransactions.length : this.futureTransactions.length === 3 ? 3 : 2;
+  }
+
+  public get futureListHideCount(): number {
+    if (!this.futureTransactions) return 0;
+    return this.futureTransactions.length - this.futureListShowCount;
+  }
+
+  public get isShowMoreVisible(): boolean {
+    return (this.futureTransactions?.length ?? 0) > 3;
+  }
 }

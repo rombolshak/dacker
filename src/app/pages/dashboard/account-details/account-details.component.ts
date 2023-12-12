@@ -69,11 +69,11 @@ export default class AccountDetailsComponent {
 
     this.accountName$ = this.fullInfo$.pipe(map(data => this.getName(data)));
     this.transactions$ = this.fullInfo$.pipe(
-      map(account => account.transactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? -1 : 1))),
+      map(account => account.transactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? 1 : -1))),
       shareReplay(1),
     );
     this.futureTransactions$ = this.fullInfo$.pipe(
-      map(account => account.futureTransactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? -1 : 1))),
+      map(account => account.futureTransactions.map(this.toViewModel).sort((a, b) => (a.date > b.date ? 1 : -1))),
     );
 
     this.removeAccount$ = account$.pipe(switchMap(account => account.delete()));

@@ -248,7 +248,11 @@ export class AccountInfoCalculator {
       },
     ];
 
-    return calculate(normalizedOps, currentRate / 100, 1e-4) * 100;
+    try {
+      return calculate(normalizedOps, currentRate / 100, 1e-4) * 100;
+    } catch {
+      return NaN;
+    }
   }
 
   private getXirrAmount(operation: OperationData): number {

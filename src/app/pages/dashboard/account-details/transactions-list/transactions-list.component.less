@@ -16,6 +16,11 @@
 
 :host {
   padding: 0 1rem;
+  .transaction-list {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
   .transaction {
     display: flex;
     align-items: center;
@@ -73,6 +78,17 @@
       color: var(--tui-base-05);
 
       .pulse-animation(passed, var(--tui-warning-bg), 2s, 100);
+    }
+
+    &.show-more {
+      tui-svg {
+        opacity: 1;
+        .transition(transform);
+
+        &.open {
+          transform: rotate(90deg);
+        }
+      }
     }
   }
 }
