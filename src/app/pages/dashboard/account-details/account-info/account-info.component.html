@@ -39,11 +39,21 @@
     </ng-container>
   </p>
 </tui-island>
-<tui-island size="s">
-  <h3 class="tui-island__category">Параметры</h3>
-  <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
-  <p class="tui-island__content" *ngIf="fullInfo !== null">
-    <span>с пополнением</span>
-    <span>без снятия</span>
-  </p>
-</tui-island>
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    class="action edit"
+    icon="tuiIconSettings"
+    appearance="secondary"
+    (click)="editAccount.emit()">
+    Параметры вклада
+  </button>
+  <div tuiGroup>
+    <button tuiButton type="button" size="m" class="action close" icon="tuiIconLock">Закрыть</button>
+    <button tuiButton type="button" size="m" class="action delete" icon="tuiIconTrash2" (click)="removeAccount.emit()">
+      Удалить
+    </button>
+  </div>
+</div>

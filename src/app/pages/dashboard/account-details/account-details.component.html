@@ -12,18 +12,22 @@
     <tui-loader size="xxl" [showLoader]="isLoading" [overlay]="true"></tui-loader>
     <ng-container *ngIf="!isLoading && account">
       <div class="section">
-        <monitraks-account-info [fullInfo]="fullInfo$ | async"></monitraks-account-info>
-      </div>
-      <div class="section">
-        <h5 class="section-header">Действия</h5>
-        <monitraks-account-actions
-          (addTransaction)="showTransactionForm = true"
+        <monitraks-account-info
+          [fullInfo]="fullInfo$ | async"
           (editAccount)="editAccount()"
-          (removeAccount)="deleteAccount()">
-        </monitraks-account-actions>
+          (removeAccount)="deleteAccount()"></monitraks-account-info>
       </div>
       <div class="section">
-        <h5 class="section-header">Транзакции</h5>
+        <h5 class="section-header">
+          Транзакции
+          <a
+            tuiMarkerIcon
+            mode="link"
+            src="tuiIconPlus"
+            size="xs"
+            class="header-button"
+            (click)="showTransactionForm = true"></a>
+        </h5>
         <monitraks-transaction-form
           (saved)="saveTransaction($event)"
           (cancel)="hideTransactionForm()"

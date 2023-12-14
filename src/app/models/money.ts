@@ -1,6 +1,4 @@
-﻿import { normalizedDuration } from '@app/services/TuiDay.helper';
-
-export class Money {
+﻿export class Money {
   constructor(public readonly amount: number) {
     this.amount = Math.round(this.amount);
   }
@@ -16,7 +14,6 @@ export class Money {
   static zero: Money = new Money(0);
 
   add(other: Money): Money {
-    // if (typeof other === 'number') return new Money(this.amount + other);
     return new Money(this.amount + other.amount);
   }
 

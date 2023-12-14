@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TuiAppearance, TuiDialogService, TuiLoaderModule } from '@taiga-ui/core';
+import { TuiAppearance, TuiButtonModule, TuiDialogService, TuiLoaderModule } from '@taiga-ui/core';
 import { DataService } from '@app/data-layer/data.service';
 import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { AccountData } from '@app/models/account.data';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
-import { TuiAvatarModule } from '@taiga-ui/kit';
+import { TuiAvatarModule, TuiMarkerIconModule } from '@taiga-ui/kit';
 import { CONFIRMATION_PROMPT, ConfirmationPromptData } from '@app/components/prompt';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddAccountComponent } from '@app/pages/dashboard/dashboard/add-account/add-account.component';
@@ -15,7 +15,6 @@ import { OperationData } from '@app/models/operation.data';
 import { firestoreAutoId } from '@app/models/identifiable';
 import { TransactionViewModel } from '@app/pages/dashboard/account-details/transaction.view-model';
 import { AccountInfoCalculatorProviderService } from '@app/services/account-info-calculator-provider.service';
-import { AccountActionsComponent } from '@app/pages/dashboard/account-details/account-actions/account-actions.component';
 import {
   TransactionFields,
   TransactionFormComponent,
@@ -33,10 +32,11 @@ import { OperationData2 } from '@app/models/operation/operationData2';
     TuiLoaderModule,
     TuiAvatarModule,
     TuiLetModule,
-    AccountActionsComponent,
     TransactionFormComponent,
     TransactionsListComponent,
     AccountInfoComponent,
+    TuiButtonModule,
+    TuiMarkerIconModule,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
@@ -152,7 +152,7 @@ export default class AccountDetailsComponent {
         switchMap(data =>
           this.dialogs.open<AccountData>(new PolymorpheusComponent(AddAccountComponent, this.injector), {
             dismissible: false,
-            label: 'Редактирование данных',
+            label: 'Параметры вклада',
             size: 'l',
             data: data.accountData,
           }),
