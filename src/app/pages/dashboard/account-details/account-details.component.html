@@ -17,28 +17,37 @@
           (editAccount)="editAccount()"
           (removeAccount)="deleteAccount()"></monitraks-account-info>
       </div>
+
       <div class="section">
-        <h5 class="section-header">
-          Транзакции
-          <a
-            tuiMarkerIcon
-            mode="link"
-            src="tuiIconPlus"
-            size="xs"
-            class="header-button"
-            (click)="showTransactionForm = true"></a>
-        </h5>
-        <monitraks-transaction-form
-          (saved)="saveTransaction($event)"
-          (cancel)="hideTransactionForm()"
-          [model]="transactionToEdit"
-          *ngIf="showTransactionForm"></monitraks-transaction-form>
-        <monitraks-transactions-list
-          [transactions]="transactions$ | async"
-          [futureTransactions]="futureTransactions$ | async"
-          (edit)="editTransaction($event)"
-          (remove)="removeTransaction($event.id)"
-          (approve)="approveTransaction($event)"></monitraks-transactions-list>
+        <div class="section-group">
+          <div>
+            <h5 class="section-header">
+              Транзакции
+              <a
+                tuiMarkerIcon
+                mode="link"
+                src="tuiIconPlus"
+                size="xs"
+                class="header-button"
+                (click)="showTransactionForm = true"></a>
+            </h5>
+            <monitraks-transaction-form
+              (saved)="saveTransaction($event)"
+              (cancel)="hideTransactionForm()"
+              [model]="transactionToEdit"
+              *ngIf="showTransactionForm"></monitraks-transaction-form>
+            <monitraks-transactions-list
+              [transactions]="transactions$ | async"
+              [futureTransactions]="futureTransactions$ | async"
+              (edit)="editTransaction($event)"
+              (remove)="removeTransaction($event.id)"
+              (approve)="approveTransaction($event)"></monitraks-transactions-list>
+          </div>
+          <div>
+            <h5 class="section-header">Баланс</h5>
+            <monitraks-balance-chart [accountInfo]="fullInfo$ | async"></monitraks-balance-chart>
+          </div>
+        </div>
       </div>
     </ng-container>
   </div>

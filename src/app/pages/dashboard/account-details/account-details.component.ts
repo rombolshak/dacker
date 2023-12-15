@@ -24,6 +24,7 @@ import { AccountInfoComponent } from '@app/pages/dashboard/account-details/accou
 import { AccountFullData } from '@app/models/account-full.data';
 import { Money } from '@app/models/money';
 import { OperationData2 } from '@app/models/operation/operationData2';
+import { BalanceChartComponent } from '@app/pages/dashboard/account-details/balance-chart/balance-chart.component';
 @Component({
   selector: 'monitraks-account-details',
   standalone: true,
@@ -37,6 +38,7 @@ import { OperationData2 } from '@app/models/operation/operationData2';
     AccountInfoComponent,
     TuiButtonModule,
     TuiMarkerIconModule,
+    BalanceChartComponent,
   ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.less'],
