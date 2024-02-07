@@ -22,7 +22,7 @@
 <tui-island size="s">
   <h3 class="tui-island__category">Ставка</h3>
   <tui-loader [showLoader]="fullInfo === null" [overlay]="true" size="xl" [inheritColor]="true"></tui-loader>
-  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">{{ fullInfo.rate }}%</p>
+  <p class="tui-island__content tui-text_body-xl" *ngIf="fullInfo !== null">{{ fullInfo.rate.toFixed(3) }}%</p>
 </tui-island>
 <tui-island size="s">
   <h3 class="tui-island__category">Доходность</h3>

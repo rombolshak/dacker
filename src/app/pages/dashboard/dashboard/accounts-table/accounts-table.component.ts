@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { CommonModule } from '@angular/common';
 import { AccountData } from '@app/models/account.data';
 import { TuiTableModule } from '@taiga-ui/addon-table';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, concatMap, combineLatest, Observable, map, debounceTime, tap } from 'rxjs';
 import { TUI_ARROW, TuiBadgeModule, TuiTagModule } from '@taiga-ui/kit';
 import {
   TuiButtonModule,
   TuiFormatDatePipeModule,
   TuiHostedDropdownModule,
+  TuiLoaderModule,
   TuiSvgModule,
   TuiTooltipModule,
 } from '@taiga-ui/core';
@@ -17,6 +18,9 @@ import { AsPipe } from '@app/pipes/as.pipe';
 import { AccountTableData } from './account-table.data';
 import { RouterLink } from '@angular/router';
 import { BankInfoService } from '@app/pages/dashboard/services/bank-info.service';
+import { AccountInfoCalculator } from '@app/services/account-info.calculator';
+import { DataService } from '@app/data-layer/data.service';
+import { AccountFullData } from '@app/models/account-full.data';
 
 type Key =
   | 'name'
@@ -52,23 +56,43 @@ type Key =
     TuiTagModule,
     TuiTooltipModule,
     RouterLink,
+    TuiLoaderModule,
   ],
   templateUrl: './accounts-table.component.html',
   styleUrls: ['./accounts-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountsTableComponent {
-  constructor(private readonly banks: BankInfoService) {}
+  constructor(
+    private readonly banks: BankInfoService,
+    private readonly data: DataService,
+  ) {
+    this.accountsData = this._accountIds.pipe(
+      debounceTime(200),
+      tap(() => (this.isLoading = true)),
+      concatMap(ids =>
+        combineLatest(
+          ids
+            .map(id => this.data.accounts.withId(id))
+            .map(builder => new AccountInfoCalculator(builder))
+            .map(calculator => calculator.calculatedData$),
+        ),
+      ),
+      map(data => data.map(this.toViewModel.bind(this))),
+      tap(() => (this.isLoading = false)),
+    );
+  }
 
   @Input()
-  public set accounts(data: AccountData[]) {
-    this.accountsData = data.map(this.toViewModel.bind(this));
+  public set accounts(ids: string[]) {
+    this._accountIds.next(ids);
   }
 
   @Output()
   public addRequested = new EventEmitter();
 
-  accountsData: AccountTableData[] = [];
+  isLoading: boolean = true;
+  accountsData: Observable<AccountTableData[]>;
   AccountTableData!: AccountTableData[];
   readonly sorter$ = new BehaviorSubject<Key | null>('closingAt');
   allColumns: readonly string[] = [
@@ -82,7 +106,6 @@ export class AccountsTableComponent {
     'duration',
     'closingAt',
     'currentNominalRate',
-    'currentRealRate',
     'interestInfo',
   ];
 
@@ -90,23 +113,32 @@ export class AccountsTableComponent {
 
   iconArrow = TUI_ARROW;
 
-  private toViewModel(model: AccountData): AccountTableData {
+  private toViewModel(model: AccountFullData): AccountTableData {
     return {
-      id: model.id,
-      name: model.name,
-      bank: this.banks.findById(model.bank)?.name ?? '',
-      openedAt: model.openedAt,
-      duration: model.duration,
-      closingAt: model.duration ? model.openedAt.append({ day: model.duration }) : null,
+      id: model.accountData.id,
+      name: model.accountData.name,
+      bank: this.banks.findById(model.accountData.bank)?.name ?? '',
+      openedAt: model.accountData.openedAt,
+      duration: model.accountData.duration,
+      closingAt: model.accountData.duration
+        ? model.accountData.openedAt.append({ day: model.accountData.duration })
+        : null,
       additionalInfo: {
-        canWithdraw: this.getCanWithdrawContent(model),
-        canContribute: this.getCanContributeContent(model),
+        canWithdraw: this.getCanWithdrawContent(model.accountData),
+        canContribute: this.getCanContributeContent(model.accountData),
       },
       interestScheduleDescription: {
-        repeatType: this.getRepeatOptionContent(model),
-        repeatDay: this.getRepeatDayContent(model),
-        capitalization: this.getCapitalizationContent(model),
-        basis: this.getInterestBasisContent(model),
+        repeatType: this.getRepeatOptionContent(model.accountData),
+        repeatDay: this.getRepeatDayContent(model.accountData),
+        capitalization: this.getCapitalizationContent(model.accountData),
+        basis: this.getInterestBasisContent(model.accountData),
+      },
+      moneyInfo: {
+        currentAmount: model.currentMoney.toView(),
+        profitAmount: model.receivedProfit.toView(),
+        totalProfit: model.totalProfit.toView(),
+        rate: model.rate.toFixed(3),
+        profitRate: model.xirr.toFixed(3),
       },
     } satisfies AccountTableData;
   }
@@ -157,4 +189,6 @@ export class AccountsTableComponent {
   private getCanContributeContent(model: AccountData) {
     return model.canContribute ? 'c пoпoлнением' : 'без пoполнeния';
   }
+
+  private _accountIds = new BehaviorSubject(<string[]>[]);
 }

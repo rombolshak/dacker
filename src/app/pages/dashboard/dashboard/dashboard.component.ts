@@ -38,13 +38,13 @@ export default class DashboardComponent {
     private readonly route: ActivatedRoute,
     destroy$: TuiDestroyService,
   ) {
-    this.accounts$ = data.accounts.getAll().pipe(
+    this.accounts$ = data.accounts.getAllIds().pipe(
       takeUntil(destroy$),
       tap(() => (this.isLoading = false)),
     );
   }
 
-  accounts$: Observable<AccountData[]>;
+  accounts$: Observable<string[]>;
   isLoading = true;
 
   addAccount(): void {

@@ -3,7 +3,7 @@
     <tui-loader *ngIf="isLoading" size="l" [showLoader]="true"></tui-loader>
     <tui-avatar
       *ngIf="account"
-      [avatarUrl]="'https://raw.githubusercontent.com/melpnz/rblp/master/icon/' + account.accountData.bank + '.svg'"
+      [avatarUrl]="'https://raw.githubusercontent.com/melpnz/rblp/master/svg/icon/' + account.accountData.bank + '.svg'"
       [text]="banks.findById(account.accountData.bank)?.name ?? ''">
     </tui-avatar>
     {{ isLoading ? 'Загрузка' : account?.accountData?.name }}

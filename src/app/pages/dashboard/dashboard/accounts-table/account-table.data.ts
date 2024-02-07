@@ -7,6 +7,13 @@ export interface AccountTableData {
   openedAt: TuiDay;
   duration: number | null;
   closingAt: TuiDay | null;
+  moneyInfo: {
+    currentAmount: number;
+    profitAmount: number;
+    profitRate: string;
+    totalProfit: number;
+    rate: string;
+  };
   interestScheduleDescription: {
     repeatType: string;
     repeatDay: string;

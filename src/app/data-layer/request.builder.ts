@@ -1,4 +1,4 @@
-﻿import { Observable } from 'rxjs';
+﻿import { map, Observable } from 'rxjs';
 import { Identifiable } from '@app/models/identifiable';
 import { StorageService } from '@app/data-layer/storage.service';
 import { FirestoreDataConverter } from '@angular/fire/firestore';
@@ -49,6 +49,10 @@ export class EntityListRequestBuilder<
 
   public getAll(): Observable<TEntity[]> {
     return this.storage.getAll<TEntity>(this.collectionPath, this.converter, this.sortField);
+  }
+
+  public getAllIds(): Observable<Identifiable['id'][]> {
+    return this.getAll().pipe(map(arr => arr.map(r => r.id)));
   }
 
   public withId(id: string): TEntityRequestBuilder {

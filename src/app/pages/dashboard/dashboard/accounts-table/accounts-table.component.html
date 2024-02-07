@@ -13,7 +13,7 @@
   </tui-hosted-dropdown>
 </div>
 
-<table tuiTable class="table" [columns]="selectedColumns">
+<table tuiTable class="table" [columns]="selectedColumns" *ngIf="accountsData | async as data">
   <thead>
     <tr tuiThGroup>
       <th *tuiHead="'name'" tuiTh>Название</th>
@@ -26,26 +26,21 @@
       <th *tuiHead="'duration'" tuiTh>Срок</th>
       <th *tuiHead="'closingAt'" tuiTh>Дата закрытия</th>
       <th *tuiHead="'currentNominalRate'" tuiTh>Номинальная ставка</th>
-      <th *tuiHead="'currentRealRate'" tuiTh>Реальная ставка</th>
       <th *tuiHead="'interestInfo'" tuiTh [sorter]="null">Инфо</th>
     </tr>
   </thead>
-  <tbody
-    *tuiLet="accountsData | tuiTableSort | as: AccountTableData as sortedAccounts"
-    tuiTbody
-    [data]="sortedAccounts">
+  <tbody *tuiLet="data | tuiTableSort | as: AccountTableData as sortedAccounts" tuiTbody [data]="sortedAccounts">
     <tr *ngFor="let account of sortedAccounts" tuiTr [routerLink]="account.id">
       <td *tuiCell="'name'" tuiTd>{{ account.name }}</td>
       <td *tuiCell="'bank'" tuiTd>{{ account.bank }}</td>
-      <td *tuiCell="'currentTotalAmount'" tuiTd></td>
-      <td *tuiCell="'currentIncomeAmount'" tuiTd></td>
-      <td *tuiCell="'currentIncomePercent'" tuiTd></td>
-      <td *tuiCell="'expectedIncomeAmount'" tuiTd></td>
+      <td *tuiCell="'currentTotalAmount'" tuiTd>{{ account.moneyInfo.currentAmount }}</td>
+      <td *tuiCell="'currentIncomeAmount'" tuiTd>{{ account.moneyInfo.profitAmount }}</td>
+      <td *tuiCell="'currentIncomePercent'" tuiTd>{{ account.moneyInfo.profitRate }}</td>
+      <td *tuiCell="'expectedIncomeAmount'" tuiTd>{{ account.moneyInfo.totalProfit }}</td>
       <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt }}</td>
       <td *tuiCell="'duration'" tuiTd>{{ account.duration }}</td>
       <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt }}</td>
-      <td *tuiCell="'currentNominalRate'" tuiTd></td>
-      <td *tuiCell="'currentRealRate'" tuiTd></td>
+      <td *tuiCell="'currentNominalRate'" tuiTd>{{ account.moneyInfo.rate }}</td>
       <td *tuiCell="'interestInfo'" tuiTd>
         <tui-tooltip [content]="infoTooltip"></tui-tooltip>
         <ng-template #infoTooltip>
@@ -72,3 +67,4 @@
     </tr>
   </tbody>
 </table>
+<tui-loader *ngIf="isLoading" size="xxl" [overlay]="true"> </tui-loader>
