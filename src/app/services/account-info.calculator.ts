@@ -88,7 +88,7 @@ export class AccountInfoCalculator {
       futureTransactions.push(new OperationData2('', next, 'interest', profit, null));
     }
 
-    return futureTransactions;
+    return futureTransactions.filter(t => t.money.amount > 0);
   }
 
   private getPeriodProfit(

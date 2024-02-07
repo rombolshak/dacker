@@ -13,7 +13,7 @@ import {
   TuiTooltipModule,
 } from '@taiga-ui/core';
 import { TuiReorderModule } from '@app/components/reorder';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiDay, TuiLetModule } from '@taiga-ui/cdk';
 import { AsPipe } from '@app/pipes/as.pipe';
 import { AccountTableData } from './account-table.data';
 import { RouterLink } from '@angular/router';
@@ -140,6 +140,9 @@ export class AccountsTableComponent {
         rate: model.rate.toFixed(3),
         profitRate: model.xirr.toFixed(3),
       },
+      hasPendingTransactions: model.futureTransactions.some(transaction =>
+        transaction.date.daySameOrBefore(TuiDay.currentLocal()),
+      ),
     } satisfies AccountTableData;
   }
 

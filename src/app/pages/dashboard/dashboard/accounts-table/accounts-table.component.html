@@ -30,7 +30,11 @@
     </tr>
   </thead>
   <tbody *tuiLet="data | tuiTableSort | as: AccountTableData as sortedAccounts" tuiTbody [data]="sortedAccounts">
-    <tr *ngFor="let account of sortedAccounts" tuiTr [routerLink]="account.id">
+    <tr
+      *ngFor="let account of sortedAccounts"
+      tuiTr
+      [routerLink]="account.id"
+      [class.passed]="account.hasPendingTransactions">
       <td *tuiCell="'name'" tuiTd>{{ account.name }}</td>
       <td *tuiCell="'bank'" tuiTd>{{ account.bank }}</td>
       <td *tuiCell="'currentTotalAmount'" tuiTd>{{ account.moneyInfo.currentAmount }}</td>

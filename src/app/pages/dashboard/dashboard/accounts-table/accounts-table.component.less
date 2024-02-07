@@ -34,6 +34,19 @@
   tbody {
     border-color: transparent;
   }
+
+  tr {
+    .transition(background-color);
+    @keyframes pulse-background {
+      50% {
+        background-color: var(--tui-warning-bg);
+      }
+    }
+
+    &.passed td {
+      animation: pulse-background ease-in-out 2s 100;
+    }
+  }
 }
 
 .columns-selector {
