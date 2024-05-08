@@ -67,7 +67,7 @@ export class AccountsTableComponent {
     private readonly banks: BankInfoService,
     private readonly data: DataService,
   ) {
-    this.accountsData = this._accountIds.pipe(
+    const accounts$ = this._accountIds.pipe(
       debounceTime(200),
       tap(() => (this.isLoading = true)),
       concatMap(ids =>
@@ -78,7 +78,15 @@ export class AccountsTableComponent {
             .map(calculator => calculator.calculatedData$),
         ),
       ),
-      map(data => data.filter(acc => !acc.accountData.isClosed).map(this.toViewModel.bind(this))),
+    );
+
+    this.accountsData = accounts$.pipe(
+      map(data => data.filter(afd => !afd.accountData.isClosed).map(this.toViewModel.bind(this))),
+      tap(() => (this.isLoading = false)),
+    );
+
+    this.closedAccounts = accounts$.pipe(
+      map(data => data.filter(afd => afd.accountData.isClosed).map(this.toViewModel.bind(this))),
       tap(() => (this.isLoading = false)),
     );
   }
@@ -93,6 +101,7 @@ export class AccountsTableComponent {
 
   isLoading: boolean = true;
   accountsData: Observable<AccountTableData[]>;
+  closedAccounts: Observable<AccountTableData[]>;
   AccountTableData!: AccountTableData[];
   readonly sorter$ = new BehaviorSubject<Key | null>('closingAt');
   allColumns: readonly string[] = [
@@ -114,7 +123,7 @@ export class AccountsTableComponent {
   iconArrow = TUI_ARROW;
 
   private toViewModel(model: AccountFullData): AccountTableData {
-    let closingAt = model.accountData.duration
+    const closingAt = model.accountData.duration
       ? model.accountData.openedAt.append({ day: model.accountData.duration })
       : null;
     return {

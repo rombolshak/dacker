@@ -72,4 +72,60 @@
     </tr>
   </tbody>
 </table>
+
+<h5 class="tui-text_h5">Закрытые вклады</h5>
+<table tuiTable class="table" [columns]="selectedColumns" *ngIf="closedAccounts | async as data">
+  <thead>
+    <tr tuiThGroup>
+      <th *tuiHead="'name'" tuiTh>Название</th>
+      <th *tuiHead="'bank'" tuiTh>Банк</th>
+      <th *tuiHead="'currentTotalAmount'" tuiTh>Сумма</th>
+      <th *tuiHead="'currentIncomeAmount'" tuiTh>Доход, руб</th>
+      <th *tuiHead="'currentIncomePercent'" tuiTh>Доход, % год</th>
+      <th *tuiHead="'expectedIncomeAmount'" tuiTh>Ожидаемый доход, руб</th>
+      <th *tuiHead="'openedAt'" tuiTh>Дата открытия</th>
+      <th *tuiHead="'duration'" tuiTh>Срок</th>
+      <th *tuiHead="'closingAt'" tuiTh>Дата закрытия</th>
+      <th *tuiHead="'currentNominalRate'" tuiTh>Cтавка</th>
+      <th *tuiHead="'interestInfo'" tuiTh [sorter]="null">Инфо</th>
+    </tr>
+  </thead>
+  <tbody *tuiLet="data | tuiTableSort | as: AccountTableData as sortedAccounts" tuiTbody [data]="sortedAccounts">
+    <tr *ngFor="let account of sortedAccounts" tuiTr [routerLink]="account.id">
+      <td *tuiCell="'name'" tuiTd>{{ account.name }}</td>
+      <td *tuiCell="'bank'" tuiTd>{{ account.bank }}</td>
+      <td *tuiCell="'currentTotalAmount'" tuiTd>{{ account.moneyInfo.currentAmount }}</td>
+      <td *tuiCell="'currentIncomeAmount'" tuiTd>{{ account.moneyInfo.profitAmount }}</td>
+      <td *tuiCell="'currentIncomePercent'" tuiTd>{{ account.moneyInfo.profitRate }}</td>
+      <td *tuiCell="'expectedIncomeAmount'" tuiTd>{{ account.moneyInfo.totalProfit }}</td>
+      <td *tuiCell="'openedAt'" tuiTd>{{ account.openedAt }}</td>
+      <td *tuiCell="'duration'" tuiTd>{{ account.duration }}</td>
+      <td *tuiCell="'closingAt'" tuiTd>{{ account.closingAt }}</td>
+      <td *tuiCell="'currentNominalRate'" tuiTd>{{ account.moneyInfo.rate }}</td>
+      <td *tuiCell="'interestInfo'" tuiTd>
+        <tui-tooltip [content]="infoTooltip"></tui-tooltip>
+        <ng-template #infoTooltip>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.repeatType"
+            [value]="account.interestScheduleDescription.repeatType"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.repeatDay"
+            [value]="account.interestScheduleDescription.repeatDay"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.capitalization"
+            [value]="account.interestScheduleDescription.capitalization"
+            [autoColor]="true"></tui-tag>
+          <tui-tag
+            *ngIf="account.interestScheduleDescription.basis"
+            [value]="account.interestScheduleDescription.basis"
+            [autoColor]="true"></tui-tag>
+          <tui-tag [value]="account.additionalInfo.canContribute" [autoColor]="true"></tui-tag>
+          <tui-tag [value]="account.additionalInfo.canWithdraw" [autoColor]="true"></tui-tag>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>
 <tui-loader *ngIf="isLoading" size="xxl" [overlay]="true"> </tui-loader>
