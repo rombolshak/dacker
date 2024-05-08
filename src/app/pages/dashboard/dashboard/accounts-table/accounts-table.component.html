@@ -34,7 +34,8 @@
       *ngFor="let account of sortedAccounts"
       tuiTr
       [routerLink]="account.id"
-      [class.passed]="account.hasPendingTransactions">
+      [class.passed]="account.hasPendingTransactions"
+      [class.expired]="account.isExpired">
       <td *tuiCell="'name'" tuiTd>{{ account.name }}</td>
       <td *tuiCell="'bank'" tuiTd>{{ account.bank }}</td>
       <td *tuiCell="'currentTotalAmount'" tuiTd>{{ account.moneyInfo.currentAmount }}</td>

@@ -114,15 +114,16 @@ export class AccountsTableComponent {
   iconArrow = TUI_ARROW;
 
   private toViewModel(model: AccountFullData): AccountTableData {
+    let closingAt = model.accountData.duration
+      ? model.accountData.openedAt.append({ day: model.accountData.duration })
+      : null;
     return {
       id: model.accountData.id,
       name: model.accountData.name,
       bank: this.banks.findById(model.accountData.bank)?.name ?? '',
       openedAt: model.accountData.openedAt,
       duration: model.accountData.duration,
-      closingAt: model.accountData.duration
-        ? model.accountData.openedAt.append({ day: model.accountData.duration })
-        : null,
+      closingAt: closingAt,
       additionalInfo: {
         canWithdraw: this.getCanWithdrawContent(model.accountData),
         canContribute: this.getCanContributeContent(model.accountData),
@@ -143,6 +144,7 @@ export class AccountsTableComponent {
       hasPendingTransactions: model.futureTransactions.some(transaction =>
         transaction.date.daySameOrBefore(TuiDay.currentLocal()),
       ),
+      isExpired: closingAt != null && closingAt.daySameOrBefore(TuiDay.currentLocal()),
     } satisfies AccountTableData;
   }
 

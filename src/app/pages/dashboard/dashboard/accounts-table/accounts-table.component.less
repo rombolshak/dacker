@@ -37,14 +37,24 @@
 
   tr {
     .transition(background-color);
-    @keyframes pulse-background {
+    @keyframes pulse-background-warning {
       50% {
         background-color: var(--tui-warning-bg);
       }
     }
 
+    @keyframes pulse-background-error {
+      50% {
+        background-color: var(--tui-error-bg-hover);
+      }
+    }
+
     &.passed td {
-      animation: pulse-background ease-in-out 2s 100;
+      animation: pulse-background-warning ease-in-out 2s 100;
+    }
+
+    &.expired td {
+      animation: pulse-background-error ease-in-out 2s 100;
     }
   }
 }

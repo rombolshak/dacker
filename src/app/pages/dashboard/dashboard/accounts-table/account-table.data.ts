@@ -8,6 +8,7 @@ export interface AccountTableData {
   duration: number | null;
   closingAt: TuiDay | null;
   hasPendingTransactions: boolean;
+  isExpired: boolean;
   moneyInfo: {
     currentAmount: number;
     profitAmount: number;
