@@ -166,6 +166,10 @@ export class AccountInfoCalculator {
 
   private getNextPaymentDays(account: AccountData, afterDay: TuiDay): TuiDay[] {
     const closingDate = account.duration !== null ? account.openedAt.append({ day: account.duration }) : null;
+    if (closingDate != null && afterDay.daySameOrAfter(closingDate)) {
+      return [];
+    }
+
     if (account.interestSchedule.type === 'onClosing') {
       return [closingDate!];
     }
@@ -208,10 +212,6 @@ export class AccountInfoCalculator {
   }
 
   private getLastPaymentDay(account: AccountData, operations: OperationData[]): TuiDay {
-    if (account.interestSchedule.type === 'onClosing') {
-      return account.openedAt;
-    }
-
     return [...operations].reverse().find(t => t.type === 'interest')?.date ?? account.openedAt;
   }
 

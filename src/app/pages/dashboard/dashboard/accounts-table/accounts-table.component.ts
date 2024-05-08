@@ -137,7 +137,7 @@ export class AccountsTableComponent {
         currentAmount: model.currentMoney.toView(),
         profitAmount: model.receivedProfit.toView(),
         totalProfit: model.totalProfit.toView(),
-        rate: model.rate.toFixed(3),
+        rate: model.rate.toFixed(1),
         profitRate: model.xirr.toFixed(3),
       },
       hasPendingTransactions: model.futureTransactions.some(transaction =>
