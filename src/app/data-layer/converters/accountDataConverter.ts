@@ -33,6 +33,7 @@ export const accountDataConverter: FirestoreDataConverter<AccountData> = {
         data.canContribute,
         data.interestSchedule,
         data.interestBase,
+        data.isClosed,
       );
     }
 
@@ -58,6 +59,7 @@ export const accountDataConverter: FirestoreDataConverter<AccountData> = {
       data.canContribute,
       data.interestSchedule,
       data.interestBase,
+      false,
     );
   },
   toFirestore(modelObject: AccountData): DocumentData {
@@ -85,6 +87,7 @@ export const accountDataConverter: FirestoreDataConverter<AccountData> = {
       canContribute: modelObject.canContribute,
       interestSchedule: modelObject.interestSchedule,
       interestBase: modelObject.interestBase,
+      isClosed: modelObject.isClosed,
     };
   },
 };

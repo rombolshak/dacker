@@ -33,11 +33,11 @@ export class AccountDataConverter {
         isCapitalizing: formData.interestSchedule.isCapitalizing,
       },
       formData.interestSchedule.basis,
+      formData.isClosed,
     );
   }
 
   public fromModel(model: AccountData): AccountFormData {
-    console.log(model.interest);
     return {
       id: model.id,
       name: model.name,
@@ -61,6 +61,7 @@ export class AccountDataConverter {
         monthSteps: model.interest.map(m => m.month),
         rates: model.interest.map(m => m.rates.map(r => r.rate)),
       },
+      isClosed: model.isClosed,
     } satisfies AccountFormData;
   }
 }

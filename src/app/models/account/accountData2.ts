@@ -22,5 +22,22 @@ export class AccountData2 implements Identifiable {
     public readonly canContribute: boolean,
     public readonly interestSchedule: InterestSchedule,
     public readonly interestBase: InterestBase,
+    public readonly isClosed: boolean,
   ) {}
+
+  toClosedAccount() {
+    return new AccountData2(
+      this.id,
+      this.name,
+      this.bank,
+      this.openedAt,
+      this.duration,
+      this.interest,
+      this.canWithdraw,
+      this.canContribute,
+      this.interestSchedule,
+      this.interestBase,
+      true,
+    );
+  }
 }

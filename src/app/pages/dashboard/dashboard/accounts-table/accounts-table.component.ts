@@ -78,7 +78,7 @@ export class AccountsTableComponent {
             .map(calculator => calculator.calculatedData$),
         ),
       ),
-      map(data => data.map(this.toViewModel.bind(this))),
+      map(data => data.filter(acc => !acc.accountData.isClosed).map(this.toViewModel.bind(this))),
       tap(() => (this.isLoading = false)),
     );
   }

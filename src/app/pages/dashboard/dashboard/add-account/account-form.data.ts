@@ -24,4 +24,5 @@ export interface AccountFormData {
     repeatDay: number | null;
     basis: InterestBase;
   };
+  isClosed: boolean;
 }

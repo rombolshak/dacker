@@ -79,6 +79,15 @@ export default class AccountDetailsComponent {
     );
 
     this.removeAccount$ = account$.pipe(switchMap(account => account.delete()));
+    this.closeAccount$ = account$.pipe(
+      switchMap(account =>
+        account.get().pipe(
+          filter(data => data != null),
+          map(data => data!.toClosedAccount()),
+          switchMap(newData => account.set(newData)),
+        ),
+      ),
+    );
     this.updateTransaction$ = (model: OperationData) =>
       account$.pipe(switchMap(account => account.operations.withId(model.id).set(model)));
     this.removeTransaction$ = (id: string) =>
@@ -116,6 +125,27 @@ export default class AccountDetailsComponent {
     return account
       ? `${account.accountData.name} (${this.banks.findById(account.accountData.bank)?.name})`
       : 'Аккаунт не найден';
+  }
+
+  public closeAccount(): void {
+    this.dialogs
+      .open<boolean>(CONFIRMATION_PROMPT, {
+        label: 'Закрытие вклада',
+        data: {
+          content:
+            '<p>Закрытый вклад не будет отображаться в общем списке вкладов, но все операции и статистика будут сохранены.</p>',
+          yes: 'Закрыть',
+          no: 'Оставить',
+          yesAppearance: TuiAppearance.Primary,
+        } as ConfirmationPromptData,
+      })
+      .pipe(
+        filter(decision => decision),
+        tap(() => (this.isLoading = true)),
+        switchMap(() => this.closeAccount$),
+        tap(() => this.router.navigate(['..'])),
+      )
+      .subscribe();
   }
 
   public deleteAccount(): void {
@@ -199,4 +229,5 @@ export default class AccountDetailsComponent {
   private readonly updateTransaction$: (model: OperationData) => Observable<void>;
   private readonly removeTransaction$: (id: string) => Observable<void>;
   private readonly removeAccount$: Observable<void>;
+  private readonly closeAccount$: Observable<void>;
 }

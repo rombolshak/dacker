@@ -51,7 +51,9 @@
     Параметры вклада
   </button>
   <div tuiGroup>
-    <button tuiButton type="button" size="m" class="action close" icon="tuiIconLock">Закрыть</button>
+    <button tuiButton type="button" size="m" class="action close" icon="tuiIconLock" (click)="closeAccount.emit()">
+      Закрыть
+    </button>
     <button tuiButton type="button" size="m" class="action delete" icon="tuiIconTrash2" (click)="removeAccount.emit()">
       Удалить
     </button>

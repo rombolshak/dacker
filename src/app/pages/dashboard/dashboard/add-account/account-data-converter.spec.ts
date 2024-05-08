@@ -48,6 +48,7 @@ describe('AccountDataConverter', () => {
       name: 'test-bank',
       id: 'test-bank-id',
     },
+    isClosed: false,
   };
 
   const modelData: AccountData = new AccountData2(
@@ -105,6 +106,7 @@ describe('AccountDataConverter', () => {
       isCapitalizing: true,
     },
     'monthlyMin',
+    false,
   );
 
   beforeEach(() => {

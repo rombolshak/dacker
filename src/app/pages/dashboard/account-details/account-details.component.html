@@ -15,7 +15,9 @@
         <monitraks-account-info
           [fullInfo]="fullInfo$ | async"
           (editAccount)="editAccount()"
-          (removeAccount)="deleteAccount()"></monitraks-account-info>
+          (removeAccount)="deleteAccount()"
+          (closeAccount)="closeAccount()">
+        </monitraks-account-info>
       </div>
 
       <div class="section">

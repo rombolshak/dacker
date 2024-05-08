@@ -32,4 +32,7 @@ export class AccountInfoComponent {
 
   @Output()
   public removeAccount = new EventEmitter();
+
+  @Output()
+  public closeAccount = new EventEmitter();
 }
