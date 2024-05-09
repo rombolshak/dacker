@@ -33,7 +33,7 @@ export class AccountDataConverter {
         isCapitalizing: formData.interestSchedule.isCapitalizing,
       },
       formData.interestSchedule.basis,
-      formData.isClosed,
+      formData.isClosed ?? false,
     );
   }
 
