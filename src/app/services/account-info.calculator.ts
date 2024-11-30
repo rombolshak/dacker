@@ -149,7 +149,7 @@ export class AccountInfoCalculator {
   }
 
   private getAmountRate(interest: MonthInterest, amount: Money): number {
-    if (amount.amount === 0) return 0;
+    if (amount.amount <= 0) return 0;
 
     const maxRateIndex =
       interest.rates.length - 1 - [...interest.rates].reverse().findIndex(msr => msr.money <= amount)!;
